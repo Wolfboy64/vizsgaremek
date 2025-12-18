@@ -1,8 +1,3 @@
-##Csapattagok névsora:
-###Király Gellért
-###Macza Ádám
-###Kiss Richárd Bendegúz
-
 # A project célja:
 
 Célunk, egy olyan webes felület és asztali alkalmazás elkészítése, amely mindenki
@@ -21,3 +16,12 @@ csökkenti az emberi hibák lehetőségét.
 Továbbá célunk, hogy a rendszer moduláris felépítésű legyen, így a jövőben könnyen
 bővíthető új funkciókkal – például automatizált jelentésekkel, statisztikákkal vagy
 karbantartási ütemezéssel.
+
+
+##Csapattagok névsora:
+
+###Király Gellért
+
+###Macza Ádám
+
+###Kiss Richárd Bendegúz
