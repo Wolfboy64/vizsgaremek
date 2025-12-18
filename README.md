@@ -1,3 +1,8 @@
+##Csapattagok névsora:
+###Király Gellért
+###Macza Ádám
+###Kiss Richárd Bendegúz
+
 # A project célja:
 
 Célunk, egy olyan webes felület és asztali alkalmazás elkészítése, amely mindenki
