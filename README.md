@@ -20,7 +20,7 @@ karbantartási ütemezéssel.
 
 ## Csapattagok névsora:
 
-###K irály Gellért
+### Király Gellért
 
 ### Macza Ádám
 
