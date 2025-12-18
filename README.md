@@ -18,10 +18,10 @@ bővíthető új funkciókkal – például automatizált jelentésekkel, statis
 karbantartási ütemezéssel.
 
 
-##Csapattagok névsora:
+## Csapattagok névsora:
 
-###Király Gellért
+###K irály Gellért
 
-###Macza Ádám
+### Macza Ádám
 
-###Kiss Richárd Bendegúz
+### Kiss Richárd Bendegúz
