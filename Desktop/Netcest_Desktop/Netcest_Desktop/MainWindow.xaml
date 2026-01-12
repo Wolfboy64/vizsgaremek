@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Netcest_Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="NetCest - Adminfelület (bejelentkezés)" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -35,14 +35,15 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Username:" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <TextBlock Text="Felhasználónév:" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
                 <TextBox x:Name="usernameTextBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
-                <TextBlock Text="Password:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <TextBlock Text="Jelszó:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
                 <PasswordBox x:Name="passwordBox" Grid.Row="1" Grid.Column="1" Margin="5,5,5,3"/>
-                <Button Content="Login" Grid.Row="3" Grid.ColumnSpan="2" Margin="-3,171,13,-191" Click="LoginButton_Click" Grid.RowSpan="2"/>
+                <Button x:Name="loginButton" Content="Login" Grid.Row="3" Grid.ColumnSpan="2" Margin="5,170,5,-190" Click="loginButton_Click" Grid.RowSpan="2"/>
                 <TextBlock x:Name="errorMessageTextBlock" Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Foreground="Red" Visibility="Collapsed"/>
             </Grid>
         </StackPanel>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="80" Grid.Row="1" Width="250" FontFamily="Arial Black" FontSize="24"><Run Language="hu-hu" Text="NetCest - Adminfelület (bejelentkezés)"/></TextBlock>
 
 
 
