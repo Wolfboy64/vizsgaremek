@@ -24,5 +24,9 @@ namespace Netcest_Desktop
         {
             InitializeComponent();
         }
+        private void loginButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
