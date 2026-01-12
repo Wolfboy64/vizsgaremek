@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Data.SqlClient;
 
 namespace Netcest_Desktop
 {
@@ -23,54 +24,101 @@ namespace Netcest_Desktop
     {
         private string AName;
         private string APassword;
+        struct Felhasznalo
+        {
+            int Id;
+            string Name;
+            string Elerhetoseg;
+            string Allapot;
+            public Felhasznalo(int id, string name, string elerhetoseg, string allapot )
+            {
+                Id = id;
+                Name = name;
+                Elerhetoseg = elerhetoseg;
+                Allapot = allapot;
+            }
+            public static List<Felhasznalo> FelhasznalokOsszes = new List<Felhasznalo>();
+            
+            public override string ToString()
+            {
+                return $"{Id} | {Name} | {Elerhetoseg} | {Allapot}";
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
             loginPage.Visibility = Visibility.Visible;
             homePage.Visibility = Visibility.Hidden;
         }
+        private string connectionString =
+           "Server=localhost;" +
+           "Database=test2;" +
+           "Uid=root;" +
+           "Pwd=;" +      
+           "Port=3306;";
         private void connectDatabase()
         {
-            //connect to "test" database on localhost without password
+            
 
-            string connectionString = "Server=localhost;Database=test;Trusted_Connection=True;";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                try
-                {
-                    connection.Open();
-                    MessageBox.Show("Sikeres adatbázis kapcsolat!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Adatbázis kapcsolat sikertelen: " + ex.Message);
-                }
-            }
+                connection.Open();
 
+                string query = "SELECT * FROM `felhasznalo`";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+           
+            }
 
         }
-        private bool LoginCheck()
+        private string FelhasznaloFejlec()
         {
-            AName = usernameTextBox.Text;
-            APassword = passwordBox.Password;
-            if (AName == "admin" && APassword == "admin123")
+            return "ID | Név | Elérhetőség | Állapot";
+        }
+        private bool LoginCheck( string username, string password)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                return true;
-            }
-            else
-            {
-                MessageBox.Show("Hibás felhasználónév vagy jelszó!");
-                return false;
+                connection.Open();
+                string query = "SELECT * FROM `felhasznalo` WHERE `nev` = @username AND `elerhetoseg` = @password";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@password", password);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    AName = reader["nev"].ToString();
+                    APassword = reader["elerhetoseg"].ToString();
+                    Felhasznalo a_ = new Felhasznalo(
+                        Convert.ToInt32(reader["id"]),
+                        reader["nev"].ToString(),
+                        reader["elerhetoseg"].ToString(),
+                        reader["allapot"].ToString()
+                        );
+                    Felhasznalo.FelhasznalokOsszes.Add(a_);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (LoginCheck() == true)
+            if (LoginCheck(usernameTextBox.Text, passwordBox.Password) == true)
             {
                 connectDatabase();
                 loginPage.Visibility = Visibility.Hidden;
                 homePage.Visibility = Visibility.Visible;
+                AdminInfos.Text = FelhasznaloFejlec();
                 MainText.Text = $"Üdvözöllek, {AName}!";
+                for (int i = 0; i < Felhasznalo.FelhasznalokOsszes.Count; i++)
+                {
+                    
+                    AdminInfos.Text += $"\n{Felhasznalo.FelhasznalokOsszes[i].ToString()}";
+                }
             }
             else 
             {
@@ -96,7 +144,10 @@ namespace Netcest_Desktop
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-
+            homePage.Visibility = Visibility.Hidden;
+            loginPage.Visibility = Visibility.Visible;
+            usernameTextBox.Clear();
+            passwordBox.Clear();
         }
     }
 }
