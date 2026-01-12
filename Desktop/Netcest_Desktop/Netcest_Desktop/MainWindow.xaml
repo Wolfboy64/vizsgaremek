@@ -76,7 +76,6 @@
             <StackPanel Visibility="Visible">
                 <Grid>
                     <TextBlock x:Name="AdminInfos" Height="auto" Width="auto" Margin="10,0,556,-40"><Run Language="hu-hu" Text="Adminisztrátori információk:"/></TextBlock>
-                    <ListBox  Width="auto" Height="auto" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="381,10,131,-29"/>
                 </Grid>
             </StackPanel>
 
