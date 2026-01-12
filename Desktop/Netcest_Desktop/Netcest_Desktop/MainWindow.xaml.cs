@@ -20,11 +20,64 @@ namespace Netcest_Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string AName;
+        private string APassword;
         public MainWindow()
         {
             InitializeComponent();
+            loginPage.Visibility = Visibility.Visible;
+            homePage.Visibility = Visibility.Hidden;
+        }
+        private void connectDatabase()
+        {
+            MessageBox.Show("Adatbázis ellenőrizve, létezik és csatlakozva van.!");
+        }
+        private bool LoginCheck()
+        {
+            AName = usernameTextBox.Text;
+            APassword = passwordBox.Password;
+            if (AName == "admin" && APassword == "admin123")
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Hibás felhasználónév vagy jelszó!");
+                return false;
+            }
         }
         private void loginButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (LoginCheck() == true)
+            {
+                connectDatabase();
+                loginPage.Visibility = Visibility.Hidden;
+                homePage.Visibility = Visibility.Visible;
+                MainText.Text = $"Üdvözöllek, {AName}!";
+            }
+            else 
+            {
+            
+            }
+                
+        }
+
+        private void manageUsersButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void viewReportsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void settingsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
