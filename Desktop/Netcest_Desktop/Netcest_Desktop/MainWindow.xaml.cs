@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
 
 namespace Netcest_Desktop
 {
@@ -30,7 +31,23 @@ namespace Netcest_Desktop
         }
         private void connectDatabase()
         {
-            MessageBox.Show("Adatbázis ellenőrizve, létezik és csatlakozva van.!");
+            //connect to "test" database on localhost without password
+
+            string connectionString = "Server=localhost;Database=test;Trusted_Connection=True;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    MessageBox.Show("Sikeres adatbázis kapcsolat!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Adatbázis kapcsolat sikertelen: " + ex.Message);
+                }
+            }
+
+
         }
         private bool LoginCheck()
         {
