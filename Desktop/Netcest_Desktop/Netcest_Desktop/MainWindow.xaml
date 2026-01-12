@@ -7,6 +7,45 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="250" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="loginPage" Background="red" Grid.Column="2" Grid.Row="2" Height="334" VerticalAlignment="Top">
+            <!-- Make a login panel grid wich good -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Username:" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <TextBox x:Name="usernameTextBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
+                <TextBlock Text="Password:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+                <PasswordBox x:Name="passwordBox" Grid.Row="1" Grid.Column="1" Margin="5,5,5,3"/>
+                <Button Content="Login" Grid.Row="3" Grid.ColumnSpan="2" Margin="-3,171,13,-191" Click="LoginButton_Click" Grid.RowSpan="2"/>
+                <TextBlock x:Name="errorMessageTextBlock" Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Foreground="Red" Visibility="Collapsed"/>
+            </Grid>
+        </StackPanel>
+
+
+
     </Grid>
 </Window>
