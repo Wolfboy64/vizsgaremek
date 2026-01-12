@@ -57,7 +57,7 @@ namespace Netcest_Desktop
             }
             else 
             {
-            
+                MessageBox.Show("Bejelentkezés sikertelen.");
             }
                 
         }
