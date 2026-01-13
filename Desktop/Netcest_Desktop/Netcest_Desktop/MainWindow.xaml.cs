@@ -145,8 +145,7 @@ namespace Netcest_Desktop
         }
         private void manageUsersButton_Click(object sender, RoutedEventArgs e)
         {
-            //homePage.Visibility = Visibility.Hidden;
-            //manageUsersPage.Visibility = Visibility.Visible;
+            
         }
 
         private void viewReportsButton_Click(object sender, RoutedEventArgs e)
@@ -169,8 +168,7 @@ namespace Netcest_Desktop
 
         private void backFromManageUsersButton_Click(object sender, RoutedEventArgs e)
         {
-            //manageUsersButton.Visibility = Visibility.Visible;
-            //homePage.Visibility = Visibility.Visible;
+            
         }
     }
 }

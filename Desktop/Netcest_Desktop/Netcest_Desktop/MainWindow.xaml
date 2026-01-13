@@ -17,12 +17,13 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
+            <RowDefinition Height="68.82" />
+            <RowDefinition Height="31.18"/>
             <RowDefinition Height="250" />
             <RowDefinition Height="100" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="loginPage" Background="red" Grid.Column="3" Grid.Row="2" Height="334" VerticalAlignment="Top" Visibility="Hidden" Grid.RowSpan="2">
+        <StackPanel x:Name="loginPage" Background="red" Grid.Column="3" Grid.Row="3" Height="334" VerticalAlignment="Top" Visibility="Hidden" Grid.RowSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -45,7 +46,7 @@
             </Grid>
         </StackPanel>
         <!-- Home page-->
-        <StackPanel x:Name="homePage" Background="LightGray" Grid.Row="1" Height="434" VerticalAlignment="Top" Grid.RowSpan="3" Grid.ColumnSpan="6">
+        <StackPanel x:Name="homePage" Background="LightGray" Grid.Row="1" Height="434" VerticalAlignment="Top" Grid.RowSpan="4" Grid.ColumnSpan="6">
             <Grid Width="785">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -85,11 +86,11 @@
                     </ListView>
                 </Grid>
             </StackPanel>
-            
-            <!--
-           
-            <StackPanel x:Name="manageUsersPage" Visibility="Hidden">
-                <Grid>
+
+
+
+            <StackPanel x:Name="manageUsersPage" Visibility="Visible">
+                <Grid Height="100">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -98,15 +99,24 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    
+                    <Button Grid.Column="1" Content="módosítás" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="72"/>
+                    <Button Grid.Column="1" Content="törlés" Margin="10,0,2,70" RenderTransformOrigin="0.5,0.5"/>
+                    <ListView x:Name="ManageUserList" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="279,0,-383,0" Grid.RowSpan="2">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
                 </Grid>
-            </StackPanel>  -->
-            
+            </StackPanel>
+
 
 
         </StackPanel>
-        <TextBlock x:Name="MainText" Visibility="Hidden" Grid.Column="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="80" Grid.Row="1" Width="250" FontFamily="Arial Black" FontSize="24"><Run Language="hu-hu" Text="NetCest - Adminfelület (bejelentkezés)"/></TextBlock>
-        <Image x:Name="logo" HorizontalAlignment="Left" Height="91" VerticalAlignment="Top" Width="94" Source="/NetCest_logo.png" Margin="87,247,0,0" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Grid.Column="5" Grid.Row="2">
+        <TextBlock x:Name="MainText" Visibility="Hidden" Grid.Column="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="80" Grid.Row="1" Width="250" FontFamily="Arial Black" FontSize="24" Grid.RowSpan="2"><Run Language="hu-hu" Text="NetCest - Adminfelület (bejelentkezés)"/></TextBlock>
+        <Image x:Name="logo" HorizontalAlignment="Left" Height="91" VerticalAlignment="Top" Width="94" Source="/NetCest_logo.png" Margin="87,247,0,0" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Grid.Column="5" Grid.Row="3">
 
         </Image>
 
