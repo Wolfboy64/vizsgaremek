@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MySql.Data.MySqlClient;
 
 namespace Netcest_Desktop
 {
@@ -55,12 +56,12 @@ namespace Netcest_Desktop
            "Database=test2;" +
            "Uid=root;" +
            "Pwd=;" +      
-           "Port=3306;";
+           "Port=3307;";
         private void connectDatabase()
         {
             
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using ( MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -117,7 +118,7 @@ namespace Netcest_Desktop
                 for (int i = 0; i < Felhasznalo.FelhasznalokOsszes.Count; i++)
                 {
                     
-                    AdminInfos.Text += $"\n{Felhasznalo.FelhasznalokOsszes[i].ToString()}";
+                    Userlist.Items.Add( Felhasznalo.FelhasznalokOsszes[i].ToString());
                 }
             }
             else 
@@ -126,10 +127,26 @@ namespace Netcest_Desktop
             }
                 
         }
-
+        private List<string> FelhasznalokListing()
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM `felhasznalo`";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                List<string> felhasznalok = new List<string>();
+                while (reader.Read())
+                {
+                    felhasznalok.Add($"{reader["id"]} | {reader["nev"]} | {reader["elerhetoseg"]} | {reader["allapot"]}");
+                }
+                return felhasznalok;
+            }
+        }
         private void manageUsersButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //homePage.Visibility = Visibility.Hidden;
+            //manageUsersPage.Visibility = Visibility.Visible;
         }
 
         private void viewReportsButton_Click(object sender, RoutedEventArgs e)
@@ -148,6 +165,12 @@ namespace Netcest_Desktop
             loginPage.Visibility = Visibility.Visible;
             usernameTextBox.Clear();
             passwordBox.Clear();
+        }
+
+        private void backFromManageUsersButton_Click(object sender, RoutedEventArgs e)
+        {
+            //manageUsersButton.Visibility = Visibility.Visible;
+            //homePage.Visibility = Visibility.Visible;
         }
     }
 }

@@ -73,11 +73,36 @@
 
 
             </Grid>
-            <StackPanel Visibility="Visible">
+            <StackPanel x:Name="MainHomePage" Visibility="Visible">
                 <Grid>
                     <TextBlock x:Name="AdminInfos" Height="auto" Width="auto" Margin="10,0,556,-40"><Run Language="hu-hu" Text="Adminisztrátori információk:"/></TextBlock>
+                    <ListView x:Name="Userlist" d:ItemsSource="{d:SampleData ItemCount=0}" Height="auto" Width="auto" Margin="428,-1,207,10" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </Grid>
             </StackPanel>
+            
+            <!--
+           
+            <StackPanel x:Name="manageUsersPage" Visibility="Hidden">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                </Grid>
+            </StackPanel>  -->
+            
+
 
         </StackPanel>
         <TextBlock x:Name="MainText" Visibility="Hidden" Grid.Column="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="80" Grid.Row="1" Width="250" FontFamily="Arial Black" FontSize="24"><Run Language="hu-hu" Text="NetCest - Adminfelület (bejelentkezés)"/></TextBlock>
