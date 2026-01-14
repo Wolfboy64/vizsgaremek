@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
 
-namespace Netcest_Desktop
+namespace CyberNest_Desktop
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -145,7 +145,9 @@ namespace Netcest_Desktop
         }
         private void manageUsersButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            homePage.Visibility = Visibility.Hidden;
+            TopMenu.Visibility = Visibility.Visible;
+            manageUsersPage.Visibility = Visibility.Visible;   
         }
 
         private void viewReportsButton_Click(object sender, RoutedEventArgs e)

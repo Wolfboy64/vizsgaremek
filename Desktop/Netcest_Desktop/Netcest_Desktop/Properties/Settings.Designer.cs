@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Netcest_Desktop.Properties
+namespace CyberNest_Desktop.Properties
 {
 
 
