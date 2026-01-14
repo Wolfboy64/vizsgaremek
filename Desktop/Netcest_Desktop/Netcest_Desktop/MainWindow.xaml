@@ -1,11 +1,11 @@
-﻿<Window x:Class="Netcest_Desktop.MainWindow"
+﻿<Window x:Class="CyberNest_Desktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Netcest_Desktop"
+        xmlns:local="clr-namespace:CyberNest_Desktop"
         mc:Ignorable="d"
-        Title="NetCest - Adminfelület (bejelentkezés)" Height="450" Width="800" Background="Gray">
+        Title="CyberNest - Adminfelület (bejelentkezés)" Height="450" Width="800" Background="Gray">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="34*" />
@@ -89,28 +89,7 @@
 
 
 
-            <StackPanel x:Name="manageUsersPage" Visibility="Visible">
-                <Grid Height="100">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Button Grid.Column="1" Content="módosítás" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="72"/>
-                    <Button Grid.Column="1" Content="törlés" Margin="10,0,2,70" RenderTransformOrigin="0.5,0.5"/>
-                    <ListView x:Name="ManageUserList" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="279,0,-383,0" Grid.RowSpan="2">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-
-                </Grid>
-            </StackPanel>
+            
 
 
 
@@ -119,7 +98,28 @@
         <Image x:Name="logo" HorizontalAlignment="Left" Height="91" VerticalAlignment="Top" Width="94" Source="/NetCest_logo.png" Margin="87,247,0,0" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Grid.Column="5" Grid.Row="3">
 
         </Image>
+        <StackPanel x:Name="manageUsersPage" Visibility="Hidden">
+            <Grid Height="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Column="1" Content="módosítás" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="72"/>
+                <Button Grid.Column="1" Content="törlés" Margin="10,0,2,70" RenderTransformOrigin="0.5,0.5"/>
+                <ListView x:Name="ManageUserList" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="279,0,-383,0" Grid.RowSpan="2">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
 
+            </Grid>
+        </StackPanel>
 
 
     </Grid>

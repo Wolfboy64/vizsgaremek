@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Netcest_Desktop
+namespace CyberNest_Desktop
 {
     /// <summary>
     /// Interaction logic for App.xaml
