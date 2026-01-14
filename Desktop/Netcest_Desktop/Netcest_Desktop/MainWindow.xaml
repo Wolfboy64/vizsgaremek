@@ -45,9 +45,9 @@
                 <TextBlock x:Name="errorMessageTextBlock" Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Foreground="Red" Visibility="Collapsed"/>
             </Grid>
         </StackPanel>
-        <!-- Home page-->
+        <!-- Adminisztrációs vezérlőpult-->
         <StackPanel x:Name="homePage" Background="LightGray" Grid.Row="1" Height="434" VerticalAlignment="Top" Grid.RowSpan="4" Grid.ColumnSpan="6">
-            <Grid Width="785">
+            <Grid Width="auto">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -74,7 +74,7 @@
 
 
             </Grid>
-            <StackPanel x:Name="MainHomePage" Visibility="Visible">
+            <StackPanel x:Name="MainHomePage" Visibility="Hidden">
                 <Grid>
                     <TextBlock x:Name="AdminInfos" Height="auto" Width="auto" Margin="10,0,556,-40"><Run Language="hu-hu" Text="Adminisztrátori információk:"/></TextBlock>
                     <ListView x:Name="Userlist" d:ItemsSource="{d:SampleData ItemCount=0}" Height="auto" Width="auto" Margin="428,-1,207,10" >
@@ -86,40 +86,38 @@
                     </ListView>
                 </Grid>
             </StackPanel>
+            <StackPanel x:FieldModifier="private" x:Name="ManageUsersPage" Visibility="Hidden">
+                <Grid Height="100">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="1" Content="módosítás" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="72"/>
+                    <Button Grid.Column="1" Content="törlés" Margin="10,0,2,70" RenderTransformOrigin="0.5,0.5"/>
+                    <ListView x:Name="ManageUserList" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="279,0,-383,0" Grid.RowSpan="2">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                </Grid>
+            </StackPanel>
 
 
 
-            
 
 
 
         </StackPanel>
-        <TextBlock x:Name="MainText" Visibility="Hidden" Grid.Column="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="80" Grid.Row="1" Width="250" FontFamily="Arial Black" FontSize="24" Grid.RowSpan="2"><Run Language="hu-hu" Text="NetCest - Adminfelület (bejelentkezés)"/></TextBlock>
-        <Image x:Name="logo" HorizontalAlignment="Left" Height="91" VerticalAlignment="Top" Width="94" Source="/NetCest_logo.png" Margin="87,247,0,0" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Grid.Column="5" Grid.Row="3">
-
-        </Image>
-        <StackPanel x:Name="manageUsersPage" Visibility="Hidden">
-            <Grid Height="100">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Button Grid.Column="1" Content="módosítás" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="72"/>
-                <Button Grid.Column="1" Content="törlés" Margin="10,0,2,70" RenderTransformOrigin="0.5,0.5"/>
-                <ListView x:Name="ManageUserList" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="279,0,-383,0" Grid.RowSpan="2">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-
-            </Grid>
-        </StackPanel>
+        <TextBlock x:Name="MainText" Visibility="Hidden" Grid.Column="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="80" Grid.Row="1" Width="250" FontFamily="Arial Black" FontSize="24" Grid.RowSpan="2"><Run Language="hu-hu" Text="CyberNest - Adminfelület (bejelentkezés)"/></TextBlock>
+        
+        
 
 
     </Grid>

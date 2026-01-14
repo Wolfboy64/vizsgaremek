@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -143,12 +142,7 @@ namespace CyberNest_Desktop
                 return felhasznalok;
             }
         }
-        private void manageUsersButton_Click(object sender, RoutedEventArgs e)
-        {
-            homePage.Visibility = Visibility.Hidden;
-            TopMenu.Visibility = Visibility.Visible;
-            manageUsersPage.Visibility = Visibility.Visible;   
-        }
+
 
         private void viewReportsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -171,6 +165,13 @@ namespace CyberNest_Desktop
         private void backFromManageUsersButton_Click(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void manageUsersButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainHomePage.Visibility = Visibility.Hidden;
+            // Add this line if you have a ManageUsersPage element defined in your XAML
+            ManageUsersPage.Visibility = Visibility.Visible;
         }
     }
 }
