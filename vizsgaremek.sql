@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Jan 05. 21:20
+-- Létrehozás ideje: 2026. Jan 17. 00:19
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -61,7 +61,9 @@ CREATE TABLE `felhasznalo` (
   `id` int(11) NOT NULL,
   `nev` varchar(100) NOT NULL,
   `elerhetoseg` varchar(150) DEFAULT NULL,
-  `allapot` enum('aktiv','inaktiv') DEFAULT 'aktiv'
+  `allapot` enum('aktiv','inaktiv') DEFAULT 'aktiv',
+  `jelszo` varchar(255) NOT NULL,
+  `role` enum('user','admin') DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
