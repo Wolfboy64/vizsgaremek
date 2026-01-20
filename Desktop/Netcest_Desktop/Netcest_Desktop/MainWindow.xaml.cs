@@ -26,11 +26,11 @@ namespace CyberNest_Desktop
         private string APassword;
         struct Felhasznalo
         {
-            int Id;
-            string Name;
-            string Jelszo;
-            string Allapot;
-            string Role;
+            public int Id;
+            public string Name;
+            public string Jelszo;
+            public string Allapot;
+            public string Role;
             public Felhasznalo(int id, string name, string jelszo, string allapot, string role)
             {
                 Id = id;
@@ -100,6 +100,7 @@ namespace CyberNest_Desktop
                         reader["elerhetoseg"].ToString(),
                         reader["role"].ToString()
                         );
+                    a_ = Felhasznalo.Bejlentkezett;
                     Felhasznalo.FelhasznalokOsszes.Add(a_);
                     return true;
                 }
@@ -166,7 +167,9 @@ namespace CyberNest_Desktop
             loginPage.Height = this.Height;
             loginPage.Width = this.Width;
             //állapot átváltása inaktivvá
-
+            Felhasznalo.Bejlentkezett.Allapot = "inaktiv";
+            MessageBox.Show(Felhasznalo.Bejlentkezett.Allapot);
+            Felhasznalo.Bejlentkezett = new Felhasznalo();
             usernameTextBox.Clear();
             passwordBox.Clear();
         }
