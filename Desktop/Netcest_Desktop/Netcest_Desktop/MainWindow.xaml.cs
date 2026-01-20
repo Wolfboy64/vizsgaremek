@@ -28,20 +28,22 @@ namespace CyberNest_Desktop
         {
             int Id;
             string Name;
-            string Elerhetoseg;
+            string Jelszo;
             string Allapot;
-            public Felhasznalo(int id, string name, string elerhetoseg, string allapot )
+            string Role;
+            public Felhasznalo(int id, string name, string jelszo, string allapot, string role)
             {
                 Id = id;
                 Name = name;
-                Elerhetoseg = elerhetoseg;
+                Jelszo = jelszo;
                 Allapot = allapot;
+                Role = role;
             }
             public static List<Felhasznalo> FelhasznalokOsszes = new List<Felhasznalo>();
-            
+            public static Felhasznalo Bejlentkezett = new Felhasznalo();
             public override string ToString()
             {
-                return $"{Id} | {Name} | {Elerhetoseg} | {Allapot}";
+                return $"{Id} | {Name} | {Allapot}";
             }
         }
         public MainWindow()
@@ -49,13 +51,14 @@ namespace CyberNest_Desktop
             InitializeComponent();
             loginPage.Visibility = Visibility.Visible;
             homePage.Visibility = Visibility.Hidden;
+            
         }
         private string connectionString =
            "Server=localhost;" +
-           "Database=test2;" +
+           "Database=test3;" +
            "Uid=root;" +
            "Pwd=;" +      
-           "Port=3307;";
+           "Port=3306;";
         private void connectDatabase()
         {
             
@@ -81,7 +84,7 @@ namespace CyberNest_Desktop
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "SELECT * FROM `felhasznalo` WHERE `nev` = @username AND `elerhetoseg` = @password";
+                string query = "SELECT * FROM `felhasznalo` WHERE `nev` = @username AND `jelszo` = @password";
                 MySqlCommand cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@password", password);
@@ -93,8 +96,9 @@ namespace CyberNest_Desktop
                     Felhasznalo a_ = new Felhasznalo(
                         Convert.ToInt32(reader["id"]),
                         reader["nev"].ToString(),
+                        reader["jelszo"].ToString(),
                         reader["elerhetoseg"].ToString(),
-                        reader["allapot"].ToString()
+                        reader["role"].ToString()
                         );
                     Felhasznalo.FelhasznalokOsszes.Add(a_);
                     return true;
@@ -112,6 +116,7 @@ namespace CyberNest_Desktop
                 connectDatabase();
                 loginPage.Visibility = Visibility.Hidden;
                 homePage.Visibility = Visibility.Visible;
+                
                 AdminInfos.Text = FelhasznaloFejlec();
                 MainText.Text = $"Üdvözöllek, {AName}!";
                 for (int i = 0; i < Felhasznalo.FelhasznalokOsszes.Count; i++)
@@ -137,7 +142,7 @@ namespace CyberNest_Desktop
                 List<string> felhasznalok = new List<string>();
                 while (reader.Read())
                 {
-                    felhasznalok.Add($"{reader["id"]} | {reader["nev"]} | {reader["elerhetoseg"]} | {reader["allapot"]}");
+                    felhasznalok.Add($"{reader["id"]} | {reader["nev"]} | {reader["role"]}");
                 }
                 return felhasznalok;
             }
@@ -158,6 +163,10 @@ namespace CyberNest_Desktop
         {
             homePage.Visibility = Visibility.Hidden;
             loginPage.Visibility = Visibility.Visible;
+            loginPage.Height = this.Height;
+            loginPage.Width = this.Width;
+            //állapot átváltása inaktivvá
+
             usernameTextBox.Clear();
             passwordBox.Clear();
         }
