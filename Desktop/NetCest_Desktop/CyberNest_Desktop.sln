@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36811.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyberNest_Desktop", "Netcest_Desktop\CyberNest_Desktop.csproj", "{7ACE8017-C604-48D5-82BA-EFED5107797E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7ACE8017-C604-48D5-82BA-EFED5107797E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ACE8017-C604-48D5-82BA-EFED5107797E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ACE8017-C604-48D5-82BA-EFED5107797E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ACE8017-C604-48D5-82BA-EFED5107797E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E88B3F93-AC85-49F8-A93D-7B70B680A951}
+	EndGlobalSection
+EndGlobal
