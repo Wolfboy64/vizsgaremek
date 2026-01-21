@@ -58,7 +58,7 @@ namespace CyberNest_Desktop
            "Database=test3;" +
            "Uid=root;" +
            "Pwd=;" +      
-           "Port=3306;";
+           "Port=3307;";
         private void connectDatabase()
         {
             
@@ -100,7 +100,7 @@ namespace CyberNest_Desktop
                         reader["elerhetoseg"].ToString(),
                         reader["role"].ToString()
                         );
-                    a_ = Felhasznalo.Bejlentkezett;
+                    Felhasznalo.Bejlentkezett =a_;
                     Felhasznalo.FelhasznalokOsszes.Add(a_);
                     return true;
                 }
@@ -168,7 +168,7 @@ namespace CyberNest_Desktop
             loginPage.Width = this.Width;
             //állapot átváltása inaktivvá
             Felhasznalo.Bejlentkezett.Allapot = "inaktiv";
-            MessageBox.Show(Felhasznalo.Bejlentkezett.Allapot);
+            MessageBox.Show($"{Felhasznalo.Bejlentkezett.Name} {Felhasznalo.Bejlentkezett.Allapot}");
             Felhasznalo.Bejlentkezett = new Felhasznalo();
             usernameTextBox.Clear();
             passwordBox.Clear();
@@ -184,6 +184,8 @@ namespace CyberNest_Desktop
             MainHomePage.Visibility = Visibility.Hidden;
             // Add this line if you have a ManageUsersPage element defined in your XAML
             ManageUsersPage.Visibility = Visibility.Visible;
+            Userlist.Items.Clear();
+            Userlist.Items.Add(FelhasznalokListing().FirstOrDefault());
         }
     }
 }
