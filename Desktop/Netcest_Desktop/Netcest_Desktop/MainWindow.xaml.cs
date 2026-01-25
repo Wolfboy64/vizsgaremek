@@ -242,10 +242,7 @@ namespace CyberNest_Desktop
         {
             eszkozHozzadasPanel.Visibility = Visibility.Visible;
         }
-        private void eszkozTorles_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+      
 
         private void eszkozHozzaadasGomb_Click(object sender, RoutedEventArgs e)
         {
@@ -266,6 +263,45 @@ namespace CyberNest_Desktop
                 cmd.Parameters.AddWithValue("@hdd", e_.Hdd);
                 cmd.ExecuteNonQuery();
 
+            }
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void eszkozTorles_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozTorlespanel.Visibility = Visibility.Visible;
+            
+            // Clear existing items before populating
+            IDs.Items.Clear();
+            
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT `id` FROM `eszkoz`";  // Only select what you need
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                
+                while (reader.Read())
+                {
+                    IDs.Items.Add(Convert.ToInt32(reader["id"]));
+                }
+                reader.Close();
+            }
+        }
+
+        private void eszkozTorlesGomb_Click(object sender, RoutedEventArgs e)
+        {
+            if (IDs.SelectedItem != null)
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM `eszkoz` WHERE `id` = @id";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@id", IDs.SelectedItem);
+                    cmd.ExecuteNonQuery();
+                    eszkozTorlespanel.Visibility = Visibility.Hidden;
+                }
             }
         }
     }
