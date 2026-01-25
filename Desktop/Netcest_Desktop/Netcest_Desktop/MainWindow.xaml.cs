@@ -46,6 +46,20 @@ namespace CyberNest_Desktop
                 return $"{Id} | {Name} | {Allapot}";
             }
         }
+        struct Eszkozok
+        {
+            public string Leiras;
+            public string Cpu;
+            public string Ram;
+            public string Hdd;
+            public Eszkozok( string leiras, string cpu, string ram, string hdd)
+            {
+                Leiras = leiras;
+                Cpu = cpu;
+                Ram = ram;
+                Hdd = hdd;
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -58,7 +72,7 @@ namespace CyberNest_Desktop
            "Database=test3;" +
            "Uid=root;" +
            "Pwd=;" +      
-           "Port=3307;";
+           "Port=3306;";
         private void connectDatabase()
         {
             
@@ -84,15 +98,23 @@ namespace CyberNest_Desktop
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "SELECT * FROM `felhasznalo` WHERE `nev` = @username AND `jelszo` = @password";
+                string query = "SELECT * FROM `felhasznalo` WHERE `nev` = @username AND `jelszo` = @password AND `role` = @role";
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                //azt ellenörzőm, hogy a role = e "admin"-al
+
+
+
+
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@password", password);
+                cmd.Parameters.AddWithValue("@role", "admin");
+
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    
                     AName = reader["nev"].ToString();
-                    APassword = reader["elerhetoseg"].ToString();
+                    //APassword = reader["elerhetoseg"].ToString();
                     Felhasznalo a_ = new Felhasznalo(
                         Convert.ToInt32(reader["id"]),
                         reader["nev"].ToString(),
@@ -110,6 +132,7 @@ namespace CyberNest_Desktop
                 }
             }
         }
+       
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             if (LoginCheck(usernameTextBox.Text, passwordBox.Password) == true)
@@ -117,9 +140,20 @@ namespace CyberNest_Desktop
                 connectDatabase();
                 loginPage.Visibility = Visibility.Hidden;
                 homePage.Visibility = Visibility.Visible;
-                
-                AdminInfos.Text = FelhasznaloFejlec();
-                MainText.Text = $"Üdvözöllek, {AName}!";
+                Felhasznalo.Bejlentkezett.Allapot = "aktiv";
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE `felhasznalo` SET `allapot` = @allapot WHERE `id` = @id";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@allapot", Felhasznalo.Bejlentkezett.Allapot);
+                    cmd.Parameters.AddWithValue("@id", Felhasznalo.Bejlentkezett.Id);
+                    cmd.ExecuteNonQuery();
+                }
+
+
+                //AdminInfos.Text = FelhasznaloFejlec();
+                //MainText.Text = $"Üdvözöllek, {AName}!";
                 for (int i = 0; i < Felhasznalo.FelhasznalokOsszes.Count; i++)
                 {
                     
@@ -129,6 +163,7 @@ namespace CyberNest_Desktop
             else 
             {
                 MessageBox.Show("Bejelentkezés sikertelen.");
+                
             }
                 
         }
@@ -168,6 +203,16 @@ namespace CyberNest_Desktop
             loginPage.Width = this.Width;
             //állapot átváltása inaktivvá
             Felhasznalo.Bejlentkezett.Allapot = "inaktiv";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "UPDATE `felhasznalo` SET `allapot` = @allapot WHERE `id` = @id";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@allapot", Felhasznalo.Bejlentkezett.Allapot);
+                cmd.Parameters.AddWithValue("@id", Felhasznalo.Bejlentkezett.Id);
+                cmd.ExecuteNonQuery();
+            }
+
             MessageBox.Show($"{Felhasznalo.Bejlentkezett.Name} {Felhasznalo.Bejlentkezett.Allapot}");
             Felhasznalo.Bejlentkezett = new Felhasznalo();
             usernameTextBox.Clear();
@@ -186,6 +231,42 @@ namespace CyberNest_Desktop
             ManageUsersPage.Visibility = Visibility.Visible;
             Userlist.Items.Clear();
             Userlist.Items.Add(FelhasznalokListing().FirstOrDefault());
+        }
+
+        //eszközök kezelése
+        private void EszkozokButton_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozokoldal.Visibility = Visibility.Visible;
+        }
+        private void eszkozHozzaadas_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozHozzadasPanel.Visibility = Visibility.Visible;
+        }
+        private void eszkozTorles_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void eszkozHozzaadasGomb_Click(object sender, RoutedEventArgs e)
+        {
+            Eszkozok e_ = new Eszkozok(
+                eszkozLeiras.Text,
+                eszkozCpu.Text,
+                eszkozRam.Text,
+                eszkozHdd.Text
+                );
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO `eszkoz` (`leiras`, `cpu`, `ram`, `hdd`) VALUES (@leiras, @cpu, @ram, @hdd)";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@leiras", e_.Leiras);
+                cmd.Parameters.AddWithValue("@cpu", e_.Cpu);
+                cmd.Parameters.AddWithValue("@ram", e_.Ram);
+                cmd.Parameters.AddWithValue("@hdd", e_.Hdd);
+                cmd.ExecuteNonQuery();
+
+            }
         }
     }
 }

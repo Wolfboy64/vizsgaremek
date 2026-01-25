@@ -67,6 +67,7 @@
                         <Button x:Name="viewReportsButton" Content="Jelentések megtekintése" Margin="137,10,446,10" Click="viewReportsButton_Click"/>
                         <Button x:Name="settingsButton" Content="Beállítások" Margin="334,10,297,10" Click="settingsButton_Click"/>
                         <Button x:Name="logoutButton" Content="Kijelentkezés" Grid.Row="0" HorizontalAlignment="Left" Margin="703,6,0,6" Click="logoutButton_Click" Width="72" Grid.ColumnSpan="3"/>
+                        <Button x:Name="EszkozokButton" Content="Eszközök" Click="EszkozokButton_Click" Height="20" Width="144" Margin="483,10,148,10"/>
                     </Grid>
 
                 </StackPanel>
@@ -74,6 +75,21 @@
 
 
             </Grid>
+            <StackPanel x:Name="eszkozokoldal" Visibility="Visible" >
+                <Grid Height="auto" Width="auto">
+                    <Button x:Name="eszkozHozzaadas" Content="Eszközök hozzáadása" Height="auto" Width="auto" Margin="0,0,672,0" Click="eszkozHozzaadas_Click"/>
+                    <Button x:Name="eszkozTorles" Content="Eszközök törlése" Height="auto" Width="auto" Margin="145,0,534,0" Click="eszkozTorles_Click"/>
+                </Grid>
+                <StackPanel x:Name="eszkozHozzadasPanel"  Visibility="Visible" >
+                    <Grid Height="auto" Width="auto">
+                        <Button x:Name="eszkozHozzaadasGomb" Content="Hozzáadás" Height="auto" Width="auto" Margin="0,80,710,10" Click="eszkozHozzaadasGomb_Click"/>
+                        <TextBox x:Name="eszkozLeiras" Text="leiras" Margin="10,25,744,67"/>
+                        <TextBox x:Name="eszkozCpu" Text="cpu" Margin="162,25,592,67"/>
+                        <TextBox x:Name="eszkozRam" Text="ram" Margin="336,25,418,67"/>
+                        <TextBox x:Name="eszkozHdd" Text="hdd" Margin="248,25,506,67"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
             <StackPanel x:Name="MainHomePage" Visibility="Hidden">
                 <Grid>
                     <TextBlock x:Name="AdminInfos" Height="auto" Width="auto" Margin="10,0,556,-40"><Run Language="hu-hu" Text="Adminisztrátori információk:"/></TextBlock>
@@ -114,10 +130,13 @@
 
 
 
+
+
+
         </StackPanel>
         <TextBlock x:Name="MainText" Visibility="Hidden" Grid.Column="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="80" Grid.Row="1" Width="250" FontFamily="Arial Black" FontSize="24" Grid.RowSpan="2"><Run Language="hu-hu" Text="CyberNest - Adminfelület (bejelentkezés)"/></TextBlock>
-        
-        
+
+
 
 
     </Grid>
