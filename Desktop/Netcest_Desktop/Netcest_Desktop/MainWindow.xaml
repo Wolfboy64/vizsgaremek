@@ -80,7 +80,25 @@
                     <Button x:Name="eszkozHozzaadas" Content="Eszközök hozzáadása" Height="auto" Width="auto" Margin="0,0,672,0" Click="eszkozHozzaadas_Click"/>
                     <Button x:Name="eszkozTorles" Content="Eszközök törlése" Height="auto" Width="auto" Margin="145,0,534,0" Click="eszkozTorles_Click"/>
                     <Button x:Name="eszkozModositas" Content="Eszközök módosítása" Height="auto" Width="auto" Margin="279,0,400,0" Click="eszkozModositas_Click"/>
+                    <Button x:Name="eszkozListazas" Content="Eszközök kilistázása" Height="auto" Width="auto" Margin="405,0,274,0" Click="eszkozListazas_Click"/>
                 </Grid>
+                <!--ESZKÖZÖK KILISTÁZÁSA-->
+                <StackPanel x:Name="eszkozListazasPanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+                        <ListView x:Name="EszkozListView" d:ItemsSource="{d:SampleData ItemCount=0}" Width="264" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="eszkozListaVissza" Content="Vissza" Margin="22,5,684,5" Click="eszkozListaVissza_Click"/>
+                        
+                    </Grid>
+                </StackPanel>
+
+
+                <!-- ESZKÖZ HOZZÁADÁS -->
                 <StackPanel x:Name="eszkozHozzadasPanel"  Visibility="Hidden" >
                     <Grid Height="auto" Width="auto">
                         <Button x:Name="eszkozHozzaadasGomb" Content="Hozzáadás" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozHozzaadasGomb_Click"/>
@@ -145,7 +163,7 @@
 
                 </Grid>
             </StackPanel>
-            
+
 
 
 

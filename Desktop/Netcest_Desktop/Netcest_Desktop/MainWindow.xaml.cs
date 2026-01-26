@@ -373,6 +373,7 @@ namespace CyberNest_Desktop
                     cmd.Parameters.AddWithValue("@ram", eszkozModRam.Text);
                     cmd.Parameters.AddWithValue("@hdd", eszkozModHdd.Text);
                     cmd.Parameters.AddWithValue("@id", EszkModIDs.SelectedItem);
+                    
                     cmd.ExecuteNonQuery();
                     eszkozModositasPanel.Visibility = Visibility.Hidden;
                     connection.Close();
@@ -380,5 +381,31 @@ namespace CyberNest_Desktop
             }
         }
 
+        private void eszkozListazas_Click(object sender, RoutedEventArgs e)
+        {
+            // Clear existing items before populating
+            eszkozListazasPanel.Visibility = Visibility.Visible;
+            EszkozListView.Items.Clear();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM `eszkoz`";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    EszkozListView.Items.Add($"ID: {reader["id"]} | Leírás: {reader["leiras"]} | CPU: {reader["cpu"]} | RAM: {reader["ram"]} | HDD: {reader["hdd"]} ");
+                }
+                reader.Close();
+
+
+            }
+        }
+
+        private void eszkozListaVissza_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
+        }
     }
 }
