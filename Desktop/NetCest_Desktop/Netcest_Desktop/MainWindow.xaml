@@ -23,7 +23,7 @@
             <RowDefinition Height="100" />
             <RowDefinition Height="0*" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="loginPage" Background="red" Grid.Column="3" Grid.Row="3" Height="334" VerticalAlignment="Top" Visibility="Hidden" Grid.RowSpan="2">
+        <StackPanel x:Name="loginPage" Background="Gray"  Grid.Column="3" Grid.Row="3" Height="334" VerticalAlignment="Top" Visibility="Hidden" Grid.RowSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -130,9 +130,15 @@
             </StackPanel>
 
             <!--Fő Irányítópult kezdőlap-->
+<<<<<<< HEAD
             <StackPanel x:Name="FelhasznalokOldal" Visibility="Visible">
 
                 <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Visible">
+=======
+            <StackPanel x:Name="FelhasznalokOldal" Visibility="Hidden">
+
+                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Hidden">
+>>>>>>> v0.3.2
                     <Grid Height="auto" Width="auto">
                         <ListView x:Name="FelhasznaloListView" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="121,-294,376,234" >
                             <ListView.View>

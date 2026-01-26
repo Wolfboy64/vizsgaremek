@@ -215,13 +215,15 @@ namespace CyberNest_Desktop
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "INSERT INTO `eszkoz` (`leiras`, `cpu`, `ram`, `hdd`) VALUES (@leiras, @cpu, @ram, @hdd)";
+                string query = "INSERT INTO `eszkoz` (`leiras`, `cpu`, `ram`, `hdd`) VALUES (@leiras, @cpu, @ram, @hdd)"; //, `uzemelteto_id` ... @uzemelteto_id
                 MySqlCommand cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@leiras", e_.Leiras);
                 cmd.Parameters.AddWithValue("@cpu", e_.Cpu);
                 cmd.Parameters.AddWithValue("@ram", e_.Ram);
                 cmd.Parameters.AddWithValue("@hdd", e_.Hdd);
+                //cmd.Parameters.AddWithValue("@uzemelteto_id", 1);
                 cmd.ExecuteNonQuery();
+                connection.Close();
 
             }
             eszkozHozzadasPanel.Visibility = Visibility.Hidden;
@@ -401,7 +403,11 @@ namespace CyberNest_Desktop
 
         private void felhasznaloListaVissza_Click(object sender, RoutedEventArgs e)
         {
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> v0.3.2
         }
 
         private void felhasznalokListazas_Click(object sender, RoutedEventArgs e)
