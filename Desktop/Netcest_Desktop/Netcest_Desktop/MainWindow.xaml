@@ -79,22 +79,35 @@
                 <Grid Height="auto" Width="auto">
                     <Button x:Name="eszkozHozzaadas" Content="Eszközök hozzáadása" Height="auto" Width="auto" Margin="0,0,672,0" Click="eszkozHozzaadas_Click"/>
                     <Button x:Name="eszkozTorles" Content="Eszközök törlése" Height="auto" Width="auto" Margin="145,0,534,0" Click="eszkozTorles_Click"/>
+                    <Button x:Name="eszkozModositas" Content="Eszközök módosítása" Height="auto" Width="auto" Margin="279,0,400,0" Click="eszkozModositas_Click"/>
                 </Grid>
                 <StackPanel x:Name="eszkozHozzadasPanel"  Visibility="Hidden" >
                     <Grid Height="auto" Width="auto">
                         <Button x:Name="eszkozHozzaadasGomb" Content="Hozzáadás" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozHozzaadasGomb_Click"/>
                         <TextBox x:Name="eszkozLeiras" Text="leiras" Margin="10,10,592,82"/>
-                        <TextBox x:Name="eszkozCpu" Text="cpu" Margin="10,28,592,64" RenderTransformOrigin="0.5,0.5"/>
+                        <TextBox x:Name="eszkozCpu" Text="cpu" Margin="10,28,592,64"/>
 
                         <TextBox x:Name="eszkozRam" Text="ram" Margin="10,64,592,28"/>
-                        <TextBox x:Name="eszkozHdd" Text="hdd" Margin="10,46,592,46" RenderTransformOrigin="0.13,-0.608"/>
+                        <TextBox x:Name="eszkozHdd" Text="hdd" Margin="10,46,592,46"/>
                     </Grid>
                 </StackPanel>
-                <!-- EZSKÖZ TÖRLÉS -->
+                <!-- ESZKÖZ TÖRLÉS -->
                 <StackPanel x:Name="eszkozTorlespanel" Visibility="Hidden">
                     <Grid Height="auto" Width="auto">
                         <ComboBox Name="IDs" Width="120"/>
                         <Button x:Name="eszkozTorlesGomb" Content="Törlés" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozTorlesGomb_Click"/>
+                    </Grid>
+                </StackPanel>
+                <!-- ESZKÖZ MÓDOSÍTÁS -->
+                <StackPanel x:Name="eszkozModositasPanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+                        <ComboBox Name="EszkModIDs" Width="120" Margin="377,-187,303,277" />
+                        <TextBox x:Name="eszkozModLeiras" Text="leiras" Margin="19,-204,583,297"/>
+                        <TextBox x:Name="eszkozModCpu" Text="cpu" Margin="19,-185,583,277"/>
+
+                        <TextBox x:Name="eszkozModRam" Text="ram" Margin="19,-145,583,237"/>
+                        <TextBox x:Name="eszkozModHdd" Text="hdd" Margin="19,-165,583,257"/>
+                        <Button x:Name="eszkozModositasGomb" Content="Módosítás" Height="auto" Width="auto" Margin="282,-187,428,277" Click="eszkozModositasGomb_Click"/>
                     </Grid>
                 </StackPanel>
             </StackPanel>

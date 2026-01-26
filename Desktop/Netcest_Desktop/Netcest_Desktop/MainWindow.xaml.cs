@@ -124,12 +124,16 @@ namespace CyberNest_Desktop
                         );
                     Felhasznalo.Bejlentkezett =a_;
                     Felhasznalo.FelhasznalokOsszes.Add(a_);
+                    connection.Close();
                     return true;
                 }
                 else
                 {
+                    connection.Close();
                     return false;
+                    
                 }
+                
             }
         }
        
@@ -301,8 +305,80 @@ namespace CyberNest_Desktop
                     cmd.Parameters.AddWithValue("@id", IDs.SelectedItem);
                     cmd.ExecuteNonQuery();
                     eszkozTorlespanel.Visibility = Visibility.Hidden;
+                    connection.Close();
                 }
             }
         }
+
+        private void eszkozModositas_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozModositasPanel.Visibility = Visibility.Visible;
+            List<int> eszkozids = new List<int>();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT `id` FROM `eszkoz`";  // Only select what you need
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    eszkozids.Add(Convert.ToInt32(reader["id"]));
+                }
+                reader.Close();
+            }
+            for (int i = 0; i < eszkozids.Count; i++)
+            {
+                EszkModIDs.Items.Add(eszkozids[i]);
+            }
+        }
+
+        private void EszkModIDs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (EszkModIDs.SelectedItem != null)
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM `eszkoz` WHERE `id` = @id";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@id", EszkModIDs.SelectedItem);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    
+                    if (reader.Read())
+                    {
+                        eszkozModLeiras.Text = reader["leiras"].ToString();
+                        eszkozModCpu.Text = reader["cpu"].ToString();
+                        eszkozModRam.Text = reader["ram"].ToString();
+                        eszkozModHdd.Text = reader["hdd"].ToString();
+                    }
+                    reader.Close();
+                }
+            }
+        }
+
+        private void eszkozModositasGomb_Click(object sender, RoutedEventArgs e)
+        {
+            if (EszkModIDs.SelectedItem != null && (eszkozModLeiras.Text != null && eszkozModCpu.Text != null && eszkozModHdd.Text != null && eszkozModRam.Text != null))
+            {
+                
+
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE `eszkoz` SET `leiras` = @leiras, `cpu` = @cpu, `ram` = @ram, `hdd` = @hdd WHERE `id` = @id";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@leiras", eszkozModLeiras.Text);
+                    cmd.Parameters.AddWithValue("@cpu", eszkozModCpu.Text);
+                    cmd.Parameters.AddWithValue("@ram", eszkozModRam.Text);
+                    cmd.Parameters.AddWithValue("@hdd", eszkozModHdd.Text);
+                    cmd.Parameters.AddWithValue("@id", EszkModIDs.SelectedItem);
+                    cmd.ExecuteNonQuery();
+                    eszkozModositasPanel.Visibility = Visibility.Hidden;
+                    connection.Close();
+                }
+            }
+        }
+
     }
 }
