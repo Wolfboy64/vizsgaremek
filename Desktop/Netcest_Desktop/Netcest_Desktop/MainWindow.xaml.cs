@@ -67,6 +67,7 @@ namespace CyberNest_Desktop
             homePage.Visibility = Visibility.Hidden;
             
         }
+        //ADATBÁZIS KAPCSOLAT kezedete
         private string connectionString =
            "Server=localhost;" +
            "Database=test3;" +
@@ -89,6 +90,7 @@ namespace CyberNest_Desktop
             }
 
         }
+        //ADATBÁZIS KAPCSOLAT vége
         private string FelhasznaloFejlec()
         {
             return "ID | Név | Elérhetőség | Állapot";
@@ -171,34 +173,6 @@ namespace CyberNest_Desktop
             }
                 
         }
-        private List<string> FelhasznalokListing()
-        {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT * FROM `felhasznalo`";
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                List<string> felhasznalok = new List<string>();
-                while (reader.Read())
-                {
-                    felhasznalok.Add($"{reader["id"]} | {reader["nev"]} | {reader["role"]}");
-                }
-                return felhasznalok;
-            }
-        }
-
-
-        private void viewReportsButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void settingsButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
             homePage.Visibility = Visibility.Hidden;
@@ -222,21 +196,6 @@ namespace CyberNest_Desktop
             usernameTextBox.Clear();
             passwordBox.Clear();
         }
-
-        private void backFromManageUsersButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void manageUsersButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainHomePage.Visibility = Visibility.Hidden;
-            // Add this line if you have a ManageUsersPage element defined in your XAML
-            ManageUsersPage.Visibility = Visibility.Visible;
-            Userlist.Items.Clear();
-            Userlist.Items.Add(FelhasznalokListing().FirstOrDefault());
-        }
-
         //eszközök kezelése
         private void EszkozokButton_Click(object sender, RoutedEventArgs e)
         {
@@ -249,8 +208,6 @@ namespace CyberNest_Desktop
             eszkozListazasPanel.Visibility = Visibility.Hidden;
             eszkozTorlespanel.Visibility = Visibility.Hidden;
         }
-      
-
         private void eszkozHozzaadasGomb_Click(object sender, RoutedEventArgs e)
         {
             Eszkozok e_ = new Eszkozok(
@@ -273,7 +230,6 @@ namespace CyberNest_Desktop
             }
             eszkozHozzadasPanel.Visibility = Visibility.Hidden;
         }
-
         private void eszkozTorles_Click(object sender, RoutedEventArgs e)
         {
             eszkozModositasPanel.Visibility = Visibility.Hidden;
@@ -300,7 +256,6 @@ namespace CyberNest_Desktop
                 reader.Close();
             }
         }
-
         private void eszkozTorlesGomb_Click(object sender, RoutedEventArgs e)
         {
             eszkozHozzadasPanel.Visibility = Visibility.Hidden;
@@ -321,7 +276,6 @@ namespace CyberNest_Desktop
                 }
             }
         }
-
         private void eszkozModositas_Click(object sender, RoutedEventArgs e)
         {
             eszkozHozzadasPanel.Visibility = Visibility.Hidden;
@@ -346,7 +300,6 @@ namespace CyberNest_Desktop
                 EszkModIDs.Items.Add(eszkozids[i]);
             }
         }
-
         private void EszkModIDs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EszkModIDs.SelectedItem != null)
@@ -370,7 +323,6 @@ namespace CyberNest_Desktop
                 }
             }
         }
-
         private void eszkozModositasGomb_Click(object sender, RoutedEventArgs e)
         {
             if (EszkModIDs.SelectedItem != null && (eszkozModLeiras.Text != null && eszkozModCpu.Text != null && eszkozModHdd.Text != null && eszkozModRam.Text != null))
@@ -395,7 +347,6 @@ namespace CyberNest_Desktop
                 }
             }
         }
-
         private void eszkozListazas_Click(object sender, RoutedEventArgs e)
         {
             // Clear existing items before populating
@@ -420,7 +371,6 @@ namespace CyberNest_Desktop
 
             }
         }
-
         private void eszkozListaVissza_Click(object sender, RoutedEventArgs e)
         {
             eszkozListazasPanel.Visibility = Visibility.Hidden;

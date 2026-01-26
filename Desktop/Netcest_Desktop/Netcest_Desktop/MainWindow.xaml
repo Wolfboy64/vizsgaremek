@@ -63,9 +63,9 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel x:Name="TopMenu" Visibility="Visible">
                     <Grid>
-                        <Button x:Name="manageUsersButton" Content="Felhasználók kezelése" Margin="0,10,643,10" Click="manageUsersButton_Click"/>
-                        <Button x:Name="viewReportsButton" Content="Jelentések megtekintése" Margin="137,10,446,10" Click="viewReportsButton_Click"/>
-                        <Button x:Name="settingsButton" Content="Beállítások" Margin="334,10,297,10" Click="settingsButton_Click"/>
+                        <Button x:Name="manageUsersButton" Content="Felhasználók kezelése" Margin="0,10,643,10"/>
+                        <Button x:Name="viewReportsButton" Content="Jelentések megtekintése" Margin="137,10,446,10"/>
+                        <Button x:Name="settingsButton" Content="Beállítások" Margin="334,10,297,10"/>
                         <Button x:Name="logoutButton" Content="Kijelentkezés" Grid.Row="0" HorizontalAlignment="Left" Margin="703,6,0,6" Click="logoutButton_Click" Width="72" Grid.ColumnSpan="3"/>
                         <Button x:Name="EszkozokButton" Content="Eszközök" Click="EszkozokButton_Click" Height="20" Width="144" Margin="483,10,148,10"/>
                     </Grid>
