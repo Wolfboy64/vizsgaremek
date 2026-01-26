@@ -166,7 +166,7 @@ namespace CyberNest_Desktop
             }
             else 
             {
-                MessageBox.Show("Bejelentkezés sikertelen.");
+                MessageBox.Show( "Hibás felhasználónév vagy jelszó", "Bejelentkezés sikertelen.", MessageBoxButton.OK, MessageBoxImage.Error);
                 
             }
                 
