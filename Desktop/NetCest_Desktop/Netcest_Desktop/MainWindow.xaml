@@ -16,12 +16,12 @@
             <ColumnDefinition Width="35*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="0*" />
             <RowDefinition Height="68.82" />
             <RowDefinition Height="31.18"/>
             <RowDefinition Height="250" />
             <RowDefinition Height="100" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="0*" />
         </Grid.RowDefinitions>
         <StackPanel x:Name="loginPage" Background="red" Grid.Column="3" Grid.Row="3" Height="334" VerticalAlignment="Top" Visibility="Hidden" Grid.RowSpan="2">
             <Grid>
@@ -46,7 +46,7 @@
             </Grid>
         </StackPanel>
         <!-- Adminisztrációs vezérlőpult-->
-        <StackPanel x:Name="homePage"  Background="LightGray" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="6" >
+        <StackPanel x:Name="homePage"  Background="LightGray" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="6" Margin="0,0,0,15" >
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -63,11 +63,11 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel x:Name="TopMenu" Visibility="Visible">
                     <Grid>
-                        <Button x:Name="manageUsersButton" Content="Felhasználók kezelése" Margin="0,10,643,10"/>
+                        <Button x:Name="felhasznaloKezeles" Content="Felhasználók kezelése" Margin="0,10,643,10" Click="felhasznaloKezeles_Click"/>
                         <Button x:Name="viewReportsButton" Content="Jelentések megtekintése" Margin="137,10,446,10"/>
-                        <Button x:Name="settingsButton" Content="Beállítások" Margin="334,10,297,10"/>
+                        <Button x:Name="settingsButton" Content="Beállítások" Margin="483,10,148,10"/>
                         <Button x:Name="logoutButton" Content="Kijelentkezés" Grid.Row="0" HorizontalAlignment="Left" Margin="703,6,0,6" Click="logoutButton_Click" Width="72" Grid.ColumnSpan="3"/>
-                        <Button x:Name="EszkozokButton" Content="Eszközök" Click="EszkozokButton_Click" Height="20" Width="144" Margin="483,10,148,10"/>
+                        <Button x:Name="EszkozokButton" Content="Eszközök" Click="EszkozokButton_Click" Height="20" Width="144" Margin="334,10,297,10"/>
                     </Grid>
 
                 </StackPanel>
@@ -128,17 +128,28 @@
                     </Grid>
                 </StackPanel>
             </StackPanel>
+
             <!--Fő Irányítópult kezdőlap-->
-            <StackPanel x:Name="MainHomePage" Visibility="Hidden">
-                <Grid>
-                    <TextBlock x:Name="AdminInfos" Height="auto" Width="auto" Margin="10,0,556,-40"><Run Language="hu-hu" Text="Adminisztrátori információk:"/></TextBlock>
-                    <ListView x:Name="Userlist" d:ItemsSource="{d:SampleData ItemCount=0}" Height="auto" Width="auto" Margin="428,-1,207,10" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+            <StackPanel x:Name="FelhasznalokOldal" Visibility="Visible">
+
+                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Visible">
+                    <Grid Height="auto" Width="auto">
+                        <ListView x:Name="FelhasznaloListView" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="121,-294,376,234" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="felhasznaloListaVissza" Content="Vissza" Margin="22,-294,684,294" Click="felhasznaloListaVissza_Click"/>
+                    </Grid>
+                </StackPanel>
+
+                <Grid Height="25" Width="auto">
+                    <Button x:Name="felhasznalokHozzaadas" Content="Felhasználók hozzáadása" Height="auto" Width="auto" Margin="146,-407,526,407" Click="felhasznalokHozzaadas_Click"/>
+                    <Button x:Name="felhasznalokTorles" Content="Felhasználók törlése" Height="auto" Width="auto" Margin="20,-407,659,407" Click="felhasznalokTorles_Click"/>
+                    <Button x:Name="felhasznalokModositas" Content="Felhasználók módosítása" Height="auto" Width="auto" Margin="279,-407,400,407" Click="felhasznalokModositas_Click"/>
+                    <Button x:Name="felhasznalokListazas" Content="Felhasználók kilistázása" Height="auto" Margin="405,-407,274,407" Click="felhasznalokListazas_Click"/>
                 </Grid>
             </StackPanel>
             <StackPanel x:FieldModifier="private" x:Name="ManageUsersPage" Visibility="Hidden">
@@ -163,6 +174,8 @@
 
                 </Grid>
             </StackPanel>
+            <StackPanel Height="100"/>
+
 
 
 

@@ -160,11 +160,7 @@ namespace CyberNest_Desktop
 
                 //AdminInfos.Text = FelhasznaloFejlec();
                 //MainText.Text = $"Üdvözöllek, {AName}!";
-                for (int i = 0; i < Felhasznalo.FelhasznalokOsszes.Count; i++)
-                {
-                    
-                    Userlist.Items.Add( Felhasznalo.FelhasznalokOsszes[i].ToString());
-                }
+                
             }
             else 
             {
@@ -374,6 +370,70 @@ namespace CyberNest_Desktop
         private void eszkozListaVissza_Click(object sender, RoutedEventArgs e)
         {
             eszkozListazasPanel.Visibility = Visibility.Hidden;
+        }
+        //felhasználók kezelése
+        private void felhasznaloKezeles_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznalokOldal.Visibility = Visibility.Visible;
+            //felhasználók listázása
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM `felhasznalo`";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                Felhasznalo.FelhasznalokOsszes.Clear();
+                while (reader.Read())
+                {
+                    Felhasznalo a_ = new Felhasznalo(
+                        Convert.ToInt32(reader["id"]),
+                        reader["nev"].ToString(),
+                        reader["jelszo"].ToString(),
+                        reader["elerhetoseg"].ToString(),
+                        reader["role"].ToString()
+                        );
+                    Felhasznalo.FelhasznalokOsszes.Add(a_);
+                }
+                reader.Close();
+            }
+        }
+
+        private void felhasznaloListaVissza_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void felhasznalokListazas_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznalokListazasPanel.Visibility = Visibility.Visible;
+            FelhasznaloListView.Items.Clear();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM `felhasznalo`";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    FelhasznaloListView.Items.Add($"ID: {reader["id"]} | Név: {reader["nev"]} | Elérhetőség: {reader["elerhetoseg"]} | Role: {reader["role"]} ");
+                }
+                reader.Close();
+            }
+        }
+        private void felhasznalokModositas_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void felhasznalokTorles_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void felhasznalokHozzaadas_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
