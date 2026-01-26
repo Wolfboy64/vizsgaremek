@@ -245,6 +245,9 @@ namespace CyberNest_Desktop
         private void eszkozHozzaadas_Click(object sender, RoutedEventArgs e)
         {
             eszkozHozzadasPanel.Visibility = Visibility.Visible;
+            eszkozModositasPanel.Visibility = Visibility.Hidden;
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
+            eszkozTorlespanel.Visibility = Visibility.Hidden;
         }
       
 
@@ -273,7 +276,12 @@ namespace CyberNest_Desktop
 
         private void eszkozTorles_Click(object sender, RoutedEventArgs e)
         {
+            eszkozModositasPanel.Visibility = Visibility.Hidden;
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
             eszkozTorlespanel.Visibility = Visibility.Visible;
+
+
             
             // Clear existing items before populating
             IDs.Items.Clear();
@@ -295,6 +303,10 @@ namespace CyberNest_Desktop
 
         private void eszkozTorlesGomb_Click(object sender, RoutedEventArgs e)
         {
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+            eszkozModositasPanel.Visibility = Visibility.Hidden;
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
+            eszkozTorlespanel.Visibility = Visibility.Visible;
             if (IDs.SelectedItem != null)
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -312,6 +324,9 @@ namespace CyberNest_Desktop
 
         private void eszkozModositas_Click(object sender, RoutedEventArgs e)
         {
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
+            eszkozTorlespanel.Visibility = Visibility.Hidden;
             eszkozModositasPanel.Visibility = Visibility.Visible;
             List<int> eszkozids = new List<int>();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -384,6 +399,9 @@ namespace CyberNest_Desktop
         private void eszkozListazas_Click(object sender, RoutedEventArgs e)
         {
             // Clear existing items before populating
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+            eszkozModositasPanel.Visibility = Visibility.Hidden;
+            eszkozTorlespanel.Visibility = Visibility.Hidden;
             eszkozListazasPanel.Visibility = Visibility.Visible;
             EszkozListView.Items.Clear();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
