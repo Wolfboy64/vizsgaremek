@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace CyberNest_Desktop
 {
@@ -403,11 +403,7 @@ namespace CyberNest_Desktop
 
         private void felhasznaloListaVissza_Click(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> v0.3.2
         }
 
         private void felhasznalokListazas_Click(object sender, RoutedEventArgs e)
