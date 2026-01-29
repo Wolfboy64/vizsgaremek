@@ -4,6 +4,7 @@ import About from "../pages/About.jsx";
 import Contact from "../pages/Contact.jsx";
 import Profile from "../pages/Profile.jsx";
 import Login from "../pages/Login.jsx";
+import Dashboard from "../pages/Dashboard.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const Main = () => {
@@ -14,6 +15,7 @@ const Main = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         {user ? (
           <>
             <Route path="/profile" element={<Profile />} />
