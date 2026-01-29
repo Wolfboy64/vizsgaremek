@@ -131,9 +131,9 @@
 
             <!--Fő Irányítópult kezdőlap-->
 
-                <StackPanel x:Name="FelhasznalokOldal" Visibility="Visible">
+            <StackPanel x:Name="FelhasznalokOldal" Visibility="Hidden">
 
-                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Visible">
+                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Hidden">
 
                     <Grid Height="auto" Width="auto">
                         <ListView x:Name="FelhasznaloListView" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="121,-294,376,234" >

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MySqlConnector;
+
 
 namespace CyberNest_Desktop
 {
@@ -173,8 +174,6 @@ namespace CyberNest_Desktop
         {
             homePage.Visibility = Visibility.Hidden;
             loginPage.Visibility = Visibility.Visible;
-            loginPage.Height = this.Height;
-            loginPage.Width = this.Width;
             //állapot átváltása inaktivvá
             Felhasznalo.Bejlentkezett.Allapot = "inaktiv";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -199,6 +198,7 @@ namespace CyberNest_Desktop
         }
         private void eszkozHozzaadas_Click(object sender, RoutedEventArgs e)
         {
+            FelhasznalokOldal.Visibility = Visibility.Hidden;
             eszkozHozzadasPanel.Visibility = Visibility.Visible;
             eszkozModositasPanel.Visibility = Visibility.Hidden;
             eszkozListazasPanel.Visibility = Visibility.Hidden;
@@ -376,6 +376,7 @@ namespace CyberNest_Desktop
         //felhasználók kezelése
         private void felhasznaloKezeles_Click(object sender, RoutedEventArgs e)
         {
+            eszkozokoldal.Visibility = Visibility.Hidden;
             FelhasznalokOldal.Visibility = Visibility.Visible;
             //felhasználók listázása
 
