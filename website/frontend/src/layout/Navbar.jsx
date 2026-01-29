@@ -1,46 +1,48 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import "../styles/Navbar.css";
 
 const Navbar = () => {
   const { user } = useAuth();
+
   return (
-    <nav>
-      <ul>
-        <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/about"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            About
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/contact"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Contact
-          </NavLink>
-        </li>
+    <nav className="navbar">
+      <div className="nav-left">
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          Home
+        </NavLink>
+
+        <NavLink
+          to="/about"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          About
+        </NavLink>
+
+        <NavLink
+          to="/contact"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          Contact
+        </NavLink>
+      </div>
+
+      <div className="nav-center">
+        CyberNest
+      </div>
+
+      <div className="nav-right">
         {user ? (
-          <li>
-            <NavLink to="/profile">Profile</NavLink>
-          </li>
+          <NavLink to="/profile">Profile</NavLink>
         ) : (
-          <li>
-            <NavLink to="/login">Login</NavLink>
-          </li>
+          <NavLink to="/login">Login</NavLink>
         )}
-      </ul>
+      </div>
     </nav>
   );
 };
+
 export default Navbar;

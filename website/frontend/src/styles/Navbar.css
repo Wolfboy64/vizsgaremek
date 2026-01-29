@@ -1,0 +1,42 @@
+.navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #111;
+  padding: 15px 30px;
+  height: 70px;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.navbar a:hover {
+  color: #00bcd4;
+}
+
+.active {
+  border-bottom: 2px solid #00bcd4;
+  padding-bottom: 4px;
+}
+
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
