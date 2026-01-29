@@ -35,6 +35,13 @@ const Navbar = () => {
       </div>
 
       <div className="nav-right">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          Dashboard
+        </NavLink>
+
         {user ? (
           <NavLink to="/profile">Profile</NavLink>
         ) : (
