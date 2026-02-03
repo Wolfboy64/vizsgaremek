@@ -184,6 +184,7 @@ namespace CyberNest_Desktop
         private void EszkozokButton_Click(object sender, RoutedEventArgs e)
         {
             eszkozokoldal.Visibility = Visibility.Visible;
+            FelhasznalokOldal.Visibility = Visibility.Hidden;
         }
         private void eszkozHozzaadas_Click(object sender, RoutedEventArgs e)
         {
