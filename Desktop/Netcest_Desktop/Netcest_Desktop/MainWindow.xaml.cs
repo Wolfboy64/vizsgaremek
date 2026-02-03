@@ -1,19 +1,8 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 namespace CyberNest_Desktop
@@ -53,7 +42,7 @@ namespace CyberNest_Desktop
             public string Cpu;
             public string Ram;
             public string Hdd;
-            public Eszkozok( string leiras, string cpu, string ram, string hdd)
+            public Eszkozok(string leiras, string cpu, string ram, string hdd)
             {
                 Leiras = leiras;
                 Cpu = cpu;
@@ -66,20 +55,20 @@ namespace CyberNest_Desktop
             InitializeComponent();
             loginPage.Visibility = Visibility.Visible;
             homePage.Visibility = Visibility.Hidden;
-            
+
         }
         //ADATBÁZIS KAPCSOLAT kezedete
         private string connectionString =
            "Server=localhost;" +
            "Database=test3;" +
            "Uid=root;" +
-           "Pwd=;" +      
-           "Port=3306;";
+           "Pwd=;" +
+           "Port=3307;";
         private void connectDatabase()
         {
-            
 
-            using ( MySqlConnection connection = new MySqlConnection(connectionString))
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -87,7 +76,7 @@ namespace CyberNest_Desktop
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
                 MySqlDataReader reader = cmd.ExecuteReader();
-           
+
             }
 
         }
@@ -96,7 +85,7 @@ namespace CyberNest_Desktop
         {
             return "ID | Név | Elérhetőség | Állapot";
         }
-        private bool LoginCheck( string username, string password)
+        private bool LoginCheck(string username, string password)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -115,7 +104,7 @@ namespace CyberNest_Desktop
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    
+
                     AName = reader["nev"].ToString();
                     //APassword = reader["elerhetoseg"].ToString();
                     Felhasznalo a_ = new Felhasznalo(
@@ -125,7 +114,7 @@ namespace CyberNest_Desktop
                         reader["elerhetoseg"].ToString(),
                         reader["role"].ToString()
                         );
-                    Felhasznalo.Bejlentkezett =a_;
+                    Felhasznalo.Bejlentkezett = a_;
                     Felhasznalo.FelhasznalokOsszes.Add(a_);
                     connection.Close();
                     return true;
@@ -134,12 +123,12 @@ namespace CyberNest_Desktop
                 {
                     connection.Close();
                     return false;
-                    
+
                 }
-                
+
             }
         }
-       
+
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             if (LoginCheck(usernameTextBox.Text, passwordBox.Password) == true)
@@ -161,14 +150,14 @@ namespace CyberNest_Desktop
 
                 //AdminInfos.Text = FelhasznaloFejlec();
                 //MainText.Text = $"Üdvözöllek, {AName}!";
-                
+
             }
-            else 
+            else
             {
-                MessageBox.Show( "Hibás felhasználónév vagy jelszó", "Bejelentkezés sikertelen.", MessageBoxButton.OK, MessageBoxImage.Error);
-                
+                MessageBox.Show("Hibás felhasználónév vagy jelszó", "Bejelentkezés sikertelen.", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
-                
+
         }
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
@@ -236,17 +225,17 @@ namespace CyberNest_Desktop
             eszkozTorlespanel.Visibility = Visibility.Visible;
 
 
-            
+
             // Clear existing items before populating
             IDs.Items.Clear();
-            
+
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
                 string query = "SELECT `id` FROM `eszkoz`";  // Only select what you need
                 MySqlCommand cmd = new MySqlCommand(query, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                
+
                 while (reader.Read())
                 {
                     IDs.Items.Add(Convert.ToInt32(reader["id"]));
@@ -309,7 +298,7 @@ namespace CyberNest_Desktop
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@id", EszkModIDs.SelectedItem);
                     MySqlDataReader reader = cmd.ExecuteReader();
-                    
+
                     if (reader.Read())
                     {
                         eszkozModLeiras.Text = reader["leiras"].ToString();
@@ -325,7 +314,7 @@ namespace CyberNest_Desktop
         {
             if (EszkModIDs.SelectedItem != null && (eszkozModLeiras.Text != null && eszkozModCpu.Text != null && eszkozModHdd.Text != null && eszkozModRam.Text != null))
             {
-                
+
 
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -338,7 +327,7 @@ namespace CyberNest_Desktop
                     cmd.Parameters.AddWithValue("@ram", eszkozModRam.Text);
                     cmd.Parameters.AddWithValue("@hdd", eszkozModHdd.Text);
                     cmd.Parameters.AddWithValue("@id", EszkModIDs.SelectedItem);
-                    
+
                     cmd.ExecuteNonQuery();
                     eszkozModositasPanel.Visibility = Visibility.Hidden;
                     connection.Close();
