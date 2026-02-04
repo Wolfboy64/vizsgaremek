@@ -270,6 +270,7 @@ namespace CyberNest_Desktop
             eszkozListazasPanel.Visibility = Visibility.Hidden;
             eszkozTorlespanel.Visibility = Visibility.Hidden;
             eszkozModositasPanel.Visibility = Visibility.Visible;
+            EszkModIDs.Items.Clear();
             List<int> eszkozids = new List<int>();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
