@@ -362,7 +362,7 @@ namespace CyberNest_Desktop
         }
         private void eszkozListaVissza_Click(object sender, RoutedEventArgs e)
         {
-            eszkozListazasPanel.Visibility = Visibility.Hidden;
+            Back(eszkozListazasPanel);
         }
         //felhasználók kezelése
         private void felhasznaloKezeles_Click(object sender, RoutedEventArgs e)
@@ -393,9 +393,11 @@ namespace CyberNest_Desktop
             }
         }
 
+
+
         private void felhasznaloListaVissza_Click(object sender, RoutedEventArgs e)
         {
-
+            Back(FelhasznalokListazasPanel);
         }
 
         private void felhasznalokListazas_Click(object sender, RoutedEventArgs e)
@@ -425,9 +427,17 @@ namespace CyberNest_Desktop
 
         }
 
+      
+        //easy tools
+        private void Back (StackPanel panel)
+        {
+            panel.Visibility = Visibility.Hidden;
+        }
+
+
         private void felhasznalokHozzaadas_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("Felhasználó hozzáadás funkció még nincs implementálva.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

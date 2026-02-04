@@ -133,8 +133,22 @@
 
             <StackPanel x:Name="FelhasznalokOldal" Visibility="Hidden">
 
-                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Hidden">
+                
 
+                <Grid Height="25" Width="auto">
+                    <Button x:Name="felhasznalokHozzaadas" Content="Felhasználók hozzáadása" Height="auto" Width="auto" Margin="146,-382,526,382" Click="felhasznalokHozzaadas_Click"/>
+                    <Button x:Name="felhasznalokTorles" Content="Felhasználók törlése" Height="auto" Width="auto" Margin="20,-382,659,382" Click="felhasznalokTorles_Click"/>
+                    <Button x:Name="felhasznalokModositas" Content="Felhasználók módosítása" Height="auto" Width="auto" Margin="284,-382,395,382" Click="felhasznalokModositas_Click"/>
+                    <Button x:Name="felhasznalokListazas" Content="Felhasználók kilistázása" Height="auto" Margin="410,-382,269,382" Click="felhasznalokListazas_Click"/>
+                </Grid>
+                <!--Felhasznalok hozzaadas-->
+                <StackPanel x:Name="FelhasznalokHozzaadasPanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+                        <Button x:Name="TouchMe" Margin="19,-165,583,257" Height="200" Click="TouchMe_Click" />
+                    </Grid>
+                </StackPanel>
+                <!-- Felhasznalok listazas-->
+                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Hidden">
                     <Grid Height="auto" Width="auto">
                         <ListView x:Name="FelhasznaloListView" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="121,-294,376,234" >
                             <ListView.View>
@@ -146,13 +160,6 @@
                         <Button x:Name="felhasznaloListaVissza" Content="Vissza" Margin="22,-294,684,294" Click="felhasznaloListaVissza_Click"/>
                     </Grid>
                 </StackPanel>
-
-                <Grid Height="25" Width="auto">
-                    <Button x:Name="felhasznalokHozzaadas" Content="Felhasználók hozzáadása" Height="auto" Width="auto" Margin="146,-407,526,407" Click="felhasznalokHozzaadas_Click"/>
-                    <Button x:Name="felhasznalokTorles" Content="Felhasználók törlése" Height="auto" Width="auto" Margin="20,-407,659,407" Click="felhasznalokTorles_Click"/>
-                    <Button x:Name="felhasznalokModositas" Content="Felhasználók módosítása" Height="auto" Width="auto" Margin="279,-407,400,407" Click="felhasznalokModositas_Click"/>
-                    <Button x:Name="felhasznalokListazas" Content="Felhasználók kilistázása" Height="auto" Margin="405,-407,274,407" Click="felhasznalokListazas_Click"/>
-                </Grid>
             </StackPanel>
             <StackPanel x:FieldModifier="private" x:Name="ManageUsersPage" Visibility="Hidden">
                 <Grid Height="100">
