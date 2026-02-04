@@ -1,9 +1,10 @@
-import db from '../config/database.js';
+import db from "../config/database.js";
 
 class IdopontModel {
-  // Get available pickup times for a device
+  // Időpontok lekérése eszköz ID alapján (elérhetőek)
   static async getAvailableByEszkozId(eszkoz_id) {
-    const [rows] = await db.execute(`
+    const [rows] = await db.execute(
+      `
       SELECT 
         id,
         atvetel_datum,
@@ -14,47 +15,46 @@ class IdopontModel {
         AND statusz = 'available'
         AND atvetel_datum >= CURDATE()
       ORDER BY atvetel_datum ASC, atvetel_idopont ASC
-    `, [eszkoz_id]);
+    `,
+      [eszkoz_id],
+    );
     return rows;
   }
 
-  // Get time slot by ID
+  // Időpont lekérése ID alapján
   static async findById(id) {
-    const [rows] = await db.execute(
-      'SELECT * FROM idopont WHERE id = ?',
-      [id]
-    );
+    const [rows] = await db.execute("SELECT * FROM idopont WHERE id = ?", [id]);
     return rows[0];
   }
 
-  // Reserve a pickup time slot
+  // Időpont lefoglalása
   static async reserve(id) {
     const [result] = await db.execute(
-      'UPDATE idopont SET statusz = ? WHERE id = ? AND statusz = ?',
-      ['reserved', id, 'available']
+      "UPDATE idopont SET statusz = ? WHERE id = ? AND statusz = ?",
+      ["reserved", id, "available"],
     );
     return result.affectedRows;
   }
 
-  // Release a pickup time slot (cancel reservation)
+  // Időpont felszabadítása (foglalás törlése)
   static async release(id) {
     const [result] = await db.execute(
-      'UPDATE idopont SET statusz = ? WHERE id = ?',
-      ['available', id]
+      "UPDATE idopont SET statusz = ? WHERE id = ?",
+      ["available", id],
     );
     return result.affectedRows;
   }
 
-  // Create new pickup time (admin only - later)
+  // Új időpont létrehozása (csak admin - később)
   static async create(eszkoz_id, atvetel_datum, atvetel_idopont) {
     const [result] = await db.execute(
-      'INSERT INTO idopont (eszkoz_id, atvetel_datum, atvetel_idopont, statusz) VALUES (?, ?, ?, ?)',
-      [eszkoz_id, atvetel_datum, atvetel_idopont, 'available']
+      "INSERT INTO idopont (eszkoz_id, atvetel_datum, atvetel_idopont, statusz) VALUES (?, ?, ?, ?)",
+      [eszkoz_id, atvetel_datum, atvetel_idopont, "available"],
     );
     return result.insertId;
   }
 
-  // Get all pickup times (admin only - later)
+  // Összes időpont lekérése (csak admin - később)
   static async getAll() {
     const [rows] = await db.execute(`
       SELECT 
