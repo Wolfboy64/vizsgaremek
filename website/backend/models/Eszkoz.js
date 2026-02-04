@@ -1,7 +1,7 @@
-import db from '../config/database.js';
+import db from "../config/database.js";
 
 class EszkozModel {
-  // Get all devices with operator info
+  // Eszközök lekérése üzemeltetői információkkal
   static async getAll() {
     const [rows] = await db.execute(`
       SELECT 
@@ -19,9 +19,10 @@ class EszkozModel {
     return rows;
   }
 
-  // Get device by ID
+  // Eszkoz lekérdezése ID alapján
   static async findById(id) {
-    const [rows] = await db.execute(`
+    const [rows] = await db.execute(
+      `
       SELECT 
         e.id, 
         e.leiras, 
@@ -34,34 +35,33 @@ class EszkozModel {
       FROM eszkoz e
       LEFT JOIN uzemelteto u ON e.uzemelteto_id = u.id
       WHERE e.id = ?
-    `, [id]);
+    `,
+      [id],
+    );
     return rows[0];
   }
 
-  // Create new device
+  // Eszközök létrehozása
   static async create(leiras, cpu, ram, hdd, uzemelteto_id) {
     const [result] = await db.execute(
-      'INSERT INTO eszkoz (leiras, cpu, ram, hdd, uzemelteto_id) VALUES (?, ?, ?, ?, ?)',
-      [leiras, cpu, ram, hdd, uzemelteto_id]
+      "INSERT INTO eszkoz (leiras, cpu, ram, hdd, uzemelteto_id) VALUES (?, ?, ?, ?, ?)",
+      [leiras, cpu, ram, hdd, uzemelteto_id],
     );
     return result.insertId;
   }
 
-  // Update device
+  // Eszközök frissítése
   static async update(id, leiras, cpu, ram, hdd, uzemelteto_id) {
     const [result] = await db.execute(
-      'UPDATE eszkoz SET leiras = ?, cpu = ?, ram = ?, hdd = ?, uzemelteto_id = ? WHERE id = ?',
-      [leiras, cpu, ram, hdd, uzemelteto_id, id]
+      "UPDATE eszkoz SET leiras = ?, cpu = ?, ram = ?, hdd = ?, uzemelteto_id = ? WHERE id = ?",
+      [leiras, cpu, ram, hdd, uzemelteto_id, id],
     );
     return result.affectedRows;
   }
 
-  // Delete device
+  // Eszközök térlése
   static async delete(id) {
-    const [result] = await db.execute(
-      'DELETE FROM eszkoz WHERE id = ?',
-      [id]
-    );
+    const [result] = await db.execute("DELETE FROM eszkoz WHERE id = ?", [id]);
     return result.affectedRows;
   }
 }

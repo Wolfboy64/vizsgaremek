@@ -1,13 +1,13 @@
-import db from '../config/database.js';
+import db from "../config/database.js";
 
 class FoglalasModel {
-  // Create new reservation
+  // Foglalás létrehozása
   static async create(
     felhasznalo_id,
     eszkoz_id,
     idopont_id,
     berlesi_kezdete,
-    berlesi_vege
+    berlesi_vege,
   ) {
     const [result] = await db.execute(
       `INSERT INTO foglalas 
@@ -19,13 +19,13 @@ class FoglalasModel {
         idopont_id,
         berlesi_kezdete,
         berlesi_vege,
-        'confirmed'
-      ]
+        "confirmed",
+      ],
     );
     return result.insertId;
   }
 
-  // Get all reservations
+  // Foglalások lekérése
   static async getAll() {
     const [rows] = await db.execute(`
       SELECT 
@@ -47,9 +47,10 @@ class FoglalasModel {
     return rows;
   }
 
-  // Get reservations by user ID
+  // Foglalások lekérése felhasználó ID alapján
   static async getByUserId(felhasznalo_id) {
-    const [rows] = await db.execute(`
+    const [rows] = await db.execute(
+      `
       SELECT 
         f.id,
         f.eszkoz_id,
@@ -67,16 +68,17 @@ class FoglalasModel {
       LEFT JOIN idopont i ON f.idopont_id = i.id
       WHERE f.felhasznalo_id = ?
       ORDER BY f.foglalas_datuma DESC
-    `, [felhasznalo_id]);
+    `,
+      [felhasznalo_id],
+    );
     return rows;
   }
 
-  // Delete reservation
+  // Foglalás törlése
   static async delete(id) {
-    const [result] = await db.execute(
-      'DELETE FROM foglalas WHERE id = ?',
-      [id]
-    );
+    const [result] = await db.execute("DELETE FROM foglalas WHERE id = ?", [
+      id,
+    ]);
     return result.affectedRows;
   }
 }
