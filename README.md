@@ -20,7 +20,7 @@ karbantartási ütemezéssel.
 
 ## Csapattagok névsora és feladatköre:
 
-### Király Gellért (Frontend, Backend, Desktop)
+### Király Gellért (Frontend, Backend, Desktop, Database)
 
 ### Macza Ádám (Frontend, Backend)
 
