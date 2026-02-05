@@ -1,9 +1,10 @@
-﻿<Window x:Class="CyberNest_Desktop.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberNest_Desktop"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="CyberNest_Desktop.MainWindow"
         mc:Ignorable="d"
         Title="CyberNest - Adminfelület (bejelentkezés)" Height="450" Width="800" Background="Gray">
     <Grid>
@@ -61,13 +62,15 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
+                
                 <StackPanel x:Name="TopMenu" Visibility="Visible">
                     <Grid>
+                        <!-- ITT VAN MÉG KIS HIBA - a felhasználók kezelése gomb eseménykezelője nem jeleníti meg a "FelhasznalokOldal" panelt. --> 
                         <Button x:Name="felhasznaloKezeles" Content="Felhasználók kezelése" Margin="0,10,643,10" Click="felhasznaloKezeles_Click"/>
-                        <Button x:Name="viewReportsButton" Content="Jelentések megtekintése" Margin="137,10,446,10"/>
-                        <Button x:Name="settingsButton" Content="Beállítások" Margin="483,10,148,10"/>
+                        <Button x:Name="viewReportsButton" Content="Jelentések megtekintése" Margin="137,10,496,10"/>
+                        <Button x:Name="settingsButton" Content="Beállítások" Margin="433,10,198,10"/>
                         <Button x:Name="logoutButton" Content="Kijelentkezés" Grid.Row="0" HorizontalAlignment="Left" Margin="703,6,0,6" Click="logoutButton_Click" Width="72" Grid.ColumnSpan="3"/>
-                        <Button x:Name="EszkozokButton" Content="Eszközök" Click="EszkozokButton_Click" Height="20" Width="144" Margin="334,10,297,10"/>
+                        <Button x:Name="EszkozokButton" Content="Eszközök" Click="EszkozokButton_Click" Height="20" Width="144" Margin="284,10,347,10"/>
                     </Grid>
 
                 </StackPanel>
@@ -75,6 +78,52 @@
 
 
             </Grid>
+            <StackPanel x:Name="FelhasznalokOldal" Visibility="Hidden" Height="auto">
+
+
+
+                <StackPanel x:Name="felhasznalokMenu" Visibility="Hidden">
+                    <Grid Height="46" Width="auto">
+                        <Button x:Name="felhasznalokHozzaadas" Content="Felhasználók hozzáadása" Height="auto" Width="auto" Click="felhasznalokHozzaadas_Click" Margin="0,0,647,25"/>
+                        <Button x:Name="felhasznalokTorles" Content="Felhasználók törlése" Height="auto" Width="auto"  Click="felhasznalokTorles_Click" Margin="448,0,230,25"/>
+                        <Button x:Name="felhasznalokModositas" Content="Felhasználók módosítása" Height="auto" Width="auto" Click="felhasznalokModositas_Click" Margin="293,0,357,25"/>
+                        <Button x:Name="felhasznalokListazas" Content="Felhasználók kilistázása" Height="auto"  Click="felhasznalokListazas_Click" Margin="158,0,512,25"/>
+
+                    </Grid>
+                </StackPanel>
+
+                <!--Felhasznalok hozzaadas-->
+                <StackPanel x:Name="FelhasznalokHozzaadasPanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+
+                        <Button x:Name="FelhasznaloHozzaadasGomb" Content="Hozzáadás" Height="auto" Width="auto" Margin="19,80,691,10"/>
+                        <TextBox x:Name="FelhasznaloNev" Text="Felhasznalonév" Margin="10,1,592,113"/>
+                        <PasswordBox Height="23" Margin="10,29,592,0" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="FelhasznaloAllapot" Margin="234,1,368,113" >
+                            <ComboBoxItem Content="Aktív" />
+                            <ComboBoxItem Content="Inaktív" />
+                        </ComboBox>
+                        <ComboBox x:Name="FelhasznaloJogosultsag" Margin="234,29,368,85">
+                            <ComboBoxItem Content="Admin" />
+                            <ComboBoxItem Content="User" />
+                        </ComboBox>
+
+                    </Grid>
+                </StackPanel>
+                <!-- Felhasznalok listazas-->
+                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+                        <ListView x:Name="FelhasznaloListView" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="121,-294,376,234" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="felhasznaloListaVissza" Content="Vissza" Margin="22,-294,684,294" Click="felhasznaloListaVissza_Click"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
             <!--Eszközök CRUD kész 2026.01.26 - Ezt a sablont kell követni a többi CRUD-nál is!-->
             <StackPanel x:Name="eszkozokoldal" Visibility="Hidden" >
                 <Grid Height="auto" Width="auto">
@@ -111,14 +160,14 @@
                 <!-- ESZKÖZ TÖRLÉS -->
                 <StackPanel x:Name="eszkozTorlespanel" Visibility="Hidden">
                     <Grid Height="auto" Width="auto">
-                        <ComboBox Name="IDs" Margin="340,90,335,0"/>
+                        <ComboBox x:Name="IDs" Margin="340,90,335,0"/>
                         <Button x:Name="eszkozTorlesGomb" Content="Törlés" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozTorlesGomb_Click"/>
                     </Grid>
                 </StackPanel>
                 <!-- ESZKÖZ MÓDOSÍTÁS -->
                 <StackPanel x:Name="eszkozModositasPanel" Visibility="Hidden">
                     <Grid Height="auto" Width="auto">
-                        <ComboBox Name="EszkModIDs" Width="120" Margin="377,-187,303,277" />
+                        <ComboBox x:Name="EszkModIDs" Width="120" Margin="377,-187,303,277" />
                         <TextBox x:Name="eszkozModLeiras" Text="leiras" Margin="19,-204,583,297"/>
                         <TextBox x:Name="eszkozModCpu" Text="cpu" Margin="19,-185,583,277"/>
 
@@ -129,38 +178,6 @@
                 </StackPanel>
             </StackPanel>
 
-            <!--Fő Irányítópult kezdőlap-->
-
-            <StackPanel x:Name="FelhasznalokOldal" Visibility="Hidden">
-
-                
-
-                <Grid Height="25" Width="auto">
-                    <Button x:Name="felhasznalokHozzaadas" Content="Felhasználók hozzáadása" Height="auto" Width="auto" Margin="146,-382,526,382" Click="felhasznalokHozzaadas_Click"/>
-                    <Button x:Name="felhasznalokTorles" Content="Felhasználók törlése" Height="auto" Width="auto" Margin="20,-382,659,382" Click="felhasznalokTorles_Click"/>
-                    <Button x:Name="felhasznalokModositas" Content="Felhasználók módosítása" Height="auto" Width="auto" Margin="284,-382,395,382" Click="felhasznalokModositas_Click"/>
-                    <Button x:Name="felhasznalokListazas" Content="Felhasználók kilistázása" Height="auto" Margin="410,-382,269,382" Click="felhasznalokListazas_Click"/>
-                </Grid>
-                <!--Felhasznalok hozzaadas-->
-                <StackPanel x:Name="FelhasznalokHozzaadasPanel" Visibility="Hidden">
-                    <Grid Height="auto" Width="auto">
-                        <Button x:Name="TouchMe" Margin="19,-165,583,257" Height="200" Click="TouchMe_Click" />
-                    </Grid>
-                </StackPanel>
-                <!-- Felhasznalok listazas-->
-                <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Hidden">
-                    <Grid Height="auto" Width="auto">
-                        <ListView x:Name="FelhasznaloListView" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="121,-294,376,234" >
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <Button x:Name="felhasznaloListaVissza" Content="Vissza" Margin="22,-294,684,294" Click="felhasznaloListaVissza_Click"/>
-                    </Grid>
-                </StackPanel>
-            </StackPanel>
             <StackPanel x:FieldModifier="private" x:Name="ManageUsersPage" Visibility="Hidden">
                 <Grid Height="100">
                     <Grid.ColumnDefinitions>
@@ -184,6 +201,7 @@
                 </Grid>
             </StackPanel>
             <StackPanel Height="100"/>
+
 
 
 

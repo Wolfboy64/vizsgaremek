@@ -63,7 +63,7 @@ namespace CyberNest_Desktop
            "Database=test3;" +
            "Uid=root;" +
            "Pwd=;" +
-           "Port=3307;";
+           "Port=3306;";
         private void connectDatabase()
         {
 
@@ -367,9 +367,9 @@ namespace CyberNest_Desktop
         //felhasználók kezelése
         private void felhasznaloKezeles_Click(object sender, RoutedEventArgs e)
         {
-            eszkozokoldal.Visibility = Visibility.Hidden;
+            Back(eszkozokoldal);
             FelhasznalokOldal.Visibility = Visibility.Visible;
-            //felhasználók listázása
+            /*//felhasználók listázása
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -390,7 +390,7 @@ namespace CyberNest_Desktop
                     Felhasznalo.FelhasznalokOsszes.Add(a_);
                 }
                 reader.Close();
-            }
+            }*/
         }
 
 
@@ -427,17 +427,22 @@ namespace CyberNest_Desktop
 
         }
 
-      
+        private void felhasznalokHozzaadas_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznalokHozzaadasPanel.Visibility = Visibility.Visible;
+            Back(FelhasznalokListazasPanel);
+        }
+
         //easy tools
         private void Back (StackPanel panel)
         {
-            panel.Visibility = Visibility.Hidden;
+            if (panel.Visibility == Visibility.Visible)
+            {
+                panel.Visibility = Visibility.Hidden;
+            }
+            
         }
 
-
-        private void felhasznalokHozzaadas_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Felhasználó hozzáadás funkció még nincs implementálva.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+        
     }
 }
