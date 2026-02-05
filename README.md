@@ -18,10 +18,10 @@ bővíthető új funkciókkal – például automatizált jelentésekkel, statis
 karbantartási ütemezéssel.
 
 
-## Csapattagok névsora:
+## Csapattagok névsora és feladatköre:
 
-### Király Gellért
+### Király Gellért (Frontend, Backend, Desktop)
 
-### Macza Ádám
+### Macza Ádám (Frontend, Backend)
 
-### Kiss Richárd Bendegúz
+### Kiss Richárd Bendegúz (Desktop)
