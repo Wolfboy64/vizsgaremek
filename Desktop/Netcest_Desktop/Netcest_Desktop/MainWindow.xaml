@@ -47,7 +47,7 @@
             </Grid>
         </StackPanel>
         <!-- Adminisztrációs vezérlőpult-->
-        <StackPanel x:Name="homePage"  Background="LightGray" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="6" Margin="0,0,0,15" >
+        <StackPanel x:Name="homePage"  Background="LightGray" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="6" Margin="0,0,0,15" HorizontalAlignment="Center" >
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
