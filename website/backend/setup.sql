@@ -32,17 +32,36 @@ CREATE TABLE IF NOT EXISTS `felhasznalo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Időpont tábla
+CREATE TABLE IF NOT EXISTS `idopont` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `eszkoz_id` int(11) NOT NULL,
+  `atvetel_datum` date NOT NULL,
+  `atvetel_idopont` time NOT NULL,
+  `statusz` enum('available','reserved','completed') DEFAULT 'available',
+  `letrehozva` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `eszkoz_id` (`eszkoz_id`),
+  CONSTRAINT `idopont_ibfk_1` FOREIGN KEY (`eszkoz_id`) REFERENCES `eszkoz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- Foglalás tábla
 CREATE TABLE IF NOT EXISTS `foglalas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `felhasznalo_id` int(11) NOT NULL,
   `eszkoz_id` int(11) NOT NULL,
+  `idopont_id` int(11) DEFAULT NULL,
+  `berlesi_kezdete` date DEFAULT NULL,
+  `berlesi_vege` date DEFAULT NULL,
   `foglalas_datuma` datetime NOT NULL DEFAULT current_timestamp(),
+  `statusz` enum('draft','confirmed','cancelled') DEFAULT 'draft',
   PRIMARY KEY (`id`),
   KEY `felhasznalo_id` (`felhasznalo_id`),
   KEY `eszkoz_id` (`eszkoz_id`),
+  KEY `idopont_id` (`idopont_id`),
   CONSTRAINT `foglalas_ibfk_1` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `foglalas_ibfk_2` FOREIGN KEY (`eszkoz_id`) REFERENCES `eszkoz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `foglalas_ibfk_2` FOREIGN KEY (`eszkoz_id`) REFERENCES `eszkoz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `foglalas_ibfk_3` FOREIGN KEY (`idopont_id`) REFERENCES `idopont` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Értékelés tábla
@@ -82,3 +101,10 @@ INSERT IGNORE INTO `eszkoz` (`id`, `leiras`, `cpu`, `ram`, `hdd`, `uzemelteto_id
 (4, 'Enterprise szintű szerver', 'Intel Xeon Platinum 8280 (28 cores)', '256 GB DDR4', '4 TB NVMe SSD RAID 10', 2),
 (5, 'Kezdő csomag teszteléshez', 'Intel Core i7-9700K (4 cores)', '16 GB DDR4', '240 GB SSD', 3),
 (6, 'GPU-val felszerelt szerver AI projektekhez', 'AMD Ryzen 9 5950X + NVIDIA RTX 3090', '64 GB DDR4', '1 TB NVMe SSD', 3);
+
+-- Alap admin felhasználó (admin123)
+INSERT INTO `felhasznalo` (`nev`, `elerhetoseg`, `allapot`, `jelszo`, `role`)
+SELECT 'admin', 'admin@local', 'aktiv', '$2b$10$svWfRA79l8Toq2ruH6f2QOTE3YwtyyGefCMt690ac4N1eJ4B.XFNW', 'admin'
+WHERE NOT EXISTS (
+  SELECT 1 FROM `felhasznalo` WHERE `elerhetoseg` = 'admin@local'
+);

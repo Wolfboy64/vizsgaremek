@@ -54,6 +54,23 @@ class IdopontModel {
     return result.insertId;
   }
 
+  // Időpont frissítése (csak admin)
+  static async update(id, eszkoz_id, atvetel_datum, atvetel_idopont, statusz) {
+    const [result] = await db.execute(
+      "UPDATE idopont SET eszkoz_id = ?, atvetel_datum = ?, atvetel_idopont = ?, statusz = ? WHERE id = ?",
+      [eszkoz_id, atvetel_datum, atvetel_idopont, statusz, id],
+    );
+    return result.affectedRows;
+  }
+
+  // Időpont törlése (csak admin)
+  static async delete(id) {
+    const [result] = await db.execute("DELETE FROM idopont WHERE id = ?", [
+      id,
+    ]);
+    return result.affectedRows;
+  }
+
   // Összes időpont lekérése (csak admin - később)
   static async getAll() {
     const [rows] = await db.execute(`

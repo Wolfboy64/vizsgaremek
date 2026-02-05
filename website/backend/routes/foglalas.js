@@ -6,8 +6,7 @@ const router = express.Router();
 
 router.post("/", verifyToken, foglalasController.create);
 router.get("/my", verifyToken, foglalasController.getMyReservations);
-router.delete("/:id", verifyToken, isAdmin, foglalasController.delete);
-
+router.delete("/:id", verifyToken, isAdmin, foglalasController.deleteReservation);
 router.get("/", verifyToken, isAdmin, foglalasController.getAll);
 
 export default router;
