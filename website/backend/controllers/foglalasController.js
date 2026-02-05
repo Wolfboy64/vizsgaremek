@@ -1,4 +1,5 @@
-import FoglalasModel from "../models/FoglalasModel.js";
+import FoglalasModel from "../models/Foglalas.js";
+import IdopontModel from "../models/Idopont.js";
 
 export const create = async (req, res) => {
   try {
@@ -6,9 +7,7 @@ export const create = async (req, res) => {
     const felhasznalo_id = req.user.id;
 
     if (!eszkoz_id || !idopont_id || !berlesi_kezdete || !berlesi_vege) {
-      return res
-        .status(400)
-        .json({ message: "Minden mező kitöltése kötelező." });
+      return res.status(400).json({ message: "Minden mező kitöltése kötelező." });
     }
 
     const start = new Date(berlesi_kezdete);
@@ -23,12 +22,9 @@ export const create = async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (start < today) {
-      return res
-        .status(400)
-        .json({ message: "A bérlési kezdete nem lehet a múltban." });
+      return res.status(400).json({ message: "A bérlési kezdete nem lehet a múltban." });
     }
 
-    const IdopontModel = require("../models/Idopont.js").default;
     const idopont = await IdopontModel.findById(idopont_id);
 
     if (!idopont) {
@@ -36,17 +32,13 @@ export const create = async (req, res) => {
     }
 
     if (idopont.statusz !== "available") {
-      return res
-        .status(400)
-        .json({ message: "Ez az átvételi időpont már nem elérhető" });
+      return res.status(400).json({ message: "Ez az átvételi időpont már nem elérhető" });
     }
 
     const reserved = await IdopontModel.reserve(idopont_id);
 
     if (reserved === 0) {
-      return res
-        .status(400)
-        .json({ message: "Ez az átvételi időpont már nem elérhető" });
+      return res.status(400).json({ message: "Ez az átvételi időpont már nem elérhető" });
     }
 
     const foglalasId = await FoglalasModel.create(
@@ -54,17 +46,13 @@ export const create = async (req, res) => {
       idopont_id,
       felhasznalo_id,
       berlesi_kezdete,
-      berlesi_vege,
+      berlesi_vege
     );
 
-    res
-      .status(201)
-      .json({ message: "Foglalás sikeresen létrehozva.", id: foglalasId });
+    res.status(201).json({ message: "Foglalás sikeresen létrehozva.", id: foglalasId });
   } catch (error) {
     console.error("Hiba a foglalás létrehozásakor:", error);
-    res
-      .status(500)
-      .json({ message: "Szerver hiba a foglalás létrehozása során." });
+    res.status(500).json({ message: "Szerver hiba a foglalás létrehozása során." });
   }
 };
 
@@ -74,9 +62,7 @@ export const getAll = async (req, res) => {
     res.json(foglalasok);
   } catch (error) {
     console.error("Hiba a foglalások lekérésekor:", error);
-    res
-      .status(500)
-      .json({ message: "Szerver hiba a foglalások lekérdezése során." });
+    res.status(500).json({ message: "Szerver hiba a foglalások lekérdezése során." });
   }
 };
 
@@ -86,16 +72,14 @@ export const getMyReservations = async (req, res) => {
     res.json(foglalasok);
   } catch (error) {
     console.error("Hiba a saját foglalások lekérésekor:", error);
-    res
-      .status(500)
-      .json({ message: "Szerver hiba a saját foglalások lekérdezése során." });
+    res.status(500).json({ message: "Szerver hiba a saját foglalások lekérdezése során." });
   }
 };
 
 export const deleteReservation = async (req, res) => {
   try {
     const id = req.params.id;
-    const affectedRows = await FoglalasModel.delete(id);
+    const affectedRows = await FoglalasModel.deleteById(id);
 
     if (affectedRows === 0) {
       return res.status(404).json({ message: "Foglalás nem található." });
