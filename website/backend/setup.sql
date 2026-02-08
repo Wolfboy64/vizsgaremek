@@ -104,7 +104,7 @@ INSERT IGNORE INTO `eszkoz` (`id`, `leiras`, `cpu`, `ram`, `hdd`, `uzemelteto_id
 
 -- Alap admin felhasználó (admin123)
 INSERT INTO `felhasznalo` (`nev`, `elerhetoseg`, `allapot`, `jelszo`, `role`)
-SELECT 'admin', 'admin@local', 'aktiv', '$2b$10$svWfRA79l8Toq2ruH6f2QOTE3YwtyyGefCMt690ac4N1eJ4B.XFNW', 'admin'
+SELECT 'admin', 'admin@local', 'aktiv', '$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu', 'admin'
 WHERE NOT EXISTS (
   SELECT 1 FROM `felhasznalo` WHERE `elerhetoseg` = 'admin@local'
 );

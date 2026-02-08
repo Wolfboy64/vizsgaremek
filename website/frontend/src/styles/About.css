@@ -23,3 +23,13 @@
   background: #f0f4f8;
   border-radius: 5px;
 }
+
+.about-container button {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #fff;
+  cursor: pointer;
+}
