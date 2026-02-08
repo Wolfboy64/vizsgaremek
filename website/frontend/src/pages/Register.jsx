@@ -1,74 +1,86 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import "../styles/Login.css";
 
-const Login = () => {
-  const { login, loading } = useAuth();
+const Register = () => {
+  const { register, loading } = useAuth();
   const navigate = useNavigate();
+  const [nev, setNev] = useState("");
   const [elerhetoseg, setElerhetoseg] = useState("");
   const [jelszo, setJelszo] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+    setSuccess("");
 
-    if (!elerhetoseg || !jelszo) {
+    if (!nev || !elerhetoseg || !jelszo) {
       setError("Minden mező kitöltése kötelező.");
       return;
     }
 
-    const result = await login(elerhetoseg, jelszo);
+    const result = await register(nev, elerhetoseg, jelszo);
     if (result.ok) {
-      navigate("/profile");
+      setSuccess("Sikeres regisztráció. Most már be tudsz jelentkezni.");
+      setTimeout(() => navigate("/login"), 800);
     } else {
-      setError(result.message || "Sikertelen bejelentkezés.");
+      setError(result.message || "Sikertelen regisztráció.");
     }
   };
 
   return (
     <div className="login-page">
       <div className="login-card">
-        <h1>Bejelentkezés</h1>
-        <p className="login-subtitle">Jelentkezz be a regisztrált fiókoddal.</p>
+        <h1>Regisztráció</h1>
+        <p className="login-subtitle">Hozz létre új fiókot.</p>
 
         <form onSubmit={handleSubmit} className="login-form">
+          <label>
+            Név
+            <input
+              type="text"
+              value={nev}
+              onChange={(event) => setNev(event.target.value)}
+              placeholder="Teljes név"
+              autoComplete="name"
+            />
+          </label>
+
           <label>
             Elérhetőség (email)
             <input
               type="email"
               value={elerhetoseg}
               onChange={(event) => setElerhetoseg(event.target.value)}
-              placeholder="admin@local"
-              autoComplete="username"
+              placeholder="email@pelda.hu"
+              autoComplete="email"
             />
           </label>
 
           <label>
-            Jelszó
+            Jelszó (min. 6 karakter)
             <input
               type="password"
               value={jelszo}
               onChange={(event) => setJelszo(event.target.value)}
               placeholder="••••••••"
-              autoComplete="current-password"
+              autoComplete="new-password"
             />
           </label>
 
           {error ? <div className="login-error">{error}</div> : null}
+          {success ? <div className="login-success">{success}</div> : null}
 
           <button type="submit" disabled={loading}>
-            {loading ? "Bejelentkezés..." : "Belépés"}
+            {loading ? "Regisztráció..." : "Fiók létrehozása"}
           </button>
         </form>
-        <div className="login-footer">
-          Nincs fiókod? <Link to="/register">Regisztráció</Link>
-        </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

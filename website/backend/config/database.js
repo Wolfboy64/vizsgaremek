@@ -54,7 +54,7 @@ try {
   // Ensure default admin exists and is active
   const adminEmail = "admin@local";
   const adminHash =
-    "$2b$10$svWfRA79l8Toq2ruH6f2QOTE3YwtyyGefCMt690ac4N1eJ4B.XFNW";
+    "$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu";
   await connection.query(
     `INSERT INTO felhasznalo (nev, elerhetoseg, allapot, jelszo, role)
      SELECT 'admin', ?, 'aktiv', ?, 'admin'

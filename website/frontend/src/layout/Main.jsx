@@ -4,6 +4,8 @@ import About from "../pages/About.jsx";
 import Contact from "../pages/Contact.jsx";
 import Profile from "../pages/Profile.jsx";
 import Login from "../pages/Login.jsx";
+import Logout from "../pages/Logout.jsx";
+import Register from "../pages/Register.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
@@ -19,10 +21,13 @@ const Main = () => {
         {user ? (
           <>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/logout" element={<Home />} />
+            <Route path="/logout" element={<Logout />} />
           </>
         ) : (
-          <Route path="/login" element={<Login />} />
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </>
         )}
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
