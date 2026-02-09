@@ -63,7 +63,7 @@ namespace CyberNest_Desktop
            "Database=test3;" +
            "Uid=root;" +
            "Pwd=;" +
-           "Port=3306;";
+           "Port=3307;";
         private void connectDatabase()
         {
 
@@ -369,6 +369,7 @@ namespace CyberNest_Desktop
         {
             Back(eszkozokoldal);
             FelhasznalokOldal.Visibility = Visibility.Visible;
+            FelhasznalokTopMenu.Visibility = Visibility.Visible;
             /*//felhasználók listázása
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -443,6 +444,38 @@ namespace CyberNest_Desktop
             
         }
 
-        
+        private void FelhasznaloHozzaadasGomb_Click(object sender, RoutedEventArgs e)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "INSERT INTO `felhasznalo` (`nev`, `jelszo`, `allapot`, `role`) VALUES (@nev, @jelszo, @allapot, @role)";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@nev", FelhasznaloNev.Text);
+                cmd.Parameters.AddWithValue("@jelszo", FelhasznaloJelszo.Password);
+
+                cmd.Parameters.AddWithValue(
+                    "@allapot",
+                    (FelhasznaloAllapot.SelectedItem as ComboBoxItem)?.Content.ToString()
+                );
+
+                cmd.Parameters.AddWithValue(
+                    "@role",
+                    (FelhasznaloJogosultsag.SelectedItem as ComboBoxItem)?.Content.ToString()
+                );
+
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Sikeres hozzáadás!");
+
+                FelhasznaloNev.Clear();
+                FelhasznaloJelszo.Clear();
+                FelhasznaloAllapot.SelectedIndex = -1;
+                FelhasznaloJogosultsag.SelectedIndex = -1;
+                FelhasznalokHozzaadasPanel.Visibility = Visibility.Hidden;
+            }
+        }
+
     }
 }
