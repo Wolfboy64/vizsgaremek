@@ -7,13 +7,14 @@ using System.Net.Http;
 using MySqlX.XDevAPI;
 using Newtonsoft.Json;
 using System.Windows.Media.Animation;
+using System.Windows;
 
 namespace Netcest_Desktop
 {
     internal class ApiService
     {
         HttpClient client = new HttpClient();
-        string baseUrl = "https://localhost:5000/api";
+        string baseUrl = "https://localhost:5050/api";
 
         public ApiService()
         {
@@ -35,19 +36,25 @@ namespace Netcest_Desktop
                 throw new Exception("Failed to get users");
             }
         }
-        public async Task<List<Felhasznalok>> PostFelhasznalo()
+        public async Task<List<Felhasznalok>> PostFelhasznalo(string username, string password)
         {
-            var response = await client.PostAsync("/debug/users", null);
-            if (response.IsSuccessStatusCode)
+            //check if username and password are correct
+            var respose = await client.GetAsync($"/debug/login?username={username}&password={password}");
+            List<Felhasznalok> ret = new List<Felhasznalok>();
+            if (respose.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var users = JsonConvert.DeserializeObject<List<Felhasznalok>>(json);
-                return users;
+                var users = new List<Felhasznalok>();
+                var json = await respose.Content.ReadAsStringAsync();
+                users = JsonConvert.DeserializeObject<List<Felhasznalok>>(json);
+                ret = users;
+
             }
             else
             {
-                throw new Exception("Failed to post user");
+                MessageBox.Show("Hibás felhasználónév vagy jelszó!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                return ret;
             }
+            return ret;
         }
         public async Task<bool> LoginMethod(string username, string password)
         {

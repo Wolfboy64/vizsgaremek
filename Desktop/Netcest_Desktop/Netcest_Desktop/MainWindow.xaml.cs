@@ -110,12 +110,20 @@ namespace CyberNest_Desktop
             }*/
         //}
         ApiService apiService = new ApiService();
-        private void loginButton_Click(object sender, RoutedEventArgs e)
+        private async void loginButton_Click(object sender, RoutedEventArgs e)
         {
             
-                //connectDatabase();
-                loginPage.Visibility = Visibility.Hidden;
-                homePage.Visibility = Visibility.Visible;
+            //connectDatabase();
+            
+            string usrn = usernameTextBox.Text;
+            string psw = passwordBox.Password;
+            if (!string.IsNullOrEmpty(usrn) && !string.IsNullOrEmpty(psw))
+            {
+                var l = await apiService.PostFelhasznalo(usrn, psw);
+                MessageBox.Show($"Sikeres bejelentkezés! Üdvözöllek, {l[0].Nev}!");
+            }
+            
+            
                 //Bejelentkezett.Allapot = "aktiv";
                 /*using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
