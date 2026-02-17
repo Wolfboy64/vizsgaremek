@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using Netcest_Desktop;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -14,28 +15,8 @@ namespace CyberNest_Desktop
     {
         private string AName;
         private string APassword;
-        struct Felhasznalo
-        {
-            public int Id;
-            public string Name;
-            public string Jelszo;
-            public string Allapot;
-            public string Role;
-            public Felhasznalo(int id, string name, string jelszo, string allapot, string role)
-            {
-                Id = id;
-                Name = name;
-                Jelszo = jelszo;
-                Allapot = allapot;
-                Role = role;
-            }
-            public static List<Felhasznalo> FelhasznalokOsszes = new List<Felhasznalo>();
-            public static Felhasznalo Bejlentkezett = new Felhasznalo();
-            public override string ToString()
-            {
-                return $"{Id} | {Name} | {Allapot}";
-            }
-        }
+        Felhasznalok Bejelentkezett;
+
         struct Eszkozok
         {
             public string Leiras;
@@ -55,7 +36,7 @@ namespace CyberNest_Desktop
             InitializeComponent();
             loginPage.Visibility = Visibility.Visible;
             homePage.Visibility = Visibility.Hidden;
-
+            
         }
         //ADATBÁZIS KAPCSOLAT kezedete
         private string connectionString =
@@ -85,9 +66,9 @@ namespace CyberNest_Desktop
         {
             return "ID | Név | Elérhetőség | Állapot";
         }
-        private bool LoginCheck(string username, string password)
-        {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+        //private bool LoginCheck(string username, string password)
+        //{
+            /*using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
                 string query = "SELECT * FROM `felhasznalo` WHERE `nev` = @username AND `jelszo` = @password AND `role` = @role";
@@ -107,15 +88,15 @@ namespace CyberNest_Desktop
 
                     AName = reader["nev"].ToString();
                     //APassword = reader["elerhetoseg"].ToString();
-                    Felhasznalo a_ = new Felhasznalo(
+                    Felhasznalok a_ = new Felhasznalok(
                         Convert.ToInt32(reader["id"]),
                         reader["nev"].ToString(),
                         reader["jelszo"].ToString(),
                         reader["elerhetoseg"].ToString(),
                         reader["role"].ToString()
                         );
-                    Felhasznalo.Bejlentkezett = a_;
-                    Felhasznalo.FelhasznalokOsszes.Add(a_);
+                    //Felhasznalok.Bejlentkezett = a_;
+                    Felhasznalok.FelhasznalokOsszes.Add(a_);
                     connection.Close();
                     return true;
                 }
@@ -126,37 +107,32 @@ namespace CyberNest_Desktop
 
                 }
 
-            }
-        }
-
+            }*/
+        //}
+        ApiService apiService = new ApiService();
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (LoginCheck(usernameTextBox.Text, passwordBox.Password) == true)
-            {
-                connectDatabase();
+            
+                //connectDatabase();
                 loginPage.Visibility = Visibility.Hidden;
                 homePage.Visibility = Visibility.Visible;
-                Felhasznalo.Bejlentkezett.Allapot = "aktiv";
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                //Bejelentkezett.Allapot = "aktiv";
+                /*using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
                     string query = "UPDATE `felhasznalo` SET `allapot` = @allapot WHERE `id` = @id";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@allapot", Felhasznalo.Bejlentkezett.Allapot);
-                    cmd.Parameters.AddWithValue("@id", Felhasznalo.Bejlentkezett.Id);
+                    cmd.Parameters.AddWithValue("@allapot", Felhasznalok.Bejlentkezett.Allapot);
+                    cmd.Parameters.AddWithValue("@id", Felhasznalok.Bejlentkezett.Id);
                     cmd.ExecuteNonQuery();
-                }
+                }*/
 
 
                 //AdminInfos.Text = FelhasznaloFejlec();
                 //MainText.Text = $"Üdvözöllek, {AName}!";
 
-            }
-            else
-            {
-                MessageBox.Show("Hibás felhasználónév vagy jelszó", "Bejelentkezés sikertelen.", MessageBoxButton.OK, MessageBoxImage.Error);
-
-            }
+            
+            
 
         }
         private void logoutButton_Click(object sender, RoutedEventArgs e)
@@ -164,19 +140,19 @@ namespace CyberNest_Desktop
             homePage.Visibility = Visibility.Hidden;
             loginPage.Visibility = Visibility.Visible;
             //állapot átváltása inaktivvá
-            Felhasznalo.Bejlentkezett.Allapot = "inaktiv";
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            //Bejelentkezett.Allapot = "inaktiv";
+            /*using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
                 string query = "UPDATE `felhasznalo` SET `allapot` = @allapot WHERE `id` = @id";
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@allapot", Felhasznalo.Bejlentkezett.Allapot);
-                cmd.Parameters.AddWithValue("@id", Felhasznalo.Bejlentkezett.Id);
+                cmd.Parameters.AddWithValue("@allapot", Bejelentkezett.Allapot);
+                cmd.Parameters.AddWithValue("@id", Bejelentkezett.Id);
                 cmd.ExecuteNonQuery();
-            }
+            }*/
 
-            MessageBox.Show($"{Felhasznalo.Bejlentkezett.Name} {Felhasznalo.Bejlentkezett.Allapot}");
-            Felhasznalo.Bejlentkezett = new Felhasznalo();
+            /*MessageBox.Show($"{Felhasznalok.Bejlentkezett.Name} {Felhasznalok.Bejlentkezett.Allapot}");
+            Felhasznalok.Bejlentkezett = new Felhasznalok(null, null, null, null, null);*/
             usernameTextBox.Clear();
             passwordBox.Clear();
         }
@@ -201,23 +177,56 @@ namespace CyberNest_Desktop
                 eszkozCpu.Text,
                 eszkozRam.Text,
                 eszkozHdd.Text
-                );
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            );
+            List<int> ids = new List<int>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                string query = "SELECT `uzemelteto_id` FROM `eszkoz` ";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        UzemeltetoID.Items.Add(Convert.ToInt32(reader["uzemelteto_id"]));
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+            }
+        }
+
+
+            /*using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "INSERT INTO `eszkoz` (`leiras`, `cpu`, `ram`, `hdd`) VALUES (@leiras, @cpu, @ram, @hdd)"; //, `uzemelteto_id` ... @uzemelteto_id
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@leiras", e_.Leiras);
-                cmd.Parameters.AddWithValue("@cpu", e_.Cpu);
-                cmd.Parameters.AddWithValue("@ram", e_.Ram);
-                cmd.Parameters.AddWithValue("@hdd", e_.Hdd);
-                //cmd.Parameters.AddWithValue("@uzemelteto_id", 1);
-                cmd.ExecuteNonQuery();
-                connection.Close();
 
+                string query = @"INSERT INTO `eszkoz`(`leiras`, `cpu`, `ram`, `hdd`, `uzemelteto_id`) VALUES (@leiras, @cpu, @ram, @hdd, @uzemelteto_id)";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@leiras", e_.Leiras);
+                    cmd.Parameters.AddWithValue("@cpu", e_.Cpu);
+                    cmd.Parameters.AddWithValue("@ram", e_.Ram);
+                    cmd.Parameters.AddWithValue("@hdd", e_.Hdd);
+
+                    cmd.Parameters.AddWithValue(
+                        "@uzemelteto_id",
+                        Felhasznalok.Bejlentkezett.Id
+                    );
+
+                    cmd.ExecuteNonQuery();
+                }
+                connection.Close();
             }
+
             eszkozHozzadasPanel.Visibility = Visibility.Hidden;
-        }
+        }*/
+
         private void eszkozTorles_Click(object sender, RoutedEventArgs e)
         {
             eszkozModositasPanel.Visibility = Visibility.Hidden;
@@ -322,13 +331,14 @@ namespace CyberNest_Desktop
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "UPDATE `eszkoz` SET `leiras` = @leiras, `cpu` = @cpu, `ram` = @ram, `hdd` = @hdd WHERE `id` = @id";
+                    string query = "UPDATE `eszkoz` SET `leiras` = @leiras, `cpu` = @cpu, `ram` = @ram, `hdd` = @hdd, `uzemelteto_id` = @uzemeltetoid WHERE `id` = @id";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@leiras", eszkozModLeiras.Text);
                     cmd.Parameters.AddWithValue("@cpu", eszkozModCpu.Text);
                     cmd.Parameters.AddWithValue("@ram", eszkozModRam.Text);
                     cmd.Parameters.AddWithValue("@hdd", eszkozModHdd.Text);
                     cmd.Parameters.AddWithValue("@id", EszkModIDs.SelectedItem);
+                    cmd.Parameters.AddWithValue("@uzemeltetoid", 1);
 
                     cmd.ExecuteNonQuery();
                     eszkozModositasPanel.Visibility = Visibility.Hidden;
@@ -477,5 +487,14 @@ namespace CyberNest_Desktop
             }
         }
 
+        private void FelhasznaloJelszo_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void FelhasznaloNev_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            FelhasznaloNev.Clear();
+        }
     }
 }

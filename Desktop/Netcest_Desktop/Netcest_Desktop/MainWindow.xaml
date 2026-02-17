@@ -78,6 +78,61 @@
 
 
             </Grid>
+            <StackPanel x:Name="eszkozokoldal" Visibility="Visible" >
+                <Grid >
+                    <Button x:Name="eszkozHozzaadas" Content="Eszközök hozzáadása" Height="auto" Width="auto" Margin="10,0,662,0" Click="eszkozHozzaadas_Click"/>
+                    <Button x:Name="eszkozTorles" Content="Eszközök törlése" Height="auto" Width="auto" Margin="143,0,489,0" Click="eszkozTorles_Click"/>
+                    <Button x:Name="eszkozModositas" Content="Eszközök módosítása" Height="auto" Width="auto" Margin="316,0,316,0" Click="eszkozModositas_Click"/>
+                    <Button x:Name="eszkozListazas" Content="Eszközök kilistázása" Height="auto" Width="auto" Margin="489,0,143,0" Click="eszkozListazas_Click"/>
+                </Grid>
+                <!--ESZKÖZÖK KILISTÁZÁSA-->
+                <StackPanel x:Name="eszkozListazasPanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+                        <ListView x:Name="EszkozListView" d:ItemsSource="{d:SampleData ItemCount=0}" Width="264" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="eszkozListaVissza" Content="Vissza" Margin="22,5,684,5" Click="eszkozListaVissza_Click"/>
+
+                    </Grid>
+                </StackPanel>
+                <!-- ESZKÖZ HOZZÁADÁS -->
+                <StackPanel x:Name="eszkozHozzadasPanel"  Visibility="Visible" >
+                    <Grid Height="auto" Width="auto">
+                        <Button x:Name="eszkozHozzaadasGomb" Content="Hozzáadás" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozHozzaadasGomb_Click"/>
+                        <TextBox x:Name="eszkozLeiras" Text="leiras" Margin="10,10,592,82"/>
+                        <TextBox x:Name="eszkozCpu" Text="cpu" Margin="10,28,592,64"/>
+
+                        <TextBox x:Name="eszkozRam" Text="ram" Margin="10,64,592,28"/>
+                        <TextBox x:Name="eszkozHdd" Text="hdd" Margin="10,46,592,46"/>
+                        <ComboBox x:Name="UzemeltetoID" Margin="234,12,469,76">
+                            <ComboBoxItem Content="UzemeltetoID1" />
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+                <!-- ESZKÖZ TÖRLÉS -->
+                <StackPanel x:Name="eszkozTorlespanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+                        <ComboBox x:Name="IDs" Margin="340,90,335,0"/>
+                        <Button x:Name="eszkozTorlesGomb" Content="Törlés" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozTorlesGomb_Click"/>
+                    </Grid>
+                </StackPanel>
+                <!-- ESZKÖZ MÓDOSÍTÁS -->
+                <StackPanel x:Name="eszkozModositasPanel" Visibility="Hidden">
+                    <Grid Height="auto" Width="auto">
+                        <ComboBox x:Name="EszkModIDs" Width="120" Margin="377,-187,303,277" />
+                        <TextBox x:Name="eszkozModLeiras" Text="leiras" Margin="19,-204,583,297"/>
+                        <TextBox x:Name="eszkozModCpu" Text="cpu" Margin="19,-185,583,277"/>
+
+                        <TextBox x:Name="eszkozModRam" Text="ram" Margin="19,-145,583,237"/>
+                        <TextBox x:Name="eszkozModHdd" Text="hdd" Margin="19,-165,583,257"/>
+                        <Button x:Name="eszkozModositasGomb" Content="Módosítás" Height="auto" Width="auto" Margin="282,-187,428,277" Click="eszkozModositasGomb_Click"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
             <StackPanel x:Name="FelhasznalokOldal" Visibility="Visible" Height="auto">
                 <StackPanel x:Name="FelhasznalokTopMenu" HorizontalAlignment="Left" Height="24" Margin="10,0,0,0" Width="auto" Visibility="Hidden">
 
@@ -95,7 +150,7 @@
                     <Grid Height="auto" Width="auto">
 
                         <Button x:Name="FelhasznaloHozzaadasGomb" Content="Hozzáadás" Height="auto" Width="auto" Margin="19,80,691,10" Click="FelhasznaloHozzaadasGomb_Click"/>
-                        <TextBox x:Name="FelhasznaloNev" Text="Felhasznalonév" Margin="10,1,592,113"/>
+                        <TextBox x:Name="FelhasznaloNev" Text="Felhasznalonév" Margin="10,1,592,113" MouseDoubleClick="FelhasznaloNev_MouseDoubleClick"/>
                         <PasswordBox x:Name="FelhasznaloJelszo" Height="23" Margin="10,29,592,0" VerticalAlignment="Top"/>
                         <ComboBox x:Name="FelhasznaloAllapot" Margin="234,1,368,113" >
                             <ComboBoxItem Content="Aktív" />
@@ -118,58 +173,6 @@
                             </ListView.View>
                         </ListView>
                         <Button x:Name="felhasznaloListaVissza" Content="Vissza" Margin="22,-294,684,294" Click="felhasznaloListaVissza_Click"/>
-                    </Grid>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel x:Name="eszkozokoldal" Visibility="Hidden" >
-                <Grid >
-                    <Button x:Name="eszkozHozzaadas" Content="Eszközök hozzáadása" Height="auto" Width="auto" Margin="10,0,662,0" Click="eszkozHozzaadas_Click"/>
-                    <Button x:Name="eszkozTorles" Content="Eszközök törlése" Height="auto" Width="auto" Margin="143,0,489,0" Click="eszkozTorles_Click"/>
-                    <Button x:Name="eszkozModositas" Content="Eszközök módosítása" Height="auto" Width="auto" Margin="316,0,316,0" Click="eszkozModositas_Click"/>
-                    <Button x:Name="eszkozListazas" Content="Eszközök kilistázása" Height="auto" Width="auto" Margin="489,0,143,0" Click="eszkozListazas_Click"/>
-                </Grid>
-                <!--ESZKÖZÖK KILISTÁZÁSA-->
-                <StackPanel x:Name="eszkozListazasPanel" Visibility="Hidden">
-                    <Grid Height="auto" Width="auto">
-                        <ListView x:Name="EszkozListView" d:ItemsSource="{d:SampleData ItemCount=0}" Width="264" >
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <Button x:Name="eszkozListaVissza" Content="Vissza" Margin="22,5,684,5" Click="eszkozListaVissza_Click"/>
-
-                    </Grid>
-                </StackPanel>
-                <!-- ESZKÖZ HOZZÁADÁS -->
-                <StackPanel x:Name="eszkozHozzadasPanel"  Visibility="Hidden" >
-                    <Grid Height="auto" Width="auto">
-                        <Button x:Name="eszkozHozzaadasGomb" Content="Hozzáadás" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozHozzaadasGomb_Click"/>
-                        <TextBox x:Name="eszkozLeiras" Text="leiras" Margin="10,10,592,82"/>
-                        <TextBox x:Name="eszkozCpu" Text="cpu" Margin="10,28,592,64"/>
-
-                        <TextBox x:Name="eszkozRam" Text="ram" Margin="10,64,592,28"/>
-                        <TextBox x:Name="eszkozHdd" Text="hdd" Margin="10,46,592,46"/>
-                    </Grid>
-                </StackPanel>
-                <!-- ESZKÖZ TÖRLÉS -->
-                <StackPanel x:Name="eszkozTorlespanel" Visibility="Hidden">
-                    <Grid Height="auto" Width="auto">
-                        <ComboBox x:Name="IDs" Margin="340,90,335,0"/>
-                        <Button x:Name="eszkozTorlesGomb" Content="Törlés" Height="auto" Width="auto" Margin="234,90,476,0" Click="eszkozTorlesGomb_Click"/>
-                    </Grid>
-                </StackPanel>
-                <!-- ESZKÖZ MÓDOSÍTÁS -->
-                <StackPanel x:Name="eszkozModositasPanel" Visibility="Hidden">
-                    <Grid Height="auto" Width="auto">
-                        <ComboBox x:Name="EszkModIDs" Width="120" Margin="377,-187,303,277" />
-                        <TextBox x:Name="eszkozModLeiras" Text="leiras" Margin="19,-204,583,297"/>
-                        <TextBox x:Name="eszkozModCpu" Text="cpu" Margin="19,-185,583,277"/>
-
-                        <TextBox x:Name="eszkozModRam" Text="ram" Margin="19,-145,583,237"/>
-                        <TextBox x:Name="eszkozModHdd" Text="hdd" Margin="19,-165,583,257"/>
-                        <Button x:Name="eszkozModositasGomb" Content="Módosítás" Height="auto" Width="auto" Margin="282,-187,428,277" Click="eszkozModositasGomb_Click"/>
                     </Grid>
                 </StackPanel>
             </StackPanel>
