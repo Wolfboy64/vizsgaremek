@@ -4,7 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Configuration;
+using System.Text;
+using System.ComponentModel;
 
 namespace CyberNest_Desktop
 {
@@ -30,6 +35,31 @@ namespace CyberNest_Desktop
                 Ram = ram;
                 Hdd = hdd;
             }
+        }
+        struct WebClient
+        {
+            //Api-ról szeretném elérni a klienseket, hogy ne csak a helyi adatbázisban legyenek, hanem egy központi helyen is, ahol több admin is eléri őket, és kezelheti őket
+            private static readonly HttpClient client = new HttpClient();
+            public static async Task<List<Felhasznalo>> GetFelhasznalokAsync(string apiUrl)
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(apiUrl);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<List<Felhasznalo>>(responseBody);
+                }
+                catch (HttpRequestException e)
+                {
+                    MessageBox.Show($"Error fetching data: {e.Message}");
+                    return new List<Felhasznalo>();
+                }
+            }
+
+            //api: localhost:5000/api/auth/login
+            
+
+
         }
         public MainWindow()
         {
