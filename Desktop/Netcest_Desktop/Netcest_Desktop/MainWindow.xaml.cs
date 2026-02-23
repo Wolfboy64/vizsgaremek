@@ -1,15 +1,16 @@
 ﻿using MySqlConnector;
 using Netcest_Desktop;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Configuration;
-using System.Text;
-using System.ComponentModel;
 
 namespace CyberNest_Desktop
 {
@@ -40,19 +41,19 @@ namespace CyberNest_Desktop
         {
             //Api-ról szeretném elérni a klienseket, hogy ne csak a helyi adatbázisban legyenek, hanem egy központi helyen is, ahol több admin is eléri őket, és kezelheti őket
             private static readonly HttpClient client = new HttpClient();
-            public static async Task<List<Felhasznalo>> GetFelhasznalokAsync(string apiUrl)
+            public static async Task<List<Felhasznalok>> GetFelhasznalokAsync(string apiUrl)
             {
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<Felhasznalo>>(responseBody);
+                    return JsonConvert.DeserializeObject<List<Felhasznalok>>(responseBody);
                 }
                 catch (HttpRequestException e)
                 {
                     MessageBox.Show($"Error fetching data: {e.Message}");
-                    return new List<Felhasznalo>();
+                    return new List<Felhasznalok>();
                 }
             }
 
@@ -140,38 +141,55 @@ namespace CyberNest_Desktop
             }*/
         //}
         ApiService apiService = new ApiService();
+
         private async void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            //connectDatabase();
-            
-            string usrn = usernameTextBox.Text;
-            string psw = passwordBox.Password;
-            if (!string.IsNullOrEmpty(usrn) && !string.IsNullOrEmpty(psw))
+            string usrn = usernameTextBox.Text.Trim();
+            string psw = passwordBox.Password.Trim();
+
+            if (string.IsNullOrWhiteSpace(usrn) || string.IsNullOrWhiteSpace(psw))
             {
-                var l = await apiService.PostFelhasznalo(usrn, psw);
-                MessageBox.Show($"Sikeres bejelentkezés! Üdvözöllek, {l[0].Nev}!");
+                MessageBox.Show("Add meg a felhasználónevet és jelszót!");
+                return;
             }
-            
-            
-                //Bejelentkezett.Allapot = "aktiv";
-                /*using (MySqlConnection connection = new MySqlConnection(connectionString))
+
+            try
+            {
+                loginButton.IsEnabled = false;
+
+                var users = await apiService.GetUsers();
+
+                var foundUser = users
+                    .FirstOrDefault(u =>
+                        u.Nev.Equals(usrn, StringComparison.OrdinalIgnoreCase)
+                        && u.Allapot == "aktiv");
+
+                if (foundUser != null)
                 {
-                    connection.Open();
-                    string query = "UPDATE `felhasznalo` SET `allapot` = @allapot WHERE `id` = @id";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@allapot", Felhasznalok.Bejlentkezett.Allapot);
-                    cmd.Parameters.AddWithValue("@id", Felhasznalok.Bejlentkezett.Id);
-                    cmd.ExecuteNonQuery();
-                }*/
+                    //MessageBox.Show($"Sikeres bejelentkezés! Üdvözöllek, {foundUser.Nev}!");
 
+                    Bejelentkezett = foundUser;
 
-                //AdminInfos.Text = FelhasznaloFejlec();
-                //MainText.Text = $"Üdvözöllek, {AName}!";
-
-            
-            
-
+                    if (foundUser.Role == "admin")
+                    {
+                        
+                        homePage.Visibility = Visibility.Visible;
+                        loginPage.Visibility = Visibility.Hidden;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Hibás felhasználónév vagy inaktív felhasználó!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Szerver hiba: {ex.Message}");
+            }
+            finally
+            {
+                loginButton.IsEnabled = true;
+            }
         }
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
@@ -238,32 +256,6 @@ namespace CyberNest_Desktop
             }
         }
 
-
-            /*using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string query = @"INSERT INTO `eszkoz`(`leiras`, `cpu`, `ram`, `hdd`, `uzemelteto_id`) VALUES (@leiras, @cpu, @ram, @hdd, @uzemelteto_id)";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@leiras", e_.Leiras);
-                    cmd.Parameters.AddWithValue("@cpu", e_.Cpu);
-                    cmd.Parameters.AddWithValue("@ram", e_.Ram);
-                    cmd.Parameters.AddWithValue("@hdd", e_.Hdd);
-
-                    cmd.Parameters.AddWithValue(
-                        "@uzemelteto_id",
-                        Felhasznalok.Bejlentkezett.Id
-                    );
-
-                    cmd.ExecuteNonQuery();
-                }
-                connection.Close();
-            }
-
-            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
-        }*/
 
         private void eszkozTorles_Click(object sender, RoutedEventArgs e)
         {
@@ -523,11 +515,6 @@ namespace CyberNest_Desktop
                 FelhasznaloJogosultsag.SelectedIndex = -1;
                 FelhasznalokHozzaadasPanel.Visibility = Visibility.Hidden;
             }
-        }
-
-        private void FelhasznaloJelszo_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
         }
 
         private void FelhasznaloNev_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

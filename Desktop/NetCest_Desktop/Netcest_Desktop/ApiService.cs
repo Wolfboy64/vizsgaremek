@@ -14,8 +14,8 @@ namespace Netcest_Desktop
     internal class ApiService
     {
         HttpClient client = new HttpClient();
-        string baseUrl = "https://localhost:5050/api";
-
+        string baseUrl = "http://localhost:5050";
+        
         public ApiService()
         {
             client.BaseAddress = new Uri(baseUrl);
@@ -23,17 +23,19 @@ namespace Netcest_Desktop
 
         public async Task<List<Felhasznalok>> GetUsers()
         {
-            var response = await client.GetAsync("/debug/users");
+            var response = await client.GetAsync("api/debug/users");
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            MessageBox.Show($"Status: {response.StatusCode}\n\n{content}");
 
             if (response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var users = JsonConvert.DeserializeObject<List<Felhasznalok>>(json);
-                return users;
+                return JsonConvert.DeserializeObject<List<Felhasznalok>>(content);
             }
             else
             {
-                throw new Exception("Failed to get users");
+                throw new Exception($"Failed: {response.StatusCode}");
             }
         }
         public async Task<List<Felhasznalok>> PostFelhasznalo(string username, string password)
@@ -51,24 +53,31 @@ namespace Netcest_Desktop
             }
             else
             {
-                MessageBox.Show("Hibás felhasználónév vagy jelszó!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Hibás felhasználónév vagy jelszó!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                 return ret;
             }
             return ret;
         }
-        public async Task<bool> LoginMethod(string username, string password)
+        public async Task<Felhasznalok> LoginAsync(string nev, string elerhetoseg)
         {
-            bool ret = false;
-            //check if username and password are correct
-            var response = await client.GetAsync($"/debug/login?username={username}&password={password}");
-            if (response.IsSuccessStatusCode)
+            var loginData = new
             {
-                var json = await response.Content.ReadAsStringAsync();
-                ret = JsonConvert.DeserializeObject<bool>(json);
-            }
+                nev = nev,
+                elerhetoseg = elerhetoseg
+            };
 
+            HttpContent content = new StringContent(
+                JsonConvert.SerializeObject(loginData),
+                Encoding.UTF8,
+                "application/json");
 
-            return ret;
+            var response = await client.PostAsync("/auth/login", content);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Felhasznalok>(json);
         }
     }
 }
