@@ -75,7 +75,7 @@ namespace CyberNest_Desktop
            "Database=test3;" +
            "Uid=root;" +
            "Pwd=;" +
-           "Port=3307;";
+           "Port=3306;";
         private void connectDatabase()
         {
 
@@ -144,6 +144,7 @@ namespace CyberNest_Desktop
 
         private async void loginButton_Click(object sender, RoutedEventArgs e)
         {
+            
             string usrn = usernameTextBox.Text.Trim();
             string psw = passwordBox.Password.Trim();
 
