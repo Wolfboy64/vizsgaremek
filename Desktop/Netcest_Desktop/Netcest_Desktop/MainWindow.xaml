@@ -102,7 +102,7 @@
                     </Grid>
                 </StackPanel>
             </Grid>
-            <Grid x:Name="ContentGrid" Background="White">
+            <Grid x:Name="ContentGrid" Background="White" Height="734">
 
                 <StackPanel x:Name="eszkozokoldal" Visibility="Hidden" >
                     <Grid >
@@ -159,8 +159,9 @@
                         </Grid>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel x:Name="FelhasznalokOldal" Visibility="Hidden" Height="auto">
-                    <StackPanel x:Name="FelhasznalokTopMenu" HorizontalAlignment="Left" Height="24" Margin="10,0,0,0" Width="auto" Visibility="Visible">
+                <!-- FELHASZNÁLÓK OLDAL -->
+                <StackPanel x:Name="FelhasznalokOldal" Visibility="Visible" Height="auto">
+                    <StackPanel x:Name="FelhasznalokTopMenu" HorizontalAlignment="Left" Height="24" Margin="10,0,0,0" Width="auto" Visibility="Hidden">
 
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button x:Name="felhasznalokHozzaadas" Content="Felhasználók hozzáadása" Height="auto" Width="auto" Margin="10,0,666,0" Click="felhasznalokHozzaadas_Click" />
@@ -187,6 +188,9 @@
                         </Grid>
                     </StackPanel>
                     <StackPanel x:Name="FelhasznalokListazasPanel" Visibility="Hidden" Height="147" Width="371">
+
+                        <Button x:Name="felhasznaloListaVissza" Content="Vissza" Click="felhasznaloListaVissza_Click" Width="111"/>
+
                         <ListView x:Name="FelhasznaloListView" d:ItemsSource="{d:SampleData ItemCount=0}" Height="146" Width="370" >
                             <ListView.View>
                                 <GridView>
@@ -194,9 +198,7 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <Grid Height="auto" Width="auto">
-                            <Button x:Name="felhasznaloListaVissza" Content="Vissza" Margin="22,-294,684,294" Click="felhasznaloListaVissza_Click"/>
-                        </Grid>
+
                     </StackPanel>
 
                     <!--Felhasznalok hozzaadasa-->

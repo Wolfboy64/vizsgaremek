@@ -440,10 +440,12 @@ namespace CyberNest_Desktop
         private void felhasznaloListaVissza_Click(object sender, RoutedEventArgs e)
         {
             Back(FelhasznalokListazasPanel);
+
         }
 
         private void felhasznalokListazas_Click(object sender, RoutedEventArgs e)
         {
+            Back(FelhasznalokHozzaadasPanel);
             FelhasznalokListazasPanel.Visibility = Visibility.Visible;
             FelhasznaloListView.Items.Clear();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
