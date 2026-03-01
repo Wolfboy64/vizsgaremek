@@ -1,72 +1,114 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
-import "../styles/Login.css";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
+import "../styles/Auth.css";
 
 const Login = () => {
-  const { login, loading } = useAuth();
-  const navigate = useNavigate();
-  const [elerhetoseg, setElerhetoseg] = useState("");
-  const [jelszo, setJelszo] = useState("");
+  const [formData, setFormData] = useState({
+    elerhetoseg: "",
+    jelszo: "",
+  });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
     setError("");
+  };
 
-    if (!elerhetoseg || !jelszo) {
-      setError("Minden mező kitöltése kötelező.");
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const result = await login(elerhetoseg, jelszo);
-    if (result.ok) {
-      navigate("/profile");
-    } else {
-      setError(result.message || "Sikertelen bejelentkezés.");
+    try {
+      const response = await api.post("/auth/login", formData);
+      login(response.data.user, response.data.token);
+      navigate("/ugyfelportal/dashboard");
+    } catch (err) {
+      setError(err.response?.data?.message || "Bejelentkezési hiba történt");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <h1>Bejelentkezés</h1>
-        <p className="login-subtitle">Jelentkezz be a regisztrált fiókoddal.</p>
+    <div className="auth-page">
+      <motion.div
+        className="auth-container"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="auth-header">
+          <h1>Bejelentkezés</h1>
+          <p>Lépj be a fiókodba</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <label>
-            Elérhetőség (email)
+        {error && (
+          <motion.div
+            className="error-message"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {error}
+          </motion.div>
+        )}
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="elerhetoseg">Email / Elérhetőség</label>
             <input
-              type="email"
-              value={elerhetoseg}
-              onChange={(event) => setElerhetoseg(event.target.value)}
-              placeholder="admin@local"
+              type="text"
+              id="elerhetoseg"
+              name="elerhetoseg"
+              value={formData.elerhetoseg}
+              onChange={handleChange}
+              placeholder="pelda@email.hu"
+              required
               autoComplete="username"
             />
-          </label>
+          </div>
 
-          <label>
-            Jelszó
+          <div className="form-group">
+            <label htmlFor="jelszo">Jelszó</label>
             <input
               type="password"
-              value={jelszo}
-              onChange={(event) => setJelszo(event.target.value)}
+              id="jelszo"
+              name="jelszo"
+              value={formData.jelszo}
+              onChange={handleChange}
               placeholder="••••••••"
+              required
               autoComplete="current-password"
             />
-          </label>
+          </div>
 
-          {error ? <div className="login-error">{error}</div> : null}
-
-          <button type="submit" disabled={loading}>
-            {loading ? "Bejelentkezés..." : "Belépés"}
-          </button>
+          <motion.button
+            type="submit"
+            className="auth-btn"
+            disabled={loading}
+            whileHover={{ scale: loading ? 1 : 1.02 }}
+            whileTap={{ scale: loading ? 1 : 0.98 }}
+          >
+            {loading ? "Bejelentkezés..." : "Bejelentkezés"}
+          </motion.button>
         </form>
-        <div className="login-footer">
-          Nincs fiókod? <Link to="/register">Regisztráció</Link>
+
+        <div className="auth-footer">
+          <p>
+            Még nincs fiókod?{" "}
+            <Link to="/ugyfelportal/register">Regisztráció</Link>
+          </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
