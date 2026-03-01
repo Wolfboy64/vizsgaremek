@@ -1,120 +1,62 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-export const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-const API_URL = import.meta.env.VITE_API_URL || "";
-const TOKEN_KEY = "cybernest_token";
-const safeJsonParse = (text) => {
-  if (!text) return null;
-  try {
-    return JSON.parse(text);
-  } catch (error) {
-    return null;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
   }
+  return context;
 };
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem(TOKEN_KEY);
-    if (savedToken) {
+    const savedToken = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
+
+    if (savedToken && savedUser) {
       setToken(savedToken);
-      fetchProfile(savedToken);
+      setUser(JSON.parse(savedUser));
     }
+    setLoading(false);
   }, []);
 
-  const fetchProfile = async (authToken) => {
-    try {
-      const response = await fetch(`${API_URL}/api/auth/me`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
-      const text = await response.text();
-      const data = safeJsonParse(text);
-      if (!response.ok) {
-        throw new Error(data?.message || "Token érvénytelen");
-      }
-
-      setUser(data.user || null);
-    } catch (error) {
-      console.error("Profil betöltési hiba:", error);
-      logout();
-    }
-  };
-
-  const login = async (elerhetoseg, jelszo) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ elerhetoseg, jelszo }),
-      });
-
-      const text = await response.text();
-      const data = safeJsonParse(text);
-      if (!response.ok) {
-        throw new Error(data?.message || "Sikertelen bejelentkezés.");
-      }
-
-      localStorage.setItem(TOKEN_KEY, data.token);
-      setToken(data.token);
-      setUser(data.user);
-      return { ok: true };
-    } catch (error) {
-      return { ok: false, message: error.message };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const register = async (nev, elerhetoseg, jelszo) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${API_URL}/api/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nev, elerhetoseg, jelszo }),
-      });
-
-      const text = await response.text();
-      const data = safeJsonParse(text);
-      if (!response.ok) {
-        throw new Error(data?.message || "Sikertelen regisztráció.");
-      }
-
-      return { ok: true };
-    } catch (error) {
-      return { ok: false, message: error.message };
-    } finally {
-      setLoading(false);
-    }
+  const login = (userData, userToken) => {
+    setUser(userData);
+    setToken(userToken);
+    localStorage.setItem("token", userToken);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
-    localStorage.removeItem(TOKEN_KEY);
-    setToken(null);
     setUser(null);
+    setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
-  return (
-    <AuthContext.Provider
-      value={{ user, token, login, register, logout, loading }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  const isAuthenticated = () => {
+    return !!token;
+  };
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+  const isAdmin = () => {
+    return user?.role === "admin";
+  };
+
+  const value = {
+    user,
+    token,
+    login,
+    logout,
+    isAuthenticated,
+    isAdmin,
+    loading,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};

@@ -1,54 +1,93 @@
-import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, logout, user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    setIsOpen(false);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
 
   return (
     <nav className="navbar">
-      <div className="nav-left">
-        <NavLink
-          to="/"
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          Home
-        </NavLink>
+      <div className="nav-container">
+        <div className="nav-left">
+          <Link to="/" onClick={closeMenu}>
+            Főoldal
+          </Link>
+          <Link to="/termekek" onClick={closeMenu}>
+            Termékek
+          </Link>
+        </div>
 
-        <NavLink
-          to="/about"
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          About
-        </NavLink>
+        <Link to="/" className="nav-logo" onClick={closeMenu}>
+          <span className="logo-cyber">Cyber</span>
+          <span className="logo-nest">Nest</span>
+        </Link>
 
-        <NavLink
-          to="/contact"
-          className={({ isActive }) => (isActive ? "active" : "")}
+        <div className="nav-right">
+          <Link to="/kapcsolat" onClick={closeMenu}>
+            Kapcsolat
+          </Link>
+          {isAuthenticated() ? (
+            <>
+              <Link to="/ugyfelportal/dashboard" onClick={closeMenu}>
+                Dashboard
+              </Link>
+              <button onClick={handleLogout} className="nav-logout-btn">
+                Kijelentkezés
+              </button>
+            </>
+          ) : (
+            <Link to="/ugyfelportal/login" onClick={closeMenu}>
+              Ügyfélportál
+            </Link>
+          )}
+        </div>
+
+        <div
+          className={`hamburger ${isOpen ? "active" : ""}`}
+          onClick={() => setIsOpen(!isOpen)}
         >
-          Contact
-        </NavLink>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
 
-      <div className="nav-center">
-        CyberNest
-      </div>
-
-      <div className="nav-right">
-        <NavLink
-          to="/dashboard"
-          className={({ isActive }) => (isActive ? "active" : "")}
-        >
-          Dashboard
-        </NavLink>
-
-        {user ? (
-          <NavLink to="/profile">Profile</NavLink>
-        ) : (
+      <div className={`mobile-menu ${isOpen ? "active" : ""}`}>
+        <Link to="/" onClick={closeMenu}>
+          Főoldal
+        </Link>
+        <Link to="/termekek" onClick={closeMenu}>
+          Termékek
+        </Link>
+        <Link to="/kapcsolat" onClick={closeMenu}>
+          Kapcsolat
+        </Link>
+        {isAuthenticated() ? (
           <>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/register">Register</NavLink>
+            <Link to="/ugyfelportal/dashboard" onClick={closeMenu}>
+              Dashboard ({user?.nev})
+            </Link>
+            <button onClick={handleLogout} className="mobile-logout-btn">
+              Kijelentkezés
+            </button>
           </>
+        ) : (
+          <Link to="/ugyfelportal/login" onClick={closeMenu}>
+            Ügyfélportál
+          </Link>
         )}
       </div>
     </nav>
