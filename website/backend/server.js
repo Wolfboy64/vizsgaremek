@@ -8,14 +8,31 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = [process.env.CLIENT_URL, "http://localhost:5173"].filter(
+  Boolean,
+);
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
+    if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    if (process.env.NODE_ENV !== "production") {
+      return callback(null, true);
+    }
+    return callback(null, false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
+};
 
 // Middleware
-app.use(
-  cors({
-    origin: true, // Allow all origins (for development)
-    credentials: true,
-  }),
-);
+app.use(cors(corsOptions));
+app.options("/api/{*splat}", cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 console.log("CLIENT_URL:", process.env.CLIENT_URL);
