@@ -34,7 +34,7 @@ const Contact = () => {
           >
             <h2>Elérhetőségeink</h2>
             <div className="info-item">
-              <div className="info-icon">📧</div>
+              <div className="info-icon">Icon1</div>
               <div>
                 <h3>Email</h3>
                 <p>info@cybernest.hu</p>
@@ -43,7 +43,7 @@ const Contact = () => {
             </div>
 
             <div className="info-item">
-              <div className="info-icon">📞</div>
+              <div className="info-icon">Icon2</div>
               <div>
                 <h3>Telefon</h3>
                 <p>+36 1 234 5678</p>
@@ -52,7 +52,7 @@ const Contact = () => {
             </div>
 
             <div className="info-item">
-              <div className="info-icon">📍</div>
+              <div className="info-icon">Icon3</div>
               <div>
                 <h3>Cím</h3>
                 <p>1234 Budapest</p>
@@ -61,7 +61,7 @@ const Contact = () => {
             </div>
 
             <div className="info-item">
-              <div className="info-icon">⏰</div>
+              <div className="info-icon">Icon4</div>
               <div>
                 <h3>24/7 Támogatás</h3>
                 <p>Technikai segítség non-stop</p>
