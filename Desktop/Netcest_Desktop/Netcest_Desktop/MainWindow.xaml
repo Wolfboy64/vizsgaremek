@@ -48,7 +48,7 @@
         </StackPanel>
         <!-- Adminisztrációs vezérlőpult-->
         <StackPanel x:Name="homePage"  Background="LightGray" Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="6" Width="NaN" Margin="0,0,0,-334" >
-            <Grid >
+            <Grid Height="57" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -63,8 +63,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel x:Name="TopMenu" Visibility="Visible">
-
-                    <Grid Height="50" Background="#2D2D30">
+                    <Grid Height="58" Background="#2D2D30" Width="642">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -73,32 +72,81 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <!-- ITT VAN MÉG KIS HIBA - a felhasználók kezelése gomb eseménykezelője nem jeleníti meg a "FelhasznalokOldal" panelt. -->
-                        <Button x:Name="felhasznaloKezeles"
-                            Content="Felhasználók kezelése"
-                            Margin="10"
-                            Click="felhasznaloKezeles_Click"/>
+                        <!-- 
+                            SABLON #1:
+                            <Button x:Name="" <- ide a név
+                                Grid.Column="0" <- Oszlop sorszáma
+                                Margin="10" <- Baloldali margó
+                                Click=""> <- Click esemény kezelője
+                                <StackPanel Orientation="Horizontal"> <- Ezt ne változtasd!
+                                    <Image Source=""  Width="20" Height="20" Margin="0,0,8,0"/> <- Kép méretezése
+                                    <TextBlock Text=""/> <- Gomb felirata
+                                </StackPanel>
+                            </Button>
+                        
+                            SABLON #2
+                            <Button x:Name=""
+                                Grid.Column="0"
+                                Margin="10" 
+                                Click=""> 
+                                <StackPanel Orientation="Horizontal"> 
+                                    <Image Source=""  Width="20" Height="20" Margin="0,0,8,0"/> 
+                                    <TextBlock Text=""/>
+                                </StackPanel>
+                            </Button>
+                        -->
 
-                        <Button x:Name="EszkozokButton"
-                            Content="Eszközök"
-                            Grid.Column="1"
+                        <Button x:Name="felhasznaloKezeles"
+                            Grid.Column="0"
                             Margin="10"
-                            Click="EszkozokButton_Click"/>
+                            Click="felhasznaloKezeles_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/user.png" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Felhasználók Kezelése"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="EszkozokButton" 
+                                Grid.Column="1"
+                                Margin="10"
+                                Click="EszkozokButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/tools.png" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Eszközök" Height="18" Width="66"/>
+                            </StackPanel>
+                        </Button>
 
                         <Button x:Name="viewReportsButton"
-                            Content="Jelentések"
-                            Grid.Column="2"
-                            Margin="10"/>
+                                Grid.Column="2"
+                                Margin="10" 
+                                Click="viewReportsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/report.png"  Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Jelentések" Height="18" Width="66"/>
+                            </StackPanel>
+                        </Button>
+
 
                         <Button x:Name="settingsButton"
-                            Content="Beállítások"
-                            Grid.Column="4"
-                            Margin="10"/>
+                                Grid.Column="3"
+                                Margin="10" 
+                                Click="settingsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/settings.png"  Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Beállítások" Height="18" Width="66"/>
+
+                            </StackPanel>
+                        </Button>
 
                         <Button x:Name="logoutButton"
-                            Content="Kijelentkezés"
-                            Grid.Column="5"
-                            Margin="10"
-                            Click="logoutButton_Click"/>
+                                Grid.Column="4"
+                                Margin="10" 
+                                Click="logoutButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/logout.png"  Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Kijelentkezés" Height="18" Width="69"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
                 </StackPanel>
             </Grid>

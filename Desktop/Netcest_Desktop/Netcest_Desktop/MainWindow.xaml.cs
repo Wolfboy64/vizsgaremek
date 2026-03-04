@@ -524,5 +524,15 @@ namespace CyberNest_Desktop
         {
             FelhasznaloNev.Clear();
         }
+
+        private void viewReportsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void settingsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
