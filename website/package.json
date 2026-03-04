@@ -1,0 +1,16 @@
+{
+  "name": "cybernest",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "start": "concurrently \"npm start -w backend\" \"npm run preview -w frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
