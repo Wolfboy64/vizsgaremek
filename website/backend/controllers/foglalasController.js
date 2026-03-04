@@ -3,26 +3,23 @@ import IdopontModel from "../models/Idopont.js";
 
 export const create = async (req, res) => {
   try {
-    const { eszkoz_id, idopont_id, berlesi_kezdete, berlesi_vege } = req.body;
+    const {
+      eszkoz_id,
+      idopont_id,
+      berlesi_kezdete,
+      berlesi_vege,
+      mentor_id,
+      mentor_nev,
+      ugyfel_nev,
+      szamlazasi_nev,
+      email,
+      telefon,
+      megjegyzes,
+    } = req.body;
     const felhasznalo_id = req.user.id;
 
-    if (!eszkoz_id || !idopont_id || !berlesi_kezdete || !berlesi_vege) {
-      return res.status(400).json({ message: "Minden mező kitöltése kötelező." });
-    }
-
-    const start = new Date(berlesi_kezdete);
-    const end = new Date(berlesi_vege);
-
-    if (start >= end) {
-      return res.status(400).json({
-        message: "A bérlési kezdete nem lehet későbbi mint a bérlési vége.",
-      });
-    }
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (start < today) {
-      return res.status(400).json({ message: "A bérlési kezdete nem lehet a múltban." });
+    if (!eszkoz_id || !idopont_id) {
+      return res.status(400).json({ message: "A foglaláshoz eszköz és időpont kötelező." });
     }
 
     const idopont = await IdopontModel.findById(idopont_id);
@@ -41,12 +38,37 @@ export const create = async (req, res) => {
       return res.status(400).json({ message: "Ez az átvételi időpont már nem elérhető" });
     }
 
+    const normalizedStart = berlesi_kezdete || idopont.atvetel_datum;
+    const normalizedEnd = berlesi_vege || normalizedStart;
+
+    const start = new Date(normalizedStart);
+    const end = new Date(normalizedEnd);
+
+    if (start > end) {
+      return res.status(400).json({
+        message: "A bérlési kezdete nem lehet későbbi mint a bérlési vége.",
+      });
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (start < today) {
+      return res.status(400).json({ message: "A bérlési kezdete nem lehet a múltban." });
+    }
+
     const foglalasId = await FoglalasModel.create(
       eszkoz_id,
       idopont_id,
       felhasznalo_id,
-      berlesi_kezdete,
-      berlesi_vege
+      normalizedStart,
+      normalizedEnd,
+      mentor_id?.trim() || null,
+      mentor_nev?.trim() || null,
+      ugyfel_nev?.trim() || null,
+      szamlazasi_nev?.trim() || null,
+      email?.trim() || null,
+      telefon?.trim() || null,
+      megjegyzes?.trim() || null,
     );
 
     res.status(201).json({ message: "Foglalás sikeresen létrehozva.", id: foglalasId });
@@ -79,10 +101,33 @@ export const getMyReservations = async (req, res) => {
 export const deleteReservation = async (req, res) => {
   try {
     const id = req.params.id;
+    const reservation = await FoglalasModel.findById(id);
+
+    if (!reservation) {
+      return res.status(404).json({ message: "Foglalás nem található." });
+    }
+
+    const isAdmin = req.user.role === "admin";
+    const isOwner = reservation.felhasznalo_id === req.user.id;
+
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({
+        message: "Csak a saját foglalásodat törölheted.",
+      });
+    }
+
     const affectedRows = await FoglalasModel.deleteById(id);
 
     if (affectedRows === 0) {
       return res.status(404).json({ message: "Foglalás nem található." });
+    }
+
+    if (reservation.idopont_id) {
+      try {
+        await IdopontModel.release(reservation.idopont_id);
+      } catch (releaseError) {
+        console.error("Figyelmeztetés: időpont felszabadítás sikertelen:", releaseError);
+      }
     }
 
     res.json({ message: "Foglalás sikeresen törölve." });
