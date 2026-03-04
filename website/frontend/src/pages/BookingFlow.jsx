@@ -87,6 +87,7 @@ const BookingFlow = () => {
   const [selectedMentorId, setSelectedMentorId] = useState("");
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [step, setStep] = useState(1);
+  const [maxVisitedStep, setMaxVisitedStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [error, setError] = useState("");
@@ -106,6 +107,10 @@ const BookingFlow = () => {
       email: prev.email || user?.elerhetoseg || "",
     }));
   }, [user]);
+
+  useEffect(() => {
+    setMaxVisitedStep((prev) => Math.max(prev, step));
+  }, [step]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -236,6 +241,12 @@ const BookingFlow = () => {
     }
   };
 
+  const handleProgressStepClick = (targetStep) => {
+    if (targetStep > maxVisitedStep) return;
+    setError("");
+    setStep(targetStep);
+  };
+
   if (isPageLoading) {
     return (
       <main className="booking-flow-page">
@@ -276,27 +287,52 @@ const BookingFlow = () => {
         </header>
 
         <div className="booking-progress">
-          <div className={`progress-step ${step >= 1 ? "active" : ""}`}>
+          <div
+            className={`progress-step ${step >= 1 ? "active" : ""} ${
+              1 <= maxVisitedStep ? "clickable" : "locked"
+            }`}
+            onClick={() => handleProgressStepClick(1)}
+          >
             <span>1</span>
             <small>Mentor</small>
           </div>
           <div className="progress-line" />
-          <div className={`progress-step ${step >= 2 ? "active" : ""}`}>
+          <div
+            className={`progress-step ${step >= 2 ? "active" : ""} ${
+              2 <= maxVisitedStep ? "clickable" : "locked"
+            }`}
+            onClick={() => handleProgressStepClick(2)}
+          >
             <span>2</span>
             <small>Naptár</small>
           </div>
           <div className="progress-line" />
-          <div className={`progress-step ${step >= 3 ? "active" : ""}`}>
+          <div
+            className={`progress-step ${step >= 3 ? "active" : ""} ${
+              3 <= maxVisitedStep ? "clickable" : "locked"
+            }`}
+            onClick={() => handleProgressStepClick(3)}
+          >
             <span>3</span>
             <small>Adatok</small>
           </div>
           <div className="progress-line" />
-          <div className={`progress-step ${step >= 4 ? "active" : ""}`}>
+          <div
+            className={`progress-step ${step >= 4 ? "active" : ""} ${
+              4 <= maxVisitedStep ? "clickable" : "locked"
+            }`}
+            onClick={() => handleProgressStepClick(4)}
+          >
             <span>4</span>
             <small>Összegzés</small>
           </div>
           <div className="progress-line" />
-          <div className={`progress-step ${step >= 5 ? "active" : ""}`}>
+          <div
+            className={`progress-step ${step >= 5 ? "active" : ""} ${
+              5 <= maxVisitedStep ? "clickable" : "locked"
+            }`}
+            onClick={() => handleProgressStepClick(5)}
+          >
             <span>5</span>
             <small>Kész</small>
           </div>
