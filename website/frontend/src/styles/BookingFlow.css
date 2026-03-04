@@ -1,0 +1,350 @@
+.booking-flow-page {
+  width: min(1120px, 100%);
+  margin: 70px auto 0;
+  padding: 32px 20px 84px;
+}
+
+.booking-shell {
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 22px;
+  background: linear-gradient(155deg, #10163b 0%, #171f45 50%, #101838 100%);
+  padding: clamp(20px, 3.8vw, 34px);
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.3);
+}
+
+.booking-header h1 {
+  margin-top: 8px;
+  font-size: clamp(1.55rem, 3.1vw, 2.3rem);
+}
+
+.booking-header p {
+  margin-top: 10px;
+  color: var(--text-gray);
+  max-width: 68ch;
+}
+
+.booking-progress {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 64px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.progress-step span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.progress-step small {
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.progress-step.active {
+  color: var(--text-light);
+}
+
+.progress-step.active span {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.progress-line {
+  flex: 1;
+  min-width: 24px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.23);
+}
+
+.error-message {
+  margin-top: 18px;
+  border: 1px solid rgba(255, 71, 87, 0.45);
+  background: rgba(255, 71, 87, 0.1);
+  color: #ff8f99;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.step-card {
+  margin-top: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 212, 255, 0.18);
+  background: rgba(11, 16, 40, 0.72);
+  padding: clamp(16px, 3vw, 26px);
+}
+
+.step-card h2 {
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+}
+
+.step-intro {
+  margin-top: 8px;
+  color: var(--text-gray);
+}
+
+.mentor-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.mentor-card {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 12, 32, 0.7);
+  color: var(--text-light);
+  padding: 14px;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.mentor-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 212, 255, 0.4);
+}
+
+.mentor-card.selected {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+
+.mentor-card img {
+  width: 100%;
+  border-radius: 10px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.mentor-card h3 {
+  margin-top: 10px;
+}
+
+.mentor-title {
+  color: var(--primary-color);
+  font-size: 0.92rem;
+  margin-top: 2px;
+}
+
+.mentor-card ul {
+  margin-top: 10px;
+  padding-left: 18px;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  display: grid;
+  gap: 5px;
+}
+
+.slot-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.slot-card {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 15, 36, 0.74);
+  color: var(--text-light);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  transition: var(--transition);
+}
+
+.slot-card strong {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.slot-card.selected {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+
+.empty-state {
+  margin-top: 14px;
+  border-radius: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  padding: 14px;
+  color: var(--text-gray);
+}
+
+.booking-form-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.booking-form-grid label {
+  display: grid;
+  gap: 7px;
+  font-size: 0.94rem;
+}
+
+.booking-form-grid input,
+.booking-form-grid textarea {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  background: rgba(7, 11, 30, 0.7);
+  color: var(--text-light);
+  padding: 11px 12px;
+  font-family: inherit;
+}
+
+.booking-form-grid textarea {
+  resize: vertical;
+}
+
+.booking-form-grid input:focus,
+.booking-form-grid textarea:focus {
+  outline: none;
+  border-color: rgba(0, 212, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.14);
+}
+
+.wide-field {
+  grid-column: 1 / -1;
+}
+
+.summary-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.summary-card {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(8, 12, 30, 0.72);
+  padding: 14px;
+}
+
+.summary-card h3 {
+  margin-bottom: 8px;
+}
+
+.summary-card p {
+  margin: 6px 0;
+}
+
+.summary-card span {
+  color: var(--text-gray);
+}
+
+.terms-row {
+  margin-top: 16px;
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+
+.terms-row input {
+  margin-top: 3px;
+}
+
+.step-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.btn-primary,
+.btn-secondary {
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-weight: 700;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.btn-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(8, 13, 34, 0.73);
+  color: var(--text-light);
+}
+
+.success-card {
+  text-align: center;
+}
+
+.success-check {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: rgba(46, 213, 115, 0.2);
+  border: 1px solid rgba(46, 213, 115, 0.75);
+  color: #62f2a6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 980px) {
+  .mentor-grid,
+  .summary-grid,
+  .slot-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .booking-flow-page {
+    padding: 24px 16px 72px;
+  }
+
+  .booking-progress {
+    gap: 6px;
+  }
+
+  .progress-step {
+    min-width: 44px;
+  }
+
+  .progress-step small {
+    display: none;
+  }
+
+  .mentor-grid,
+  .summary-grid,
+  .slot-grid,
+  .booking-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .step-actions {
+    flex-direction: column-reverse;
+  }
+}
