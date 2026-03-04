@@ -39,6 +39,14 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
+.progress-step.clickable {
+  cursor: pointer;
+}
+
+.progress-step.locked {
+  cursor: not-allowed;
+}
+
 .progress-step span {
   width: 34px;
   height: 34px;

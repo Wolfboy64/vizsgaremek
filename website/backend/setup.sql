@@ -109,6 +109,31 @@ INSERT IGNORE INTO `eszkoz` (`id`, `leiras`, `cpu`, `ram`, `hdd`, `uzemelteto_id
 (5, 'Kezdő csomag teszteléshez', 'Intel Core i7-9700K (4 cores)', '16 GB DDR4', '240 GB SSD', 3),
 (6, 'GPU-val felszerelt szerver AI projektekhez', 'AMD Ryzen 9 5950X + NVIDIA RTX 3090', '64 GB DDR4', '1 TB NVMe SSD', 3);
 
+-- Jovo ideju, foglalhato idopontok feltoltese (duplikacio nelkul)
+INSERT INTO `idopont` (`eszkoz_id`, `atvetel_datum`, `atvetel_idopont`, `statusz`)
+SELECT
+  e.id,
+  DATE_ADD(CURDATE(), INTERVAL d.n DAY),
+  t.atvetel_idopont,
+  'available'
+FROM `eszkoz` e
+CROSS JOIN (
+  SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL
+  SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL
+  SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14
+) d
+CROSS JOIN (
+  SELECT TIME('09:00:00') AS atvetel_idopont
+  UNION ALL SELECT TIME('11:00:00')
+  UNION ALL SELECT TIME('14:00:00')
+  UNION ALL SELECT TIME('16:00:00')
+) t
+LEFT JOIN `idopont` i
+  ON i.eszkoz_id = e.id
+  AND i.atvetel_datum = DATE_ADD(CURDATE(), INTERVAL d.n DAY)
+  AND i.atvetel_idopont = t.atvetel_idopont
+WHERE i.id IS NULL;
+
 -- Alap admin felhasználó (admin123)
 INSERT INTO `felhasznalo` (`nev`, `elerhetoseg`, `allapot`, `jelszo`, `role`)
 SELECT 'admin', 'admin@local', 'aktiv', '$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu', 'admin'
