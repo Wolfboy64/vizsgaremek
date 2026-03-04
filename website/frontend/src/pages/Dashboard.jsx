@@ -4,29 +4,39 @@ import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import "../styles/Dashboard.css";
 
+const MotionDiv = motion.div;
+const MotionButton = motion.button;
+
 const Dashboard = () => {
   const { user } = useAuth();
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    fetchReservations();
-  }, []);
-
-  const fetchReservations = async () => {
+  async function fetchReservations() {
     try {
       const response = await api.get("/foglalas/my");
-      setReservations(response.data.foglalasok);
+      const fetchedReservations = Array.isArray(response.data)
+        ? response.data
+        : response.data?.foglalasok || [];
+      setReservations(fetchedReservations);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching reservations:", err);
       setLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchReservations();
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleCancelReservation = async (id) => {
-    if (!window.confirm("Biztosan törölni szeretnéd ezt a foglalást?")) {
+    if (!window.confirm("Biztosan szeretnéd törölni a foglalást?")) {
       return;
     }
 
@@ -52,7 +62,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
-      <motion.div
+      <MotionDiv
         className="dashboard-header"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -62,20 +72,20 @@ const Dashboard = () => {
         <p className="user-role">
           Role: {user?.role === "admin" ? "Adminisztrátor" : "Felhasználó"}
         </p>
-      </motion.div>
+      </MotionDiv>
 
       <div className="container">
         {message && (
-          <motion.div
+          <MotionDiv
             className="dashboard-message"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
             {message}
-          </motion.div>
+          </MotionDiv>
         )}
 
-        <motion.div
+        <MotionDiv
           className="dashboard-section"
           variants={fadeIn}
           initial="hidden"
@@ -98,9 +108,9 @@ const Dashboard = () => {
               </span>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div
+        <MotionDiv
           className="dashboard-section"
           variants={fadeIn}
           initial="hidden"
@@ -116,7 +126,7 @@ const Dashboard = () => {
           ) : (
             <div className="reservations-list">
               {reservations.map((reservation) => (
-                <motion.div
+                <MotionDiv
                   key={reservation.id}
                   className="reservation-card"
                   whileHover={{ scale: 1.02 }}
@@ -180,6 +190,46 @@ const Dashboard = () => {
                         </div>
                       )}
 
+                      {reservation.mentor_nev && (
+                        <div className="mentor-display">
+                          <p className="mentor-label">🧑‍🏫 Mentor:</p>
+                          <p className="mentor-value">
+                            {reservation.mentor_nev}
+                          </p>
+                        </div>
+                      )}
+
+                      {reservation.ugyfel_nev && (
+                        <p>
+                          <strong>Név:</strong> {reservation.ugyfel_nev}
+                        </p>
+                      )}
+
+                      {reservation.szamlazasi_nev && (
+                        <p>
+                          <strong>Számlázási név:</strong>{" "}
+                          {reservation.szamlazasi_nev}
+                        </p>
+                      )}
+
+                      {reservation.email && (
+                        <p>
+                          <strong>Email:</strong> {reservation.email}
+                        </p>
+                      )}
+
+                      {reservation.telefon && (
+                        <p>
+                          <strong>Telefon:</strong> {reservation.telefon}
+                        </p>
+                      )}
+
+                      {reservation.megjegyzes && (
+                        <p>
+                          <strong>Megjegyzés:</strong> {reservation.megjegyzes}
+                        </p>
+                      )}
+
                       <p className="reservation-date">
                         <strong>Foglalás létrehozva:</strong>{" "}
                         {new Date(reservation.foglalas_datuma).toLocaleString(
@@ -188,22 +238,22 @@ const Dashboard = () => {
                       </p>
                     </div>
                   </div>
-                  <motion.button
+                  <MotionButton
                     className="cancel-btn"
                     onClick={() => handleCancelReservation(reservation.id)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     Törlés
-                  </motion.button>
-                </motion.div>
+                  </MotionButton>
+                </MotionDiv>
               ))}
             </div>
           )}
-        </motion.div>
+        </MotionDiv>
 
         {user?.role === "admin" && (
-          <motion.div
+          <MotionDiv
             className="dashboard-section admin-section"
             variants={fadeIn}
             initial="hidden"
@@ -215,7 +265,7 @@ const Dashboard = () => {
               Admin funkciók később bővíthetők (pl. összes foglalás
               megtekintése, szerver kezelés, stb.)
             </p>
-          </motion.div>
+          </MotionDiv>
         )}
       </div>
     </div>
