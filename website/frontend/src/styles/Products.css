@@ -1,0 +1,218 @@
+.products-page {
+  width: min(1220px, 100%);
+  margin: 70px auto 0;
+  padding: 36px 20px 90px;
+}
+
+.products-hero {
+  padding: clamp(28px, 5vw, 46px);
+  border-radius: 22px;
+  border: 1px solid rgba(0, 212, 255, 0.22);
+  background: linear-gradient(145deg, #0f1435 0%, #1a1e3f 58%, #141a39 100%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.products-hero h1 {
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  line-height: 1.2;
+}
+
+.products-hero p {
+  margin-top: 10px;
+  color: var(--text-gray);
+  max-width: 68ch;
+}
+
+.products-toolbar {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.toolbar-field {
+  display: grid;
+  gap: 8px;
+}
+
+.toolbar-field span {
+  color: var(--text-gray);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.toolbar-field input,
+.toolbar-field select {
+  width: 100%;
+  border: 1px solid rgba(0, 212, 255, 0.26);
+  background: rgba(8, 12, 31, 0.7);
+  color: var(--text-light);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: var(--transition);
+}
+
+.toolbar-field input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.toolbar-field input:focus,
+.toolbar-field select:focus {
+  outline: none;
+  border-color: rgba(0, 212, 255, 0.65);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
+}
+
+.products-summary {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.summary-item {
+  border: 1px solid rgba(0, 212, 255, 0.18);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: rgba(21, 25, 50, 0.65);
+}
+
+.summary-label {
+  display: block;
+  color: var(--text-gray);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.summary-item strong {
+  font-size: 1.3rem;
+}
+
+.products-error {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.retry-button {
+  margin-top: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  font-weight: 700;
+}
+
+.products-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.product-card {
+  border-radius: 16px;
+  border: 1px solid rgba(0, 212, 255, 0.16);
+  background: rgba(21, 25, 50, 0.74);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: var(--transition);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.28);
+}
+
+.product-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-id {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  color: var(--primary-color);
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.product-card h2 {
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+.spec-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.spec-item {
+  border-radius: 10px;
+  background: rgba(10, 14, 39, 0.75);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  padding: 10px 12px;
+}
+
+.spec-item span {
+  display: block;
+  color: var(--text-gray);
+  font-size: 0.82rem;
+}
+
+.spec-item strong {
+  font-size: 0.98rem;
+}
+
+.product-description {
+  color: var(--text-gray);
+  line-height: 1.58;
+  min-height: 4.2em;
+}
+
+.product-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+}
+
+.operator-name {
+  display: block;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.operator-description {
+  margin-top: 4px;
+  color: var(--text-gray);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 980px) {
+  .products-toolbar,
+  .products-summary,
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .products-page {
+    padding: 26px 16px 72px;
+  }
+
+  .products-toolbar,
+  .products-summary,
+  .products-grid,
+  .spec-list {
+    grid-template-columns: 1fr;
+  }
+}
