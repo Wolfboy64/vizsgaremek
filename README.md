@@ -108,7 +108,7 @@ Backend oldalon a `website/backend/.env` fájlban:
 | `DB_USER` | Adatbázis felhasználó | `root` |
 | `DB_PASSWORD` | Adatbázis jelszó | `root` |
 | `DB_NAME` | Adatbázis neve | `cybernest` |
-| `DB_PORT` | Adatbázis port | `3306` |
+| `DB_PORT` | Adatbázis port | `3306 + 3307` |
 | `JWT_SECRET` | JWT aláírási kulcs | `nagyon-eros-titok` |
 | `PORT` | Backend port | `5050` |
 | `CLIENT_URL` | Frontend URL (CORS) | `http://localhost:5173` |
