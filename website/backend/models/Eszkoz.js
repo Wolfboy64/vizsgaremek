@@ -15,6 +15,7 @@ class EszkozModel {
         u.leiras as uzemelteto_leiras
       FROM eszkoz e
       LEFT JOIN uzemelteto u ON e.uzemelteto_id = u.id
+      ORDER BY e.id ASC
     `);
     return rows;
   }
