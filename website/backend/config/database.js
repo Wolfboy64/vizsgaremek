@@ -13,14 +13,47 @@ const dbHost = process.env.DB_HOST;
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
 const dbName = process.env.DB_NAME;
-const dbPort = Number(process.env.DB_PORT) || 3306;
+const possiblePorts = [
+  Number(process.env.DB_PORT) || 3306,
+  3306,
+  3307,
+];
 
-const baseConfig = {
-  host: dbHost,
-  user: dbUser,
-  password: dbPassword,
-  port: dbPort,
-};
+// Duplikációk kiszűrése
+const uniquePorts = [...new Set(possiblePorts)];
+
+let baseConfig;
+let connectedPort;
+
+for (const port of uniquePorts) {
+  try {
+    const testConnection = await mysql.createConnection({
+      host: dbHost,
+      user: dbUser,
+      password: dbPassword,
+      port: port,
+    });
+
+    await testConnection.end();
+
+    baseConfig = {
+      host: dbHost,
+      user: dbUser,
+      password: dbPassword,
+      port: port,
+    };
+
+    connectedPort = port;
+    console.log(`MySQL csatlakozva a ${port} porton.`);
+    break;
+  } catch (error) {
+    console.log(`Nem sikerült csatlakozni a ${port} porton.`);
+  }
+}
+
+if (!baseConfig) {
+  throw new Error("Nem sikerült csatlakozni egyik MySQL portra sem (3306/3307).");
+}
 
 // Ensure database exists before creating the pool.
 try {
