@@ -181,6 +181,9 @@
   margin-top: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .operator-name {
@@ -194,6 +197,22 @@
   color: var(--text-gray);
   font-size: 0.92rem;
   line-height: 1.45;
+}
+
+.select-product-btn {
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  transition: var(--transition);
+}
+
+.select-product-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 980px) {
