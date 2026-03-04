@@ -7,18 +7,32 @@ class FoglalasModel {
     idopont_id,
     felhasznalo_id,
     berlesi_kezdete,
-    berlesi_vege
+    berlesi_vege,
+    mentor_id,
+    mentor_nev,
+    ugyfel_nev,
+    szamlazasi_nev,
+    email,
+    telefon,
+    megjegyzes,
   ) {
     const [result] = await db.execute(
       `INSERT INTO foglalas 
-       (felhasznalo_id, eszkoz_id, idopont_id, berlesi_kezdete, berlesi_vege, foglalas_datuma, statusz) 
-       VALUES (?, ?, ?, ?, ?, NOW(), ?)`,
+       (felhasznalo_id, eszkoz_id, idopont_id, berlesi_kezdete, berlesi_vege, mentor_id, mentor_nev, ugyfel_nev, szamlazasi_nev, email, telefon, megjegyzes, foglalas_datuma, statusz) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)`,
       [
         felhasznalo_id,
         eszkoz_id,
         idopont_id,
         berlesi_kezdete,
         berlesi_vege,
+        mentor_id,
+        mentor_nev,
+        ugyfel_nev,
+        szamlazasi_nev,
+        email,
+        telefon,
+        megjegyzes,
         "confirmed",
       ]
     );
@@ -32,6 +46,16 @@ class FoglalasModel {
         f.id,
         f.felhasznalo_id,
         f.eszkoz_id,
+        f.idopont_id,
+        f.berlesi_kezdete,
+        f.berlesi_vege,
+        f.mentor_id,
+        f.mentor_nev,
+        f.ugyfel_nev,
+        f.szamlazasi_nev,
+        f.email,
+        f.telefon,
+        f.megjegyzes,
         f.foglalas_datuma,
         felh.nev as felhasznalo_nev,
         felh.elerhetoseg,
@@ -57,6 +81,13 @@ class FoglalasModel {
         f.foglalas_datuma,
         f.berlesi_kezdete,
         f.berlesi_vege,
+        f.mentor_id,
+        f.mentor_nev,
+        f.ugyfel_nev,
+        f.szamlazasi_nev,
+        f.email,
+        f.telefon,
+        f.megjegyzes,
         e.cpu,
         e.ram,
         e.hdd,
@@ -80,6 +111,14 @@ class FoglalasModel {
       id,
     ]);
     return result.affectedRows;
+  }
+
+  static async findById(id) {
+    const [rows] = await db.execute(
+      "SELECT id, felhasznalo_id, idopont_id FROM foglalas WHERE id = ?",
+      [id],
+    );
+    return rows[0];
   }
 }
 

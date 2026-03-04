@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/Products.css";
 
@@ -21,6 +22,7 @@ const parseRamValue = (ramText) => {
 };
 
 const Products = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -215,6 +217,13 @@ const Products = () => {
                 {product.uzemelteto_leiras && (
                   <p className="operator-description">{product.uzemelteto_leiras}</p>
                 )}
+                <button
+                  type="button"
+                  className="select-product-btn"
+                  onClick={() => navigate(`/termekek/${product.id}`)}
+                >
+                  Kiválasztás
+                </button>
               </footer>
             </article>
           ))}
