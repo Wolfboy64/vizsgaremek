@@ -1,12 +1,56 @@
-import '../styles/Home.css';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/Home.css";
+
+const MAIN_TITLE = "CyberNest ahol nemcsak tanulhatsz";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [typedTitle, setTypedTitle] = useState("");
+
+  useEffect(() => {
+    let index = 0;
+
+    const intervalId = setInterval(() => {
+      index += 1;
+      setTypedTitle(MAIN_TITLE.slice(0, index));
+
+      if (index >= MAIN_TITLE.length) {
+        clearInterval(intervalId);
+      }
+    }, 55);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <div className="home-container">
       <header className="hero-section">
-        <h1>Szerverbérlés, Egyszerűen.</h1>
-        <p>Megbízható fizikai szerverek, átlátható ügyintézés, profi háttér.</p>
-        <button className="cta-button">Bérlés indítása</button>
+        <div className="hero-grid">
+          <div className="hero-title-wrap">
+            <h1 className="typing-title" aria-label={MAIN_TITLE}>
+              {typedTitle}
+              <span className="typing-caret" aria-hidden="true"></span>
+            </h1>
+          </div>
+
+          <div className="hero-copy-wrap">
+            <p className="hero-description">
+              Mentoraink közül több területre specializált támogatást választhatsz,
+              és számos tanulási lehetőséget biztosítunk, hogy a saját tempódban
+              fejlődhess. Emellett szervereink közül is szabadon választhatsz
+              kezdő, haladó és profi szinten, a céljaidhoz igazítva.
+            </p>
+            <button
+              className="cta-button"
+              onClick={() => navigate("/termekek")}
+            >
+              Bérlés indítása
+            </button>
+          </div>
+        </div>
       </header>
 
       <section className="features-grid">
