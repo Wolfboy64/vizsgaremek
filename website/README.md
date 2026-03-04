@@ -29,25 +29,11 @@ Ez a projekt a vizsgaremek webes része, amely egy **frontend + backend** alkalm
 
 ---
 
-## Backend telepítés / csomagok
+## Projekt telepítés (Backend + Frontend egyszerre)
 
 ```bash
-npm init -y   # létrehoz egy package.json fájlt alapértelmezett beállításokkal
-npm install express      # a szerver keretrendszer
-npm install dotenv       # környezeti változók (pl. port)
-npm install cors         # engedélyezi a fetch API hívásokat
-npm install jsonwebtoken # JWT alapú auth (opcionális)
-npm install bcrypt       # jelszó hasheléshez (opcionális)
-```
-
----
-
-## Frontend telepítés (React + Vite)
-
-```bash
-npm create vite@latest frontend # Létrehoz egy új React + Vite projektet 'my-frontend' mappába
-cd frontend # Belépünk a my-frontend mappába
-npm install # Telepíti a projekt függőségeit a package.json alapján
-npm run dev # Elindítja a fejlesztői szervert, így a böngészőben látható lesz az alkalmazás
-npm install react-router-dom
+git clone <repo-url>   # Projekt klónozása
+cd website             # Belépés a fő (workspace) mappába
+npm install            # Telepíti a backend ÉS frontend összes csomagját egyszerre
+npm run dev            # Elindítja a backend és frontend szervert egy terminálból
 ```
