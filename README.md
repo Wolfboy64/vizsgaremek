@@ -303,6 +303,88 @@ Fő táblák:
 - email értesítések
 - audit naplózás és finomabb jogosultságmodell
 
+---
+
+## Adatbázis ER Diagram (teljes séma)
+
+```mermaid
+erDiagram
+    UZEMELTETO {
+        INT id PK
+        VARCHAR nev
+        TEXT leiras
+    }
+
+    ESZKOZ {
+        INT id PK
+        TEXT leiras
+        VARCHAR cpu
+        VARCHAR ram
+        VARCHAR hdd
+        INT uzemelteto_id FK
+    }
+
+    FELHASZNALO {
+        INT id PK
+        VARCHAR nev
+        VARCHAR elerhetoseg
+        ENUM allapot
+        VARCHAR jelszo
+        ENUM role
+    }
+
+    IDOPONT {
+        INT id PK
+        INT eszkoz_id FK
+        DATE atvetel_datum
+        TIME atvetel_idopont
+        ENUM statusz
+        DATETIME letrehozva
+    }
+
+    FOGLALAS {
+        INT id PK
+        INT felhasznalo_id FK
+        INT eszkoz_id FK
+        INT idopont_id FK
+        DATE berlesi_kezdete
+        DATE berlesi_vege
+        VARCHAR mentor_id
+        VARCHAR mentor_nev
+        VARCHAR ugyfel_nev
+        VARCHAR szamlazasi_nev
+        VARCHAR email
+        VARCHAR telefon
+        TEXT megjegyzes
+        DATETIME foglalas_datuma
+        ENUM statusz
+    }
+
+    ERTEKELES {
+        INT id PK
+        INT foglalas_id FK
+        TINYINT eszkoz_pontszam
+        TINYINT uzemelteto_pontszam
+        TEXT megjegyzes
+        DATETIME datum
+    }
+
+    LOG {
+        INT id PK
+        INT foglalas_id FK
+        TEXT uzenet
+        DATETIME letrehozva
+    }
+
+    UZEMELTETO ||--o{ ESZKOZ : "uzemelteti"
+    ESZKOZ ||--o{ IDOPONT : "elerheto_idopontok"
+    FELHASZNALO ||--o{ FOGLALAS : "letrehoz"
+    ESZKOZ ||--o{ FOGLALAS : "foglalhato"
+    IDOPONT ||--o{ FOGLALAS : "idopontra_szol"
+    FOGLALAS ||--o| ERTEKELES : "ertekeles"
+    FOGLALAS ||--o{ LOG : "naplo_bejegyzesek"
+```
+
 ## Megjegyzés
 
 Ez a README az aktuális kódállapothoz igazított, részletes dokumentáció.
