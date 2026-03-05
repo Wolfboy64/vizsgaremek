@@ -26,7 +26,7 @@ start "CyberNest Server" cmd /k "npm run dev"
 
 echo.
 echo [4/4] Bongeszo megnyitasa...
-timeout /t 5 >nul
+timeout /t 1 >nul
 start http://localhost:5173
 
 echo.
