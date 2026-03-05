@@ -217,6 +217,7 @@ namespace CyberNest_Desktop
         private void EszkozokButton_Click(object sender, RoutedEventArgs e)
         {
             eszkozokoldal.Visibility = Visibility.Visible;
+            eszkozokPanel.Visibility = Visibility.Visible;
             FelhasznalokOldal.Visibility = Visibility.Hidden;
             FelhasznalokTopMenu.Visibility = Visibility.Hidden;
         }
@@ -412,6 +413,8 @@ namespace CyberNest_Desktop
             Back(eszkozokoldal);
             FelhasznalokOldal.Visibility = Visibility.Visible;
             FelhasznalokTopMenu.Visibility = Visibility.Visible;
+            eszkozokoldal.Visibility = Visibility.Hidden;
+            eszkozokPanel.Visibility = Visibility.Hidden;
             /*//felhasználók listázása
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))

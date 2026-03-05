@@ -150,7 +150,12 @@
                     </Grid>
                 </StackPanel>
             </Grid>
-            <Grid x:Name="EszkozokGrid"  >
+            <Grid x:Name="EszkozokGrid" Height="729"  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="253*"/>
+                    <RowDefinition Height="476*"/>
+                    <RowDefinition Height="0*"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" MinWidth="1368"/>
                     <ColumnDefinition Width="Auto"/>
@@ -158,7 +163,7 @@
                     <ColumnDefinition Width="0*"/>
                     <ColumnDefinition Width="Auto" MinWidth="136.12"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel x:Name="eszkozokoldal" Visibility="Visible" Background="Bisque" Orientation="Horizontal">
+                <StackPanel x:Name="eszkozokoldal" Visibility="Visible" Background="Bisque" Orientation="Horizontal" Margin="1588,0,1588,153" Height="auto">
 
                     <!--ESZKÖZÖK KILISTÁZÁSA-->
                     <StackPanel x:Name="eszkozListazasPanel" Visibility="Hidden">
@@ -284,7 +289,7 @@
                         </Grid>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Visibility="Visible" Orientation="Horizontal" Background="DarkBlue" Margin="0,-56,2356,857">
+                <StackPanel x:Name="eszkozokPanel" Visibility="Hidden" Orientation="Horizontal" Background="DarkBlue" Margin="0,-56,2356,222">
                     <Grid>
 
                         <Button x:Name="eszkozHozzaadas" 
