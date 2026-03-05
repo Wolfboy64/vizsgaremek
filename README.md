@@ -150,13 +150,13 @@ A Git ekkor letölti a projekt teljes tartalmát.
 A projekt weboldal része egy külön website branch-ben található, ezért a klónozás után át kell váltani erre a branch-re.
 
 Először lépj be a letöltött repository mappájába:
-
+```bash
 cd vizsgaremek
-
+```
 Ezután válts át a website branch-re:
-
+```bash
 git checkout website
-
+```
 Ez a parancs átvált a website branch-re, ahol a teljes webalkalmazás található.
 
 ---
@@ -197,38 +197,6 @@ A projekt kétféleképpen indítható.
 
 ---
 
-# Manuális indítás (terminálból)
-
-Miután beléptél a `website` mappába, futtasd a következő parancsot:
-
-```bash
-npm install
-```
-
-Ez automatikusan telepíti:
-
-* a **backend csomagokat**
-* a **frontend csomagokat**
-* létrehozza a **node_modules** mappát
-
-A telepítés után indítsd el az alkalmazást:
-
-```bash
-npm run dev
-```
-
-Ez egyszerre elindítja:
-
-* a **backend szervert**
-* a **frontend Vite fejlesztői szervert**
-
-Az alkalmazás ezután elérhető lesz a böngészőben:
-
-```
-http://localhost:5173
-```
-
----
 
 # Egyszerű indítás (ajánlott)
 
@@ -270,6 +238,38 @@ http://localhost:5173
 
 ---
 
+# Manuális indítás (terminálból)
+
+Miután beléptél a `website` mappába, futtasd a következő parancsot:
+
+```bash
+npm install
+```
+
+Ez automatikusan telepíti:
+
+* a **backend csomagokat**
+* a **frontend csomagokat**
+* létrehozza a **node_modules** mappát
+
+A telepítés után indítsd el az alkalmazást:
+
+```bash
+npm run dev
+```
+
+Ez egyszerre elindítja:
+
+* a **backend szervert**
+* a **frontend Vite fejlesztői szervert**
+
+Az alkalmazás ezután elérhető lesz a böngészőben:
+
+```
+http://localhost:5173
+```
+
+---
 
 
 ### 3) Környezeti változók beállítása
