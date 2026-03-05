@@ -24,7 +24,7 @@
             <RowDefinition Height="100" />
             <RowDefinition Height="0*" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="loginPage" Background="Gray"  Grid.Column="3" Grid.Row="3" Height="334" VerticalAlignment="Top" Visibility="Hidden" Grid.RowSpan="2">
+        <StackPanel x:Name="loginPage" Background="Gray"  Grid.Column="3" Grid.Row="3" Height="334" VerticalAlignment="Top" Visibility="Visible" Grid.RowSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -150,7 +150,7 @@
                     </Grid>
                 </StackPanel>
             </Grid>
-            <Grid x:Name="EszkozokGrid"  Height="734" >
+            <Grid x:Name="EszkozokGrid"  >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" MinWidth="1368"/>
                     <ColumnDefinition Width="Auto"/>
@@ -158,49 +158,8 @@
                     <ColumnDefinition Width="0*"/>
                     <ColumnDefinition Width="Auto" MinWidth="136.12"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel x:Name="eszkozokoldal" Visibility="Hidden" Background="Bisque">
-                    <Grid>
+                <StackPanel x:Name="eszkozokoldal" Visibility="Visible" Background="Bisque" Orientation="Horizontal">
 
-                        <Button x:Name="eszkozHozzaadas" 
-                                Height="auto" 
-                                Width="auto" 
-                                Click="eszkozHozzaadas_Click"
-                                Margin="337,0,876,0">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Images/Devices/Device_add.png" Width="20" Height="20" Margin="0,0,8,0"/>
-                                <TextBlock Text="Eszközök hozzáadása" Height="18" Width="113"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="eszkozTorles" 
-                                Height="auto" Width="auto" 
-                                Click="eszkozTorles_Click"
-                                Margin="497,0,730,0">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Device_Delete.png" Width="20" Height="20" Margin="0,0,8,0"/>
-                                <TextBlock Text="Eszközök törlése" Height="18" Width="95"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="eszkozModositas" 
-                                Height="auto" Width="auto" 
-                                Click="eszkozModositas_Click"
-                                Margin="188,0,1036,0">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Images/Devices/Device_Modify.png" Width="20" Height="20" Margin="0,0,8,0"/>
-                                <TextBlock Text="Eszközök módosítása" Height="18" Width="112"/>
-                            </StackPanel>
-                        </Button>
-                        <Button
-                            x:Name="eszkozListazas" 
-                            Height="auto" Width="auto" 
-                            Click="eszkozListazas_Click" 
-                            Margin="10,0,1185,0">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Images/Devices/Device_List.png" Width="20" Height="20" Margin="0,0,8,0"/>
-                                <TextBlock Text="Eszközök kilistázása" Height="18" Width="107"/>
-                            </StackPanel>
-                        </Button>
-
-                    </Grid>
                     <!--ESZKÖZÖK KILISTÁZÁSA-->
                     <StackPanel x:Name="eszkozListazasPanel" Visibility="Hidden">
                         <Grid Height="auto" Width="auto">
@@ -256,7 +215,7 @@
                 </StackPanel>
 
                 <!-- FELHASZNÁLÓK OLDAL -->
-                <StackPanel x:Name="FelhasznalokOldal" Visibility="Visible" Height="auto" Margin="0,0,368,0">
+                <StackPanel x:Name="FelhasznalokOldal" Visibility="Hidden" Height="auto" Margin="0,0,368,0">
                     <StackPanel Margin="0,25,368,10" Height="741" Width="998" >
                         <StackPanel.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -325,6 +284,50 @@
                         </Grid>
                     </StackPanel>
                 </StackPanel>
+                <StackPanel Visibility="Visible" Orientation="Horizontal" Background="DarkBlue" Margin="0,-56,2356,857">
+                    <Grid>
+
+                        <Button x:Name="eszkozHozzaadas" 
+                                    Height="auto" 
+                                    Width="148" 
+                                    Click="eszkozHozzaadas_Click"
+                                    Margin="369,54,0,0" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/Devices/Device_add.png" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Eszközök hozzáadása" Height="18" Width="113"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="eszkozTorles" 
+                                    Height="auto" 
+                                    Click="eszkozTorles_Click"
+                                    Margin="540,54,1053,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Device_Delete.png" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Eszközök törlése" Height="18" Width="95"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="eszkozModositas" 
+                                    Height="auto" Width="auto" 
+                                    Click="eszkozModositas_Click"
+                                    Margin="188,54,1370,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/Devices/Device_Modify.png" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Eszközök módosítása" Height="18" Width="112"/>
+                            </StackPanel>
+                        </Button>
+                        <Button
+                                x:Name="eszkozListazas" 
+                                Height="auto" Width="auto" 
+                                Click="eszkozListazas_Click" 
+                                Margin="10,54,1551,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/Devices/Device_List.png" Width="20" Height="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Eszközök kilistázása" Height="18" Width="107"/>
+                            </StackPanel>
+                        </Button>
+
+                    </Grid>
+                </StackPanel>
 
 
 
@@ -347,7 +350,7 @@
                     <GradientStop Color="#FF001BFF"/>
                 </LinearGradientBrush>
             </TextBlock.Background><Run Language="hu-hu" Text="CyberNest - Adminfelület"/></TextBlock>
-        <StackPanel x:Name="FelhasznalokTopMenu" Visibility="Visible" Orientation="Horizontal" Grid.ColumnSpan="6" Margin="0,55,0,16" Grid.RowSpan="3" Background="DarkBlue">
+        <StackPanel x:Name="FelhasznalokTopMenu" Visibility="Hidden" Orientation="Horizontal" Grid.ColumnSpan="6" Margin="0,55,0,16" Grid.RowSpan="3" Background="DarkBlue">
 
 
             <Grid Width="880" Height="27">

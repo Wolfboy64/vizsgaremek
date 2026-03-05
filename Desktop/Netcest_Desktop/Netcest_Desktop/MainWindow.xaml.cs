@@ -218,6 +218,7 @@ namespace CyberNest_Desktop
         {
             eszkozokoldal.Visibility = Visibility.Visible;
             FelhasznalokOldal.Visibility = Visibility.Hidden;
+            FelhasznalokTopMenu.Visibility = Visibility.Hidden;
         }
         private void eszkozHozzaadas_Click(object sender, RoutedEventArgs e)
         {
