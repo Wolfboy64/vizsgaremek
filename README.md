@@ -77,26 +77,200 @@ website/
   package.json (workspace root)
 ```
 
-## Telepítés és futtatás
+
+
+# Telepítés és futtatás
 
 ### Előkövetelmények
 
-- Node.js 18+
-- npm 9+
-- MySQL 8+ (vagy MariaDB kompatibilis)
+A projekt futtatásához az alábbi programoknak telepítve kell lenniük a számítógépen:
 
-### 1) Repository klónozása
+- **Node.js 18 vagy újabb**
+- **npm 9 vagy újabb**
+- **MySQL 8+** (vagy MariaDB kompatibilis)
+- **Git**
+
+Ellenőrzéshez nyisd meg a **Parancssort (CMD)** és írd be:
 
 ```bash
-git clone <repo-url>
+node -v
+npm -v
+git --version
+````
+
+Ha mindegyik verziószámot visszaad, akkor a szükséges programok telepítve vannak.
+
+---
+
+# 1) Repository klónozása
+
+Először le kell tölteni (klónozni) a projektet a Git repositoryból.
+
+### 1. Parancssor megnyitása
+
+1. Nyomd meg a **Windows + R** billentyűket
+2. Írd be:
+
+```bash
+cmd
+```
+
+3. Nyomd meg az **Enter** billentyűt
+
+Ezzel megnyílik a **Parancssor (Command Prompt)**.
+
+---
+
+### 2. Lépj abba a mappába, ahová a projektet le szeretnéd tölteni
+
+Példa: ha az **Asztalra** szeretnéd klónozni:
+
+```bash
+cd Desktop
+```
+
+Ha más mappába szeretnéd, akkor annak az útvonalát kell megadni.
+
+---
+
+### 3. A repository klónozása
+
+Másold be a következő parancsot a parancssorba:
+
+```bash
+git clone https://github.com/Wolfboy64/vizsgaremek.git
+```
+
+Majd nyomj **Entert**.
+
+A Git ekkor letölti a projekt teljes tartalmát.
+
+## Átváltás a megfelelő branch-re
+
+A projekt weboldal része egy külön website branch-ben található, ezért a klónozás után át kell váltani erre a branch-re.
+
+Először lépj be a letöltött repository mappájába:
+
+cd vizsgaremek
+
+Ezután válts át a website branch-re:
+
+git checkout website
+
+Ez a parancs átvált a website branch-re, ahol a teljes webalkalmazás található.
+
+---
+
+### 4. Belépés a projekt mappájába
+
+A klónozás után lépj be a projekt fő mappájába:
+
+```bash
 cd website
 ```
 
-### 2) Függőségek telepítése (workspace szinten)
+---
+
+### 5. A projekt mappastruktúrája
+
+A klónozás után a következő struktúra lesz látható:
+
+```
+VIZSGAREMEK
+│
+└── website
+    ├── backend
+    ├── frontend
+    ├── package.json
+    ├── package-lock.json
+    ├── start.bat
+    └── README.md
+```
+
+A projekt indításához **mindig a `website` mappában kell lenni**, mert itt található a fő konfiguráció.
+
+---
+
+# 2) Függőségek telepítése és projekt indítása
+
+A projekt kétféleképpen indítható.
+
+---
+
+# Manuális indítás (terminálból)
+
+Miután beléptél a `website` mappába, futtasd a következő parancsot:
 
 ```bash
 npm install
 ```
+
+Ez automatikusan telepíti:
+
+* a **backend csomagokat**
+* a **frontend csomagokat**
+* létrehozza a **node_modules** mappát
+
+A telepítés után indítsd el az alkalmazást:
+
+```bash
+npm run dev
+```
+
+Ez egyszerre elindítja:
+
+* a **backend szervert**
+* a **frontend Vite fejlesztői szervert**
+
+Az alkalmazás ezután elérhető lesz a böngészőben:
+
+```
+http://localhost:5173
+```
+
+---
+
+# Egyszerű indítás (ajánlott)
+
+A projekt tartalmaz egy automatikus indító fájlt, amely minden szükséges lépést elvégez.
+
+Fájl neve:
+
+```
+start.bat
+```
+
+Helye:
+
+```
+VIZSGAREMEK
+└── website
+    └── start.bat
+```
+
+### Indítás lépései
+
+1. Nyisd meg a **VIZSGAREMEK** mappát
+2. Lépj be a **website** mappába
+3. Keresd meg a **start.bat** fájlt
+4. **Dupla kattintással indítsd el**
+
+Az indító fájl automatikusan:
+
+1. telepíti a szükséges csomagokat (`npm install`)
+2. elindítja a backend szervert
+3. elindítja a frontend fejlesztői szervert
+4. megnyitja a böngészőt
+
+Ezután az alkalmazás automatikusan elérhető lesz:
+
+```
+http://localhost:5173
+```
+
+---
+
+
 
 ### 3) Környezeti változók beállítása
 
