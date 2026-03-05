@@ -63,7 +63,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel x:Name="TopMenu" Visibility="Visible">
-                    <Grid Height="58" Background="#2D2D30" Width="997">
+                    <Grid Height="58" Background="#2D2D30" Width="1000">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -257,12 +257,12 @@
 
                 <!-- FELHASZNÁLÓK OLDAL -->
                 <StackPanel x:Name="FelhasznalokOldal" Visibility="Visible" Height="auto" Margin="0,0,368,0">
-                    <StackPanel Margin="0,25,368,10" Height="741" Width="995" >
+                    <StackPanel Margin="0,25,368,10" Height="741" Width="998" >
                         <StackPanel.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black" Offset="0.627"/>
+                                <GradientStop Color="BlueViolet" Offset="0.627"/>
                                 <GradientStop Color="#FF158000"/>
-                                <GradientStop Color="#FFD0D0D0" Offset="0.964"/>
+                                <GradientStop Color="Aqua" Offset="0.964"/>
                             </LinearGradientBrush>
                         </StackPanel.Background>
 
@@ -347,7 +347,7 @@
                     <GradientStop Color="#FF001BFF"/>
                 </LinearGradientBrush>
             </TextBlock.Background><Run Language="hu-hu" Text="CyberNest - Adminfelület"/></TextBlock>
-        <StackPanel x:Name="FelhasznalokTopMenu" Visibility="Visible" Orientation="Horizontal" Grid.ColumnSpan="6" Margin="0,55,3,16" Grid.RowSpan="3" Background="DarkBlue">
+        <StackPanel x:Name="FelhasznalokTopMenu" Visibility="Visible" Orientation="Horizontal" Grid.ColumnSpan="6" Margin="0,55,0,16" Grid.RowSpan="3" Background="DarkBlue">
 
 
             <Grid Width="880" Height="27">
