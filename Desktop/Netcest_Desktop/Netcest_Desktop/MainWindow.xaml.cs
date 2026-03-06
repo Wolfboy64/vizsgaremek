@@ -214,21 +214,15 @@ namespace CyberNest_Desktop
             passwordBox.Clear();
         }
         //eszközök kezelése
-        private void EszkozokButton_Click(object sender, RoutedEventArgs e)
+        /*private void EszkozokButton_Click(object sender, RoutedEventArgs e)
         {
             eszkozokoldal.Visibility = Visibility.Visible;
             eszkozokPanel.Visibility = Visibility.Visible;
             FelhasznalokOldal.Visibility = Visibility.Hidden;
             FelhasznalokTopMenu.Visibility = Visibility.Hidden;
-        }
-        private void eszkozHozzaadas_Click(object sender, RoutedEventArgs e)
-        {
-            FelhasznalokOldal.Visibility = Visibility.Hidden;
-            eszkozHozzadasPanel.Visibility = Visibility.Visible;
-            eszkozModositasPanel.Visibility = Visibility.Hidden;
-            eszkozListazasPanel.Visibility = Visibility.Hidden;
-            eszkozTorlespanel.Visibility = Visibility.Hidden;
-        }
+        }*/
+
+
         private void eszkozHozzaadasGomb_Click(object sender, RoutedEventArgs e)
         {
             Eszkozok e_ = new Eszkozok(
@@ -260,32 +254,7 @@ namespace CyberNest_Desktop
         }
 
 
-        private void eszkozTorles_Click(object sender, RoutedEventArgs e)
-        {
-            eszkozModositasPanel.Visibility = Visibility.Hidden;
-            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
-            eszkozListazasPanel.Visibility = Visibility.Hidden;
-            eszkozTorlespanel.Visibility = Visibility.Visible;
-
-
-
-            // Clear existing items before populating
-            IDs.Items.Clear();
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT `id` FROM `eszkoz`";  // Only select what you need
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    IDs.Items.Add(Convert.ToInt32(reader["id"]));
-                }
-                reader.Close();
-            }
-        }
+       
         private void eszkozTorlesGomb_Click(object sender, RoutedEventArgs e)
         {
             eszkozHozzadasPanel.Visibility = Visibility.Hidden;
@@ -306,31 +275,7 @@ namespace CyberNest_Desktop
                 }
             }
         }
-        private void eszkozModositas_Click(object sender, RoutedEventArgs e)
-        {
-            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
-            eszkozListazasPanel.Visibility = Visibility.Hidden;
-            eszkozTorlespanel.Visibility = Visibility.Hidden;
-            eszkozModositasPanel.Visibility = Visibility.Visible;
-            EszkModIDs.Items.Clear();
-            List<int> eszkozids = new List<int>();
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT `id` FROM `eszkoz`";  // Only select what you need
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    eszkozids.Add(Convert.ToInt32(reader["id"]));
-                }
-                reader.Close();
-            }
-            for (int i = 0; i < eszkozids.Count; i++)
-            {
-                EszkModIDs.Items.Add(eszkozids[i]);
-            }
-        }
+        
         private void EszkModIDs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EszkModIDs.SelectedItem != null)
@@ -379,30 +324,7 @@ namespace CyberNest_Desktop
                 }
             }
         }
-        private void eszkozListazas_Click(object sender, RoutedEventArgs e)
-        {
-            // Clear existing items before populating
-            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
-            eszkozModositasPanel.Visibility = Visibility.Hidden;
-            eszkozTorlespanel.Visibility = Visibility.Hidden;
-            eszkozListazasPanel.Visibility = Visibility.Visible;
-            EszkozListView.Items.Clear();
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT * FROM `eszkoz`";
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    EszkozListView.Items.Add($"ID: {reader["id"]} | Leírás: {reader["leiras"]} | CPU: {reader["cpu"]} | RAM: {reader["ram"]} | HDD: {reader["hdd"]} ");
-                }
-                reader.Close();
-
-
-            }
-        }
+        
         private void eszkozListaVissza_Click(object sender, RoutedEventArgs e)
         {
             Back(eszkozListazasPanel);
@@ -537,6 +459,56 @@ namespace CyberNest_Desktop
         private void settingsButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void EszkozokButton_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznalokOldal.Visibility = Visibility.Hidden;
+            FelhasznalokTopMenu.Visibility = Visibility.Hidden;
+
+            eszkozokPanel.Visibility = Visibility.Visible;
+            eszkozokoldal.Visibility = Visibility.Visible;
+            
+        }
+
+        private void eszkozHozzaadas_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
+            eszkozModositasPanel.Visibility = Visibility.Hidden;
+            eszkozTorlespanel.Visibility = Visibility.Hidden;
+
+            eszkozHozzadasPanel.Visibility = Visibility.Visible;
+
+        }
+
+        private void eszkozTorles_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozModositasPanel.Visibility = Visibility.Hidden;
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
+
+            eszkozTorlespanel.Visibility = Visibility.Visible;
+
+        }
+
+        private void eszkozListazas_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozModositasPanel.Visibility = Visibility.Hidden;
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+            eszkozTorlespanel.Visibility = Visibility.Hidden;
+
+            eszkozListazasPanel.Visibility = Visibility.Visible;
+
+        }
+
+        private void eszkozModositas_Click(object sender, RoutedEventArgs e)
+        {
+            eszkozHozzadasPanel.Visibility = Visibility.Hidden;
+            eszkozTorlespanel.Visibility = Visibility.Hidden;
+            eszkozListazasPanel.Visibility = Visibility.Hidden;
+
+            eszkozModositasPanel.Visibility = Visibility.Visible;
+            
         }
     }
 }
