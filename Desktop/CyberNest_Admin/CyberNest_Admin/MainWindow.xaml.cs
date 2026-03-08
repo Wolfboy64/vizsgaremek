@@ -19,6 +19,9 @@ namespace CyberNest_Admin
         public MainWindow()
         {
             InitializeComponent();
+            LoginPage.Visibility = Visibility.Visible;
+            SideBrand_loginPage.Visibility = Visibility.Visible;
+            MainContentPage.Visibility = Visibility.Hidden;
         }
 
 
@@ -37,6 +40,10 @@ namespace CyberNest_Admin
             {
                 MessageBox.Show($"Sikeres belépés! Token: {eredmeny.Token} További infók: {eredmeny.User.Role}" );
                 // Itt átválthatsz egy másik ablakra vagy betöltheted az adatokat
+                LoginPage.Visibility = Visibility.Hidden;
+                SideBrand_loginPage.Visibility = Visibility.Hidden;
+
+                MainContentPage.Visibility = Visibility.Visible;
 
 
             }
@@ -47,8 +54,30 @@ namespace CyberNest_Admin
 
             // Visszaállítjuk a UI-t
             Bejelentkezes.IsEnabled = true;
-            
-            
+        }
+
+        /*
+           |-----------------------------|
+           |  Felhasználók kezelése      |
+           |-----------------------------|*/
+
+
+        private void UjFelhasznaloMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void FelhasznaloTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

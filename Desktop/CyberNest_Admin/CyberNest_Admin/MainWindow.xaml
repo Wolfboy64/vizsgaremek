@@ -7,9 +7,12 @@
         mc:Ignorable="d"
         Title="CyberNest Admin felület" Height="450" Width="800">
     <Grid>
-
-
-
+        <!--FIGYELEM! ÁLTALÁNOS TÁJÉKOZTATÓ ERRŐL AZ XAML FÁJLRÓL:
+        1. Fontos panelek nevei és láthatósággal kapcsolatos beállításaik:
+            - LoginPage: Ez a StackPanel tartalmazza a bejelentkezési űrlapot. Ez a panel kezdetben már látszik
+            - SideBrand_loginPage: Ez a StackPanel tartalmazza a jobb oldali márkázási elemeket. 
+            - MainContentPage: Ez a StackPanel tartalmazza a fő tartalmat, beleértve a menüt és egyéb adminisztrációs elemeket. Kezdetben rejtett, és csak akkor lesz látható, amikor a bejelentkezés sikeres volt.
+        -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="200"/>
@@ -24,45 +27,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Background="#FF3426DE" Grid.RowSpan="5" Grid.ColumnSpan="3"/>
-        <StackPanel x:Name="LoginPage" Background="#FFEE82A0" Grid.Row="2" Height="NaN" Width="NaN" Grid.ColumnSpan="2" Margin="146,0,0,0" RenderTransformOrigin="0.5,0.5">
-            <StackPanel.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="0.32"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="-0.661"/>
-                </TransformGroup>
-            </StackPanel.RenderTransform>
-            <Grid Height="86" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="67*"/>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="90*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock TextWrapping="Wrap" 
-                    Text="Felhasználónév:"
-                    Margin="0,6,0,7" />
-                <TextBox x:Name="txtUser"
-                        Text="TextBox" 
-                        Grid.ColumnSpan="2" Margin="17,8,0,3" HorizontalAlignment="Left" Width="134" Grid.Column="1"/>
-                <Button x:Name="Bejelentkezes"
-                    Content="Bejelentkezés" 
-                    Grid.Column="2" 
-                    Grid.Row="1" Margin="1,28,0,5" Grid.RowSpan="2" Click="Bejelentkezes_Click"/>
-                <TextBlock TextWrapping="Wrap" 
-                    Text="Jelszó:" Margin="0,7,0,7" Grid.Row="1" />
-                <PasswordBox x:Name="txtPass" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,6,0,7" Grid.Row="1" HorizontalAlignment="Center" Width="132"/>
-            </Grid>
+        <StackPanel Background="#FF3426DE"
+                    Grid.RowSpan="5" 
+                    Grid.ColumnSpan="3"
+                    Visibility="Visible"/>
 
-        </StackPanel>
 
-        <StackPanel Grid.Column="3" Grid.RowSpan="5">
+        <StackPanel x:Name="SideBrand_loginPage" Grid.Column="3" Grid.RowSpan="5" Visibility="Visible">
             <StackPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF153CDA"/>
@@ -93,13 +64,66 @@
 
             </Grid>
         </StackPanel>
+        <StackPanel x:Name="MainContentPage"
+                    Grid.ColumnSpan="5"
+                    Grid.RowSpan="5"
+                    Background="Red"
+                    Visibility="Hidden">
+            <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
+            <Menu x:Name="TopMainMenu"
+                  Height="50" 
+                  Background="Blue">
+                <MenuItem x:Name="FelhasznalokMenu"
+                         Header="Felhasználók" 
+                          Foreground="White"
+                          Background="Blue"
+                          FontSize="14">
+                    <MenuItem x:Name="FelhasznalokListajaMenu" Header="Felhasználók listája" Click="FelhasznalokListajaMenu_Click"/>
+                    <MenuItem x:Name="UjFelhasznaloMenu" Header="Új felhasználó" Click="UjFelhasznaloMenu_Click"/>
+                    <MenuItem x:Name="FelhasznaloTorleseMenu" Header="Felhasználó törlése" Click="FelhasznaloTorleseMenu_Click"/>
+                    <MenuItem x:Name="FelhasznaloModositasMenu" Header="Felhasználó módosítása" Click="FelhasznaloModositasMenu_Click"/>
+                </MenuItem>
+            </Menu>
 
+        </StackPanel>
+        <StackPanel x:Name="LoginPage"
+                    Background="#FFEE82A0"
+                    Height="NaN"
+                    Width="200"
+                    RenderTransformOrigin="0.5,0.5"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3">
 
+            <Grid Height="86" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="67*"/>
+                    <ColumnDefinition Width="43*"/>
+                    <ColumnDefinition Width="90*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock TextWrapping="Wrap" 
+                                Text="Felhasználónév:"
+                                Margin="0,6,0,7" />
+                <TextBox x:Name="txtUser"
+                            Text="TextBox" 
+                            Grid.ColumnSpan="2" Margin="17,8,0,3" HorizontalAlignment="Left" Width="134" Grid.Column="1"/>
+                <Button x:Name="Bejelentkezes"
+                            Content="Bejelentkezés" 
+                            Grid.Column="2" 
+                            Grid.Row="1" Margin="1,28,0,5" Grid.RowSpan="2" Click="Bejelentkezes_Click"/>
 
+                <TextBlock TextWrapping="Wrap" 
+                               Text="Jelszó:" 
+                               Margin="0,7,0,7" 
+                               Grid.Row="1" />
+                <PasswordBox x:Name="txtPass" Grid.Column="1" Grid.ColumnSpan="2" Margin="17,7,0,6" Grid.Row="1" HorizontalAlignment="Left" Width="132"/>
+            </Grid>
 
-
-
+        </StackPanel>
     </Grid>
-
-
 </Window>
