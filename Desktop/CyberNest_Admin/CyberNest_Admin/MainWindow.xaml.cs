@@ -20,5 +20,36 @@ namespace CyberNest_Admin
         {
             InitializeComponent();
         }
+
+
+        private async void Bejelentkezes_Click(object sender, RoutedEventArgs e)
+        {
+            // Vizuális visszajelzés (opcionális, de ajánlott)
+            Bejelentkezes.IsEnabled = false;
+       
+
+            var api = new ApiService();
+
+            // Itt a program nem áll meg, a UI szál szabad marad!
+            var eredmeny = await api.LoginAsync(txtUser.Text, txtPass.Password);
+
+            if (eredmeny != null)
+            {
+                MessageBox.Show($"Sikeres belépés! Token: {eredmeny.Token} További infók: {eredmeny.User.Role}" );
+                // Itt átválthatsz egy másik ablakra vagy betöltheted az adatokat
+
+
+            }
+            else
+            {
+                MessageBox.Show("Hiba a bejelentkezés során. Ellenőrizd az adatokat!");
+            }
+
+            // Visszaállítjuk a UI-t
+            Bejelentkezes.IsEnabled = true;
+            
+            
+
+        }
     }
 }

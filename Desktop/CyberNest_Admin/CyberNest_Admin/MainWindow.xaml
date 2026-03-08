@@ -5,8 +5,101 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberNest_Admin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="CyberNest Admin felület" Height="450" Width="800">
     <Grid>
 
+
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Background="#FF3426DE" Grid.RowSpan="5" Grid.ColumnSpan="3"/>
+        <StackPanel x:Name="LoginPage" Background="#FFEE82A0" Grid.Row="2" Height="NaN" Width="NaN" Grid.ColumnSpan="2" Margin="146,0,0,0" RenderTransformOrigin="0.5,0.5">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="0.32"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-0.661"/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+            <Grid Height="86" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="67*"/>
+                    <ColumnDefinition Width="43*"/>
+                    <ColumnDefinition Width="90*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock TextWrapping="Wrap" 
+                    Text="Felhasználónév:"
+                    Margin="0,6,0,7" />
+                <TextBox x:Name="txtUser"
+                        Text="TextBox" 
+                        Grid.ColumnSpan="2" Margin="17,8,0,3" HorizontalAlignment="Left" Width="134" Grid.Column="1"/>
+                <Button x:Name="Bejelentkezes"
+                    Content="Bejelentkezés" 
+                    Grid.Column="2" 
+                    Grid.Row="1" Margin="1,28,0,5" Grid.RowSpan="2" Click="Bejelentkezes_Click"/>
+                <TextBlock TextWrapping="Wrap" 
+                    Text="Jelszó:" Margin="0,7,0,7" Grid.Row="1" />
+                <PasswordBox x:Name="txtPass" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,6,0,7" Grid.Row="1" HorizontalAlignment="Center" Width="132"/>
+            </Grid>
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="3" Grid.RowSpan="5">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF153CDA"/>
+                    <GradientStop Color="#FF1D64C5" Offset="1"/>
+
+                    <GradientStop Color="#FF2AB5B2" Offset="0.506"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+
+                <TextBlock TextWrapping="Wrap" Foreground="White" Text="CyberNest - Admin felület" FontSize="20" Margin="0,213,0,-266" Grid.Row="2" FontWeight="Bold" TextTrimming="WordEllipsis" FontFamily="Corbel" HorizontalAlignment="Center" Width="132" FontStyle="Italic">
+                    <TextBlock.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF91700"/>
+                            <GradientStop Color="#FFFF21F7" Offset="1"/>
+                            <GradientStop Color="#FF0839FF" Offset="0.473"/>
+                            <GradientStop Color="#FF81277E" Offset="0.159"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Background>
+                </TextBlock>
+
+            </Grid>
+        </StackPanel>
+
+
+
+
+
+
     </Grid>
+
+
 </Window>
