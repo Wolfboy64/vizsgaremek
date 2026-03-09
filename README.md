@@ -404,6 +404,17 @@ Példa login request:
 | `PUT` | `/api/idopont/:id` | Igen | admin | Időpont módosítása |
 | `DELETE` | `/api/idopont/:id` | Igen | admin | Időpont törlése |
 
+### Felhasználó endpointok
+
+| Method | Endpoint | Auth | Szerepkör | Leírás |
+|---|---|---|---|---|
+| `GET` | `/api/felhasznalo` | Igen | admin | Összes felhasználó listázása |
+| `GET` | `/api/felhasznalo/:id` | Igen | user/admin | Egy felhasználó adatainak lekérdezése |
+| `PUT` | `/api/felhasznalo/:id` | Igen | user/admin | Felhasználó adatainak módosítása |
+| `DELETE` | `/api/felhasznalo/:id` | Igen | admin | Felhasználó törlése |
+
+> Megjegyzés: a felhasználó módosításához vagy lekérdezéséhez érvényes JWT token szükséges. A törlés csak admin jogosultsággal érhető el.
+
 ### Egyéb és debug endpointok
 
 | Method | Endpoint | Auth | Leírás |
