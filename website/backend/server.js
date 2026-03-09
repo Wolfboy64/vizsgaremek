@@ -44,11 +44,15 @@ import authRoutes from "./routes/auth.js";
 import eszkozRoutes from "./routes/eszkoz.js";
 import foglalasRoutes from "./routes/foglalas.js";
 import idopontRoutes from "./routes/idopont.js";
+import felhasznaloRoutes from "./routes/felhasznalo.js";
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/eszkoz", eszkozRoutes);
 app.use("/api/foglalas", foglalasRoutes);
 app.use("/api/idopont", idopontRoutes);
+app.use("/api/felhasznalo", felhasznaloRoutes);
+
 
 // Debug: list users (dev only)
 app.get("/api/debug/users", async (req, res) => {
