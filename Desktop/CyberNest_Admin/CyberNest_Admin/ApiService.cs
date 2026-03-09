@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks; // Az async-hez szükséges
+using System.Threading.Tasks;
+using System.Windows; // Az async-hez szükséges
 
 namespace CyberNest_Admin
 {
@@ -94,7 +95,15 @@ namespace CyberNest_Admin
                 var response = await _httpClient.GetAsync("eszkoz");
 
                 if (!response.IsSuccessStatusCode) return new List<Eszkoz>();
+
+                
+
                 string jsonString = await response.Content.ReadAsStringAsync();
+                //uzemelteto létrehozása a jsonból
+                //Adatok: UzemeltetoId, UzemeltetoNev, UzemeltetoLeiras
+                
+
+
                 return Eszkoz.FromJson(jsonString);
             }
             catch (Exception ex)

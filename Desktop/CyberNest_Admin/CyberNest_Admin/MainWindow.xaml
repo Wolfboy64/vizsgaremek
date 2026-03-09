@@ -159,9 +159,14 @@
                             Grid.RowSpan="3"
                             Grid.ColumnSpan="3"
                             HorizontalAlignment="Left"
-                            Background="Gray" Margin="0,82,0,0" Width="590">
+                            Background="Gray" 
+                            Margin="0,82,0,0" 
+                            Width="590"
+                            Visibility="Hidden">
                     <Button x:Name="EszkozokListBackBtn" Content="Vissza" Width="84" Click="EszkozokListBackBtn_Click"/>
-                    <ListView x:Name="EszkozokListView" Height="146" DisplayMemberPath="{Binding Eszkoz}">
+                    <ListView x:Name="EszkozokListView" 
+                              Height="146" 
+                              ItemsSource="{Binding Eszkozok}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="20"/>
@@ -169,10 +174,37 @@
                                 <GridViewColumn Header="CPU" DisplayMemberBinding="{Binding Cpu}" Width="100"/>
                                 <GridViewColumn Header="RAM" DisplayMemberBinding="{Binding Ram}" Width="100"/>
                                 <GridViewColumn Header="HDD" DisplayMemberBinding="{Binding Hdd}" Width="100"/>
-                                <GridViewColumn Header="uzemelteto_nev" DisplayMemberBinding="{Binding uzemelteto_nev}" Width="180"/>
+                                <GridViewColumn Header="uzemelteto_nev" DisplayMemberBinding="{Binding UzemeltetoNev}" Width="180"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
+
+                </StackPanel>
+                <!-- Új eszköz hozzáadása -->
+                <StackPanel x:Name="ujEszkozPanel"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Grid.RowSpan="3"
+                            Background="Gray" Margin="0,82,0,0">
+                    <Grid Height="165">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+    
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
+                    </Grid>
+
+
                 </StackPanel>
             </Grid>
 

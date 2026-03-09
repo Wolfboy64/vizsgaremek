@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -128,6 +129,11 @@ namespace CyberNest_Admin
             EszkozokListPanel.Visibility = Visibility.Visible;
             ApiService api = new ApiService();
             var lista = await api.GetEszkozokAsync();
+            Uzemelteto.uzemeltetokAll.Clear(); 
+            foreach (var item in lista) {
+                Uzemelteto.uzemeltetokAll.Add(new Uzemelteto((int)item.UzemeltetoId,item.UzemeltetoNev,item.UzemeltetoLeiras));
+            }
+            
             System.Diagnostics.Debug.WriteLine($"Letöltött eszközök száma: {lista.Count}");
             if (lista.Count > 0)
             {
