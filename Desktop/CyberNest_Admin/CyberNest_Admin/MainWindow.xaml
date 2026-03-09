@@ -89,6 +89,14 @@
                     <MenuItem x:Name="FelhasznaloTorleseMenu" Header="Felhasználó törlése" Click="FelhasznaloTorleseMenu_Click"/>
                     <MenuItem x:Name="FelhasznaloModositasMenu" Header="Felhasználó módosítása" Click="FelhasznaloModositasMenu_Click"/>
                 </MenuItem>
+                <MenuItem x:Name="EszkozokMenu"
+                          Header="Eszközök" 
+                          FontSize="14">
+                    <MenuItem x:Name="EszkozokListajaMenu" Header="Eszközök listája" Click="EszkozokListajaMenu_Click"/>
+                    <MenuItem x:Name="UjEszkozMenu" Header="Új eszköz" Click="UjEszkozMenu_Click"/>
+                    <MenuItem x:Name="EszkozTorleseMenu" Header="Eszköz törlése" Click="EszkozTorleseMenu_Click"/>
+                    <MenuItem x:Name="EszkozModositasMenu" Header="Eszköz módosítása" Click="EszkozModositasMenu_Click"/>
+                </MenuItem>
             </Menu>
             <Grid Height="412" Width="799" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
@@ -143,11 +151,34 @@
                     </ComboBox>
                     <Button x:Name="UjFelhasznaloSaveBtn" Content="Mentés" Width="84" Margin="10" Click="UjFelhasznaloSaveBtn_Click"/>
                 </StackPanel>
+
+
+                <!-- Eszkozok list -->
+                <StackPanel x:Name="EszkozokListPanel"
+                            Grid.Column="0"
+                            Grid.RowSpan="3"
+                            Grid.ColumnSpan="3"
+                            HorizontalAlignment="Left"
+                            Background="Gray" Margin="0,82,0,0" Width="590">
+                    <Button x:Name="EszkozokListBackBtn" Content="Vissza" Width="84" Click="EszkozokListBackBtn_Click"/>
+                    <ListView x:Name="EszkozokListView" Height="146" DisplayMemberPath="{Binding Eszkoz}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="20"/>
+                                <GridViewColumn Header="leírás" DisplayMemberBinding="{Binding Leiras}" Width="100"/>
+                                <GridViewColumn Header="CPU" DisplayMemberBinding="{Binding Cpu}" Width="100"/>
+                                <GridViewColumn Header="RAM" DisplayMemberBinding="{Binding Ram}" Width="100"/>
+                                <GridViewColumn Header="HDD" DisplayMemberBinding="{Binding Hdd}" Width="100"/>
+                                <GridViewColumn Header="uzemelteto_nev" DisplayMemberBinding="{Binding uzemelteto_nev}" Width="180"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
             </Grid>
 
         </StackPanel>
         <StackPanel x:Name="LoginPage"
-                    Background="#FFEE82A0"
+                    Background="LightBlue"
                     Width="200"
                     RenderTransformOrigin="0.5,0.5"
                     HorizontalAlignment="Center"

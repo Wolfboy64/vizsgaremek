@@ -16,6 +16,7 @@ namespace CyberNest_Admin
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static string Token = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -38,7 +39,8 @@ namespace CyberNest_Admin
 
             if (eredmeny != null)
             {
-                MessageBox.Show($"Sikeres belépés! Token: {eredmeny.Token} További infók: {eredmeny.User.Role}" );
+                Token = eredmeny.Token;
+                MessageBox.Show($"Sikeres belépés! Token: {Token} További infók: {eredmeny.User.Role}" );
                 // Itt átválthatsz egy másik ablakra vagy betöltheted az adatokat
                 LoginPage.Visibility = Visibility.Hidden;
                 SideBrand_loginPage.Visibility = Visibility.Hidden;
@@ -110,10 +112,50 @@ namespace CyberNest_Admin
         {
             UjFelhasznaloPanel.Visibility = Visibility.Hidden; 
         }
-
         private void FelhasznalokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
             FelhasznaloListPanel.Visibility = Visibility.Hidden;
         }
+        private void EszkozokListBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            EszkozokListPanel.Visibility = Visibility.Hidden;
+        }
+
+
+        //eszközökList
+        private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
+        {
+            EszkozokListPanel.Visibility = Visibility.Visible;
+            ApiService api = new ApiService();
+            var lista = await api.GetEszkozokAsync();
+            System.Diagnostics.Debug.WriteLine($"Letöltött eszközök száma: {lista.Count}");
+            if (lista.Count > 0)
+            {
+                EszkozokListView.ItemsSource = null; // Kényszerített frissítés
+                EszkozokListView.ItemsSource = lista;
+            }
+            else
+            {
+                MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
+            }
+
+        }
+
+        private void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EszkozTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EszkozModositasMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        
     }
 }

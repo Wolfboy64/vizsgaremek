@@ -84,6 +84,26 @@ namespace CyberNest_Admin
             return response.IsSuccessStatusCode;
 
         }
-        //
+
+
+
+        public async Task<List<Eszkoz>> GetEszkozokAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("eszkoz");
+
+                if (!response.IsSuccessStatusCode) return new List<Eszkoz>();
+                string jsonString = await response.Content.ReadAsStringAsync();
+                return Eszkoz.FromJson(jsonString);
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine(ex.Message);
+                return new List<Eszkoz>();
+            }
+            
+        }
     }
 }
