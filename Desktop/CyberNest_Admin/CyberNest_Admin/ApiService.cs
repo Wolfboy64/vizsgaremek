@@ -114,5 +114,45 @@ namespace CyberNest_Admin
             }
             
         }
+        public async Task<bool> InsertEszkozAsync(string leiras, string cpu, string ram, string hdd, string uzemeltetoneve, string JWT)
+        {
+            try
+            {
+                Uzemelteto u = new Uzemelteto(0, "", "");
+                foreach (var item in Uzemelteto.uzemeltetokAll)
+                {
+                    if (item.UzemeltetoNev == uzemeltetoneve)
+                    {
+                        u = item;
+                        break;
+                    }
+                }
+
+                var insertData = new
+                {
+                    leiras,
+                    cpu,
+                    ram,
+                    hdd,
+                    u.UzemeltetoId,
+                    uzemeltetoneve,
+                    u.UzemeltetoLeiras
+
+                };
+                //JWT token hozzáadása a kérés headeréhez
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.PostAsJsonAsync("eszkoz", insertData);
+                Debug.WriteLine($"Response: {response}");
+                return (response.IsSuccessStatusCode);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+            
+
+
+        }
     }
 }

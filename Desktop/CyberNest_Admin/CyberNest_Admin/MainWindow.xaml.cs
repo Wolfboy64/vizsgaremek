@@ -121,7 +121,10 @@ namespace CyberNest_Admin
         {
             EszkozokListPanel.Visibility = Visibility.Hidden;
         }
-
+        private void ujEszkozBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ujEszkozPanel.Visibility = Visibility.Hidden;
+        }
 
         //eszközökList
         private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
@@ -144,12 +147,16 @@ namespace CyberNest_Admin
             {
                 MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
             }
-
+            var lista2 = Uzemelteto.uzemeltetokAll
+                .Select(x => x.UzemeltetoNev)
+                .Distinct()
+                .ToList();
+            ujEszkozUzemelteto.ItemsSource = lista2;
         }
 
         private void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            ujEszkozPanel.Visibility = Visibility.Visible;
         }
 
         private void EszkozTorleseMenu_Click(object sender, RoutedEventArgs e)
@@ -159,6 +166,30 @@ namespace CyberNest_Admin
 
         private void EszkozModositasMenu_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private async void ujEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ApiService api = new ApiService();
+            var leiras = ujEszkozLeiras.Text;
+            var cpu = ujEszkozCpu.Text;
+            var ram = ujEszkozRam.Text;
+            var hdd = ujEszkozHdd.Text;
+
+            
+            var uzemeltetoneve = ujEszkozUzemelteto.SelectedValue.ToString();
+
+            var eredmeny = api.InsertEszkozAsync(leiras, cpu, ram, hdd, uzemeltetoneve, Token);
+            if (eredmeny.Result)
+            {
+                MessageBox.Show("Sikeres eszköz hozzáadás!");
+                ujEszkozPanel.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                MessageBox.Show("Hiba történt az eszköz hozzáadásakor. Ellenőrizd az adatokat!");
+            }
 
         }
 

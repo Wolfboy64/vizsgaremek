@@ -184,14 +184,15 @@
                 <StackPanel x:Name="ujEszkozPanel"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
-                            Grid.RowSpan="3"
-                            Background="Gray" Margin="0,82,0,0">
+                            Grid.RowSpan="4"
+                            Background="Gray" Margin="0,82,0,82"
+                            Visibility="Visible">
                     <Grid Height="165">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
-    
+
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -201,7 +202,22 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="0" TextWrapping="Wrap" Text="Leírás" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="CPU" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="2" TextWrapping="Wrap" Text="RAM" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="3" TextWrapping="Wrap" Text="HDD" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="4" TextWrapping="Wrap" Text="Üzemeltető neve" VerticalAlignment="Center"/>
+                        
+                        
+                        <TextBox x:Name="ujEszkozRam" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114" Grid.Row="2"/>
+                        <TextBox x:Name="ujEszkozCpu" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114" Grid.Row="1"/>
+                        <TextBox x:Name="ujEszkozHdd" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114" Grid.Row="3"/>
+                        <TextBox x:Name="ujEszkozLeiras" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114"/>
+
+                        <ComboBox x:Name="ujEszkozUzemelteto" HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Width="114" Grid.Row="4"/>
+
+                        <Button x:Name="ujEszkozSaveBtn" Content="Mentés" Width="84" Margin="25,4,25,5" Grid.Row="5" Grid.Column="1" Click="ujEszkozSaveBtn_Click"/>
+                        <Button x:Name="ujEszkozBackBtn" Content="Vissza" Width="84" Margin="17,4,32,5" Grid.Row="5" Grid.Column="0" Click="ujEszkozBackBtn_Click"/>
                     </Grid>
 
 
