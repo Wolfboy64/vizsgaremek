@@ -56,10 +56,11 @@ namespace CyberNest_Admin
             Bejelentkezes.IsEnabled = true;
         }
 
-        /*
-           |-----------------------------|
-           |  Felhasználók kezelése      |
-           |-----------------------------|*/
+       /*
+        *  |-----------------------------|
+        *  |  Felhasználók kezelése      |
+        *  |-----------------------------|
+        */
 
 
         private void UjFelhasznaloMenu_Click(object sender, RoutedEventArgs e)
@@ -75,10 +76,26 @@ namespace CyberNest_Admin
         {
 
         }
-
-        private void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
+        private async void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
+            FelhasznaloListPanel.Visibility = Visibility.Visible;
 
+            var api = new ApiService();
+            var lista = await api.GetUsersAsync();
+
+            // Nézzük meg a Visual Studio "Output" ablakában, hány elem jött le
+            System.Diagnostics.Debug.WriteLine($"Letöltött felhasználók száma: {lista.Count}");
+
+            if (lista.Count > 0)
+            {
+                FelhasznalokListView.ItemsSource = null; // Kényszerített frissítés
+                FelhasznalokListView.ItemsSource = lista;
+            }
+            else
+            {
+                MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
+            }
         }
+
     }
 }

@@ -55,5 +55,21 @@ namespace CyberNest_Admin
                 return null;
             }
         }
+        public async Task<List<User>> GetUsersAsync()
+        {
+            var response = await _httpClient.GetAsync("/debug/users");
+            if (!response.IsSuccessStatusCode) return new List<User>();
+
+            string jsonString = await response.Content.ReadAsStringAsync();
+
+            // Debugoláshoz: Írasd ki, mit kapunk ténylegesen
+            System.Diagnostics.Debug.WriteLine($"JSON válasz: {jsonString}");
+
+            // Használd a PropertyNameCaseInsensitive opciót, ha nem a QuickType beállításait használod
+            var options = new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            return System.Text.Json.JsonSerializer.Deserialize<List<User>>(jsonString, options) ?? new List<User>();
+        }
+
     }
 }

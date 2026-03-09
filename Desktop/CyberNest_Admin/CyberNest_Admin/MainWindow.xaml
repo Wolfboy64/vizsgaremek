@@ -30,10 +30,13 @@
         <StackPanel Background="#FF3426DE"
                     Grid.RowSpan="5" 
                     Grid.ColumnSpan="3"
-                    Visibility="Visible"/>
+                    Visibility="Hidden"/>
 
 
-        <StackPanel x:Name="SideBrand_loginPage" Grid.Column="3" Grid.RowSpan="5" Visibility="Visible">
+        <StackPanel x:Name="SideBrand_loginPage" 
+                    Grid.Column="3"
+                    Grid.RowSpan="5"
+                    Visibility="Hidden">
             <StackPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF153CDA"/>
@@ -67,16 +70,19 @@
         <StackPanel x:Name="MainContentPage"
                     Grid.ColumnSpan="5"
                     Grid.RowSpan="5"
-                    Background="Red"
-                    Visibility="Hidden">
+                    Visibility="Visible">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFFF8000"/>
+                    <GradientStop Color="#FF2E0BAD" Offset="1"/>
+                    <GradientStop Color="Red" Offset="0.477"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
-                  Height="50" 
-                  Background="Blue">
+                  Height="21" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
                 <MenuItem x:Name="FelhasznalokMenu"
                          Header="Felhasználók" 
-                          Foreground="White"
-                          Background="Blue"
                           FontSize="14">
                     <MenuItem x:Name="FelhasznalokListajaMenu" Header="Felhasználók listája" Click="FelhasznalokListajaMenu_Click"/>
                     <MenuItem x:Name="UjFelhasznaloMenu" Header="Új felhasználó" Click="UjFelhasznaloMenu_Click"/>
@@ -84,16 +90,49 @@
                     <MenuItem x:Name="FelhasznaloModositasMenu" Header="Felhasználó módosítása" Click="FelhasznaloModositasMenu_Click"/>
                 </MenuItem>
             </Menu>
+            <Grid Height="412" Width="799" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="FelhasznaloListPanel"
+                            Background="Gray"
+                            Margin="0,66,0,10"
+                            Grid.Column="1"
+                            Grid.RowSpan="4"
+                            Grid.ColumnSpan="2"
+                            Visibility="Hidden">
+                    <Button x:Name="FelhasznalokListBackBtn" Content="Vissza" Width="84"/>
+                    <ListView x:Name="FelhasznalokListView">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Név" DisplayMemberBinding="{Binding Nev}" Width="150"/>
+                                <GridViewColumn Header="E-mail" DisplayMemberBinding="{Binding Elerhetoseg}" Width="200"/>
+                                <GridViewColumn Header="Szerepkör" DisplayMemberBinding="{Binding Role}" Width="100"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </Grid>
 
         </StackPanel>
         <StackPanel x:Name="LoginPage"
                     Background="#FFEE82A0"
-                    Height="NaN"
                     Width="200"
                     RenderTransformOrigin="0.5,0.5"
                     HorizontalAlignment="Center"
                     Grid.Row="2"
-                    Grid.ColumnSpan="3">
+                    Grid.ColumnSpan="3"
+                    Visibility="Hidden">
 
             <Grid Height="86" >
                 <Grid.ColumnDefinitions>
@@ -111,7 +150,7 @@
                                 Margin="0,6,0,7" />
                 <TextBox x:Name="txtUser"
                             Text="TextBox" 
-                            Grid.ColumnSpan="2" Margin="17,8,0,3" HorizontalAlignment="Left" Width="134" Grid.Column="1"/>
+                            Grid.ColumnSpan="2" Margin="17,8,0,3" HorizontalAlignment="Left" Width="106" Grid.Column="1"/>
                 <Button x:Name="Bejelentkezes"
                             Content="Bejelentkezés" 
                             Grid.Column="2" 
@@ -121,7 +160,7 @@
                                Text="Jelszó:" 
                                Margin="0,7,0,7" 
                                Grid.Row="1" />
-                <PasswordBox x:Name="txtPass" Grid.Column="1" Grid.ColumnSpan="2" Margin="17,7,0,6" Grid.Row="1" HorizontalAlignment="Left" Width="132"/>
+                <PasswordBox x:Name="txtPass" Grid.Column="1" Grid.ColumnSpan="2" Margin="17,7,0,6" Grid.Row="1" HorizontalAlignment="Left" Width="106"/>
             </Grid>
 
         </StackPanel>
