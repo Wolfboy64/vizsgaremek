@@ -65,7 +65,13 @@ namespace CyberNest_Admin
 
         private void UjFelhasznaloMenu_Click(object sender, RoutedEventArgs e)
         {
+            UjFelhasznaloPanel.Visibility = Visibility.Visible;
+            var api = new ApiService();
 
+            var lista = api.RegisterAsync(UjFelhasznaloNev.Text,
+                UjFelhasznaloEmail.Text,
+                "jelszo",
+                UjFelhasznaloRole.SelectedValue.ToString());
         }
 
         private void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
@@ -97,5 +103,17 @@ namespace CyberNest_Admin
             }
         }
 
+
+        //vissza gombok
+
+        private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            UjFelhasznaloPanel.Visibility = Visibility.Hidden; 
+        }
+
+        private void FelhasznalokListBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznaloListPanel.Visibility = Visibility.Hidden;
+        }
     }
 }

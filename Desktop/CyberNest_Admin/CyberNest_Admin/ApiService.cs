@@ -6,7 +6,7 @@ using System.Threading.Tasks; // Az async-hez szükséges
 
 namespace CyberNest_Admin
 {
-    
+
 
     public class ApiService
     {
@@ -57,7 +57,7 @@ namespace CyberNest_Admin
         }
         public async Task<List<User>> GetUsersAsync()
         {
-            var response = await _httpClient.GetAsync("/debug/users");
+            var response = await _httpClient.GetAsync("debug/users");
             if (!response.IsSuccessStatusCode) return new List<User>();
 
             string jsonString = await response.Content.ReadAsStringAsync();
@@ -70,6 +70,20 @@ namespace CyberNest_Admin
 
             return System.Text.Json.JsonSerializer.Deserialize<List<User>>(jsonString, options) ?? new List<User>();
         }
+        //insert new felhasznalo to /api/auth/register with post method. with this datas: nev, elerhetoseg, jelszo, role = "user"
+        public async Task<bool> RegisterAsync(string nev, string elerhetoseg, string jelszo, string szerepkor)
+        {
+            var registerData = new
+            {
+                nev,
+                elerhetoseg,
+                jelszo,
+                szerepkor
+            };
+            var response = await _httpClient.PostAsJsonAsync("auth/register", registerData);
+            return response.IsSuccessStatusCode;
 
+        }
+        //
     }
 }
