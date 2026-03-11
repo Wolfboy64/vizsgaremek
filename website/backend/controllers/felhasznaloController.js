@@ -12,6 +12,43 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const create = async (req, res) => {
+  try {
+    const { nev, elerhetoseg, jelszo, role } = req.body;
+
+    if (!nev || !elerhetoseg || !jelszo) {
+      return res
+        .status(400)
+        .json({ message: "Minden mező kitöltése kötelező." });
+    }
+
+    const normalizedRole = role ?? "user";
+    if (!["user", "admin"].includes(normalizedRole)) {
+      return res.status(400).json({ message: "Érvénytelen szerepkör." });
+    }
+
+    const existingUser =
+      await FelhasznaloModel.findByElerhetoseg(elerhetoseg);
+    if (existingUser) {
+      return res.status(400).json({ message: "Ez az elérhetőség már foglalt." });
+    }
+
+    const userId = await FelhasznaloModel.create(
+      nev,
+      elerhetoseg,
+      jelszo,
+      normalizedRole,
+    );
+
+    res.status(201).json({ message: "Felhasználó létrehozva.", userId });
+  } catch (error) {
+    console.error("Hiba a felhasználó létrehozásakor:", error);
+    res.status(500).json({
+      message: "Szerver hiba a felhasználó létrehozása során.",
+    });
+  }
+};
+
 export const getById = async (req, res) => {
   try {
     const id = req.params.id;
