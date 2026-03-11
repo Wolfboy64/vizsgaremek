@@ -45,6 +45,7 @@ import eszkozRoutes from "./routes/eszkoz.js";
 import foglalasRoutes from "./routes/foglalas.js";
 import idopontRoutes from "./routes/idopont.js";
 import felhasznaloRoutes from "./routes/felhasznalo.js";
+import uzemeltetoRoutes from "./routes/uzemelteto.js";
 
 
 app.use("/api/auth", authRoutes);
@@ -52,6 +53,7 @@ app.use("/api/eszkoz", eszkozRoutes);
 app.use("/api/foglalas", foglalasRoutes);
 app.use("/api/idopont", idopontRoutes);
 app.use("/api/felhasznalo", felhasznaloRoutes);
+app.use("/api/uzemelteto", uzemeltetoRoutes);
 
 
 // Debug: list users (dev only)
