@@ -173,8 +173,7 @@
                             Visibility="Hidden">
                     <Button x:Name="EszkozokListBackBtn" Content="Vissza" Width="84" Click="EszkozokListBackBtn_Click"/>
                     <ListView x:Name="EszkozokListView" 
-                              Height="146" 
-                              ItemsSource="{Binding Eszkozok}">
+                              Height="146" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="20"/>

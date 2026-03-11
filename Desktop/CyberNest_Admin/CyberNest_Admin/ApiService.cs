@@ -75,18 +75,29 @@ namespace CyberNest_Admin
         {
             try
             {
-                var response = await _httpClient.GetAsync("eszkozok"); // Ellenőrizd a végpontot!
+                var response = await _httpClient.GetAsync("eszkoz");
 
-                if (response.IsSuccessStatusCode)
+                System.Diagnostics.Debug.WriteLine($"StatusCode: {response.StatusCode}");
+
+                string jsonString = await response.Content.ReadAsStringAsync();
+
+                System.Diagnostics.Debug.WriteLine($"Kapott JSON: {jsonString}");
+
+                if (!response.IsSuccessStatusCode)
                 {
-                    string jsonString = await response.Content.ReadAsStringAsync();
-                    return Eszkoz.FromJson(jsonString);
+                    System.Diagnostics.Debug.WriteLine("A kérés nem volt sikeres.");
+                    return new List<Eszkoz>();
                 }
-                return new List<Eszkoz>();
+
+                var lista = Eszkoz.FromJson(jsonString);
+
+                System.Diagnostics.Debug.WriteLine($"Deszerializált lista elemszám: {lista.Count}");
+
+                return lista;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Eszközök lekérési hiba: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Eszköz lekérési hiba: {ex.Message}");
                 return new List<Eszkoz>();
             }
         }

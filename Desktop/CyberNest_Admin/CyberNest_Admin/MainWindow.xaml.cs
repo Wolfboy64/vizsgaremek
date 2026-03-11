@@ -131,28 +131,41 @@ namespace CyberNest_Admin
         private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
             EszkozokListPanel.Visibility = Visibility.Visible;
+
             ApiService api = new ApiService();
+
             var lista = await api.GetEszkozokAsync();
-            Uzemelteto.uzemeltetokAll.Clear(); 
-            foreach (var item in lista) {
-                Uzemelteto.uzemeltetokAll.Add(new Uzemelteto((int)item.UzemeltetoId,item.UzemeltetoNev,item.UzemeltetoLeiras));
+            Eszkoz.Eszkozok = lista;
+            Uzemelteto.uzemeltetokAll.Clear();
+
+            foreach (var item in lista)
+            {
+                Uzemelteto.uzemeltetokAll.Add(
+                    new Uzemelteto(
+                        (int)item.UzemeltetoId,
+                        item.UzemeltetoNev,
+                        item.UzemeltetoLeiras
+                    )
+                );
             }
-            
+
             System.Diagnostics.Debug.WriteLine($"Letöltött eszközök száma: {lista.Count}");
+
             if (lista.Count > 0)
             {
-                EszkozokListView.ItemsSource = null; // Kényszerített frissítés
                 EszkozokListView.ItemsSource = lista;
             }
             else
             {
                 MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
             }
+
             var lista2 = Uzemelteto.uzemeltetokAll
-            .Select(x => x.UzemeltetoNev)
-            .Where(nev => !string.IsNullOrEmpty(nev)) // Üresek kiszűrése
-            .Distinct()
-            .ToList();
+                .Select(x => x.UzemeltetoNev)
+                .Where(nev => !string.IsNullOrEmpty(nev))
+                .Distinct()
+                .ToList();
+
             ujEszkozUzemelteto.ItemsSource = lista2;
         }
 

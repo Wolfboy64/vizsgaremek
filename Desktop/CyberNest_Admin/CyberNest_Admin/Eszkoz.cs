@@ -34,6 +34,9 @@ namespace CyberNest_Admin
 
         [JsonPropertyName("uzemelteto_leiras")]
         public string UzemeltetoLeiras { get; set; }
+
+
+        public static List<Eszkoz> Eszkozok = new List<Eszkoz>();
     }
 
     public partial class Eszkoz
