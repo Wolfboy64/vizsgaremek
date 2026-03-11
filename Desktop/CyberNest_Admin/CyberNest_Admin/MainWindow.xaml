@@ -85,7 +85,10 @@
             
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
-                  Height="21" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+                  Height="21" 
+                  Background="#2D2D30"
+                  Foreground="#007ACC">
+
                 <MenuItem x:Name="FelhasznalokMenu"
                          Header="Felhasználók" 
                           FontSize="14">
