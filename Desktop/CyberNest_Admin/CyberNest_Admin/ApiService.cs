@@ -71,6 +71,25 @@ namespace CyberNest_Admin
 
             return System.Text.Json.JsonSerializer.Deserialize<List<User>>(jsonString, options) ?? new List<User>();
         }
+        public async Task<List<Eszkoz>> GetEszkozokAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("eszkozok"); // Ellenőrizd a végpontot!
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonString = await response.Content.ReadAsStringAsync();
+                    return Eszkoz.FromJson(jsonString);
+                }
+                return new List<Eszkoz>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Eszközök lekérési hiba: {ex.Message}");
+                return new List<Eszkoz>();
+            }
+        }
         //insert new felhasznalo to /api/auth/register with post method. with this datas: nev, elerhetoseg, jelszo, role = "user"
         public async Task<bool> RegisterAsync(string nev, string elerhetoseg, string jelszo, string szerepkor)
         {
@@ -88,7 +107,7 @@ namespace CyberNest_Admin
 
 
 
-        public async Task<List<Eszkoz>> GetEszkozokAsync()
+        /*public async Task<List<Eszkoz>> GetEszkozokAsync()
         {
             try
             {
@@ -113,7 +132,7 @@ namespace CyberNest_Admin
                 return new List<Eszkoz>();
             }
             
-        }
+        }*/
         public async Task<bool> InsertEszkozAsync(string leiras, string cpu, string ram, string hdd, string uzemeltetoneve, string JWT)
         {
             try

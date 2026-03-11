@@ -5,13 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberNest_Admin"
         mc:Ignorable="d"
-        Title="CyberNest Admin felület" Height="450" Width="800">
+        Title="CyberNest Admin felület" Height="450" Width="800" Background="#1E1E1E" Foreground="#007ACC">
     <Grid>
         <!--FIGYELEM! ÁLTALÁNOS TÁJÉKOZTATÓ ERRŐL AZ XAML FÁJLRÓL:
         1. Fontos panelek nevei és láthatósággal kapcsolatos beállításaik:
             - LoginPage: Ez a StackPanel tartalmazza a bejelentkezési űrlapot. Ez a panel kezdetben már látszik
             - SideBrand_loginPage: Ez a StackPanel tartalmazza a jobb oldali márkázási elemeket. 
             - MainContentPage: Ez a StackPanel tartalmazza a fő tartalmat, beleértve a menüt és egyéb adminisztrációs elemeket. Kezdetben rejtett, és csak akkor lesz látható, amikor a bejelentkezés sikeres volt.
+        2.Színpaletta:
+            - #1E1E1E  // háttér
+            - #2D2D30  // panel
+            - #3F3F46  // világos panel
+            - #5A5A5F  // border
+            - #007ACC  // primary
+            - #1C97EA  // hover
+            - #28A745  // success
+            - #FFC107  // warning
+            - #DC3545  // error
+            - #F0F0F0  // text
         -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -71,13 +82,7 @@
                     Grid.ColumnSpan="5"
                     Grid.RowSpan="5"
                     Visibility="Visible">
-            <StackPanel.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFFF8000"/>
-                    <GradientStop Color="#FF2E0BAD" Offset="1"/>
-                    <GradientStop Color="Red" Offset="0.477"/>
-                </LinearGradientBrush>
-            </StackPanel.Background>
+            
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
                   Height="21" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
@@ -114,7 +119,7 @@
                 </Grid.RowDefinitions>
                 <!-- Felhasznalok listázás -->
                 <StackPanel x:Name="FelhasznaloListPanel"
-                            Background="Gray"
+                            Background="#3F3F46"
                             Margin="0,66,0,10"
                             Grid.Column="1"
                             Grid.RowSpan="4"
@@ -133,7 +138,7 @@
                 </StackPanel>
                 <!-- Új felhasználó létrehozása -->
                 <StackPanel x:Name="UjFelhasznaloPanel"
-                            Background="LightGray"
+                            Background="#3F3F46"
                             Margin="0,66,0,10"
                             Grid.Column="1"
                             Grid.RowSpan="4"
@@ -159,7 +164,7 @@
                             Grid.RowSpan="3"
                             Grid.ColumnSpan="3"
                             HorizontalAlignment="Left"
-                            Background="Gray" 
+                            Background="#3F3F46" 
                             Margin="0,82,0,0" 
                             Width="590"
                             Visibility="Hidden">
@@ -185,8 +190,8 @@
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
                             Grid.RowSpan="4"
-                            Background="Gray" Margin="0,82,0,82"
-                            Visibility="Visible">
+                            Background="#3F3F46" Margin="0,82,0,82"
+                            Visibility="Hidden">
                     <Grid Height="165">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -226,7 +231,7 @@
 
         </StackPanel>
         <StackPanel x:Name="LoginPage"
-                    Background="LightBlue"
+                    Background="#3F3F46"
                     Width="200"
                     RenderTransformOrigin="0.5,0.5"
                     HorizontalAlignment="Center"

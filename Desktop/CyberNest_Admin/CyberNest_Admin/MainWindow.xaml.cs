@@ -43,6 +43,7 @@ namespace CyberNest_Admin
                 Token = eredmeny.Token;
                 MessageBox.Show($"Sikeres belépés! Token: {Token} További infók: {eredmeny.User.Role}" );
                 // Itt átválthatsz egy másik ablakra vagy betöltheted az adatokat
+                Clipboard.SetText(Token); // Token másolása a vágólapra, ha szükséges   
                 LoginPage.Visibility = Visibility.Hidden;
                 SideBrand_loginPage.Visibility = Visibility.Hidden;
 
@@ -148,9 +149,10 @@ namespace CyberNest_Admin
                 MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
             }
             var lista2 = Uzemelteto.uzemeltetokAll
-                .Select(x => x.UzemeltetoNev)
-                .Distinct()
-                .ToList();
+            .Select(x => x.UzemeltetoNev)
+            .Where(nev => !string.IsNullOrEmpty(nev)) // Üresek kiszűrése
+            .Distinct()
+            .ToList();
             ujEszkozUzemelteto.ItemsSource = lista2;
         }
 
@@ -177,7 +179,6 @@ namespace CyberNest_Admin
             var ram = ujEszkozRam.Text;
             var hdd = ujEszkozHdd.Text;
 
-            
             var uzemeltetoneve = ujEszkozUzemelteto.SelectedValue.ToString();
 
             var eredmeny = api.InsertEszkozAsync(leiras, cpu, ram, hdd, uzemeltetoneve, Token);
