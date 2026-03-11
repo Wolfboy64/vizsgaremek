@@ -71,6 +71,20 @@ namespace CyberNest_Admin
 
             return System.Text.Json.JsonSerializer.Deserialize<List<User>>(jsonString, options) ?? new List<User>();
         }
+        public async Task<bool> DeleteUserAsync(int userId)
+        {
+            try
+            {
+                // Ellenőrizd a végpontot: users/{userId} vagy felhasznalo/{userId}?
+                var response = await _httpClient.DeleteAsync($"users/{userId}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Törlési hiba: {ex.Message}");
+                return false;
+            }
+        }
         public async Task<List<Eszkoz>> GetEszkozokAsync()
         {
             try
@@ -102,8 +116,9 @@ namespace CyberNest_Admin
             }
         }
         //insert new felhasznalo to /api/auth/register with post method. with this datas: nev, elerhetoseg, jelszo, role = "user"
-        public async Task<bool> RegisterAsync(string nev, string elerhetoseg, string jelszo, string szerepkor)
+        public async Task<bool> RegisterAsync(string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
             var registerData = new
             {
                 nev,

@@ -71,20 +71,56 @@ namespace CyberNest_Admin
         {
             UjFelhasznaloPanel.Visibility = Visibility.Visible;
             var api = new ApiService();
-
+            string role = ujFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
+            MessageBox.Show($"Szerepkör: {role}"); // Debug üzenet a szerepkörről
             var lista = api.RegisterAsync(UjFelhasznaloNev.Text,
-                UjFelhasznaloEmail.Text,
-                "jelszo",
-                UjFelhasznaloRole.SelectedValue.ToString());
+            UjFelhasznaloEmail.Text,
+            "jelszo",
+            role,
+            Token);
         }
 
         private void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
         {
 
         }
-        private void FelhasznaloTorleseMenu_Click(object sender, RoutedEventArgs e)
-        {
 
+
+        private async void FelhasznaloTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznaloTorlesPanel.Visibility = Visibility.Visible;
+            var api = new ApiService();
+
+            // .Result helyett await, hogy ne fagyjon ki a UI
+            var lista = await api.GetUsersAsync();
+
+            FelhasznaloTorlesComboBox.ItemsSource = lista;
+            // Figyelem: A User osztályodban 'Elerhetoseg' van, nem 'Email'!
+            FelhasznaloTorlesComboBox.DisplayMemberPath = "Elerhetoseg";
+            FelhasznaloTorlesComboBox.SelectedValuePath = "Id";
+        }
+
+        private async void FelhasznaloTorlesSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // A SelectedValue közvetlenül az Id-t adja vissza a SelectedValuePath miatt
+            if (FelhasznaloTorlesComboBox.SelectedValue != null)
+            {
+                int id = Convert.ToInt32(FelhasznaloTorlesComboBox.SelectedValue);
+
+                ApiService api = new ApiService();
+                bool siker = await api.DeleteUserAsync(id); // await kell ide is!
+
+                if (siker)
+                {
+                    MessageBox.Show("Felhasználó törölve!");
+                    // Frissítsük a listát törlés után
+                    FelhasznaloTorleseMenu_Click(null, null);
+                }
+                else
+                {
+                    MessageBox.Show("Hiba történt a törlés során.");
+                }
+            }
         }
         private async void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -109,6 +145,10 @@ namespace CyberNest_Admin
 
 
         //vissza gombok
+        private void FelhasznalokTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznaloTorlesPanel.Visibility = Visibility.Hidden; 
+        }
 
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -207,6 +247,8 @@ namespace CyberNest_Admin
 
         }
 
-        
+     
+
+
     }
 }

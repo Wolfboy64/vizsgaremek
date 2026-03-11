@@ -82,7 +82,7 @@
                     Grid.ColumnSpan="5"
                     Grid.RowSpan="5"
                     Visibility="Visible">
-            
+
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
                   Height="21" 
@@ -142,24 +142,78 @@
                 <!-- Új felhasználó létrehozása -->
                 <StackPanel x:Name="UjFelhasznaloPanel"
                             Background="#3F3F46"
-                            Margin="0,66,0,10"
+                            Margin="0,29,0,46"
                             Grid.Column="1"
-                            Grid.RowSpan="4"
+                            Grid.RowSpan="5"
                             Grid.ColumnSpan="2"
-                            Visibility="Hidden">
-                    <Button x:Name="UjFelhasznaloBackBtn" Content="Vissza" Width="84"/>
-                    <TextBlock Text="Név:" Margin="10"/>
-                    <TextBox x:Name="UjFelhasznaloNev" Margin="10"/>
-                    <TextBlock Text="E-mail:" Margin="10"/>
-                    <TextBox x:Name="UjFelhasznaloEmail" Margin="10"/>
-                    <TextBlock Text="Szerepkör:" Margin="10"/>
-                    <ComboBox x:Name="UjFelhasznaloRole" Margin="10">
-                        <ComboBoxItem Content="Admin"/>
-                        <ComboBoxItem Content="User"/>
-                    </ComboBox>
-                    <Button x:Name="UjFelhasznaloSaveBtn" Content="Mentés" Width="84" Margin="10" Click="UjFelhasznaloSaveBtn_Click"/>
-                </StackPanel>
+                            Visibility="Visible">
+                    <Grid Height="246">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="UjFelhasznaloBackBtn" Content="Vissza" Width="84" RenderTransformOrigin="0.452,0.754" Margin="20,111,29,-82" Grid.Row="4"/>
+                        <TextBlock Text="Név:" Margin="10,10,10,10" Grid.Row="2"/>
+                        <TextBox x:Name="UjFelhasznaloNev" Margin="10,10,10,10" Grid.Column="1" Grid.Row="2"/>
+                        <TextBlock Text="E-mail:" Margin="10,10,10,10" Grid.Row="1"/>
+                        <TextBox x:Name="UjFelhasznaloEmail" Margin="10,10,10,10" Grid.Column="1" Grid.Row="1"/>
+                        <TextBlock Text="Admin:" Margin="10,10,10,10" Grid.Row="3"/>
+                        <Button x:Name="UjFelhasznaloSaveBtn" Content="Mentés" Width="84" Margin="24,111,25,-82" Click="UjFelhasznaloSaveBtn_Click" Grid.Column="2" Grid.Row="4"/>
+                        <CheckBox x:Name="ujFelhasznaloCheckBox" Grid.Column="1" HorizontalAlignment="Left" Foreground="#007ACC" Margin="104,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="20" Height="19"/>
+                    </Grid>
 
+
+                </StackPanel>
+                <!-- Felhasználók törlése -->
+                <StackPanel x:Name="FelhasznaloTorlesPanel"
+                         Background="#3F3F46"
+                         Margin="0,66,0,10"
+                         Grid.Column="1"
+                         Grid.RowSpan="4"
+                         Grid.ColumnSpan="2"
+                         Visibility="Hidden">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Válassza ki a törölni kívánt felhasználót:" Margin="10,10,10,10" Grid.ColumnSpan="2"/>
+                        <ComboBox x:Name="FelhasznaloTorlesComboBox" Margin="10,3,10,3" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
+
+                        <Button x:Name="FelhasznaloTorlesSaveBtn"
+                                Content="Mentés"
+                                Width="84"
+                                Margin="39,183,10,-180"
+                                Click="FelhasznaloTorlesSaveBtn_Click"
+                                Grid.Column="2" 
+                                Grid.Row="1" 
+                                Grid.RowSpan="2"/>
+                        <Button x:Name="FelhasznalokTorlesVisszaBtn"
+                                Content="Vissza"
+                                Width="84"
+                                Margin="10,183,39,-180" 
+                                Click="FelhasznalokTorlesVisszaBtn_Click" 
+                                Grid.Row="1" 
+                                Grid.RowSpan="2"/>
+
+                    </Grid>
+
+
+                </StackPanel>
 
                 <!-- Eszkozok list -->
                 <StackPanel x:Name="EszkozokListPanel"
@@ -214,8 +268,8 @@
                         <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="2" TextWrapping="Wrap" Text="RAM" VerticalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="3" TextWrapping="Wrap" Text="HDD" VerticalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="4" TextWrapping="Wrap" Text="Üzemeltető neve" VerticalAlignment="Center"/>
-                        
-                        
+
+
                         <TextBox x:Name="ujEszkozRam" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114" Grid.Row="2"/>
                         <TextBox x:Name="ujEszkozCpu" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114" Grid.Row="1"/>
                         <TextBox x:Name="ujEszkozHdd" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114" Grid.Row="3"/>
