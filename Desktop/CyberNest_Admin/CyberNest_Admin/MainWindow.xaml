@@ -146,7 +146,7 @@
                             Grid.Column="1"
                             Grid.RowSpan="5"
                             Grid.ColumnSpan="2"
-                            Visibility="Visible">
+                            Visibility="Hidden">
                     <Grid Height="246">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
