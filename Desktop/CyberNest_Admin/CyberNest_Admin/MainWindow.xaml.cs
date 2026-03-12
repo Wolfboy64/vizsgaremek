@@ -70,14 +70,7 @@ namespace CyberNest_Admin
         private void UjFelhasznaloMenu_Click(object sender, RoutedEventArgs e)
         {
             UjFelhasznaloPanel.Visibility = Visibility.Visible;
-            var api = new ApiService();
-            string role = ujFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
-            MessageBox.Show($"Szerepkör: {role}"); // Debug üzenet a szerepkörről
-            var lista = api.RegisterAsync(UjFelhasznaloNev.Text,
-            UjFelhasznaloEmail.Text,
-            "jelszo",
-            role,
-            Token);
+            
         }
 
         private void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
@@ -106,20 +99,19 @@ namespace CyberNest_Admin
             if (FelhasznaloTorlesComboBox.SelectedValue != null)
             {
                 int id = Convert.ToInt32(FelhasznaloTorlesComboBox.SelectedValue);
-
-                ApiService api = new ApiService();
-                bool siker = await api.DeleteUserAsync(id); // await kell ide is!
-
-                if (siker)
+                try
                 {
-                    MessageBox.Show("Felhasználó törölve!");
-                    // Frissítsük a listát törlés után
-                    FelhasznaloTorleseMenu_Click(null, null);
+                    ApiService api = new ApiService();
+                    bool siker = await api.DeleteUserAsync(id, Token); // await kell ide is!
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Hiba történt a törlés során.");
+
+                    Debug.WriteLine($"Hiba, Störung! {ex.Message}");
                 }
+               
+
+               
             }
         }
         private async void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
@@ -152,7 +144,14 @@ namespace CyberNest_Admin
 
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            UjFelhasznaloPanel.Visibility = Visibility.Hidden; 
+            UjFelhasznaloPanel.Visibility = Visibility.Hidden;
+            var api = new ApiService();
+            string role = ujFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
+            var lista = api.AddFelhasznaloAsync(UjFelhasznaloNev.Text,
+            UjFelhasznaloEmail.Text,
+            "jelszo",
+            role,
+            Token);
         }
         private void FelhasznalokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -247,8 +246,73 @@ namespace CyberNest_Admin
 
         }
 
-     
+        private void ErtekelesekMenu_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
 
+        private void UzemeltetokListajaMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UjUzemeltetoMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UzemeltetoTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UzemeltetoModositasMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void NaplozasListajaMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NaplozasTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ErtekelesTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ErtekelesModositasMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UjErtekelesMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NaplozasListajaMenu_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NaplozasTorleseMenu_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NaplozasModositasMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UjNaplozasMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

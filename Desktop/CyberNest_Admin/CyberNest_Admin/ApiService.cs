@@ -71,12 +71,13 @@ namespace CyberNest_Admin
 
             return System.Text.Json.JsonSerializer.Deserialize<List<User>>(jsonString, options) ?? new List<User>();
         }
-        public async Task<bool> DeleteUserAsync(int userId)
+        public async Task<bool> DeleteUserAsync(int userId, string JWT)
         {
             try
             {
                 // Ellenőrizd a végpontot: users/{userId} vagy felhasznalo/{userId}?
-                var response = await _httpClient.DeleteAsync($"users/{userId}");
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.DeleteAsync($"felhasznalo/{userId}");
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -116,19 +117,20 @@ namespace CyberNest_Admin
             }
         }
         //insert new felhasznalo to /api/auth/register with post method. with this datas: nev, elerhetoseg, jelszo, role = "user"
-        public async Task<bool> RegisterAsync(string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
+        // CREATE: Új felhasználó hozzáadása
+        public async Task<bool> AddFelhasznaloAsync(string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
             var registerData = new
             {
-                nev,
-                elerhetoseg,
-                jelszo,
-                szerepkor
+                nev = nev,
+                elerhetoseg = elerhetoseg,
+                jelszo = jelszo,
+                role = szerepkor // A backend 'role' néven várja a modelltől függően
             };
-            var response = await _httpClient.PostAsJsonAsync("auth/register", registerData);
+            // Figyelem: A backend create útvonala általában /felhasznalo vagy /auth/register
+            var response = await _httpClient.PostAsJsonAsync("felhasznalo", registerData);
             return response.IsSuccessStatusCode;
-
         }
 
 

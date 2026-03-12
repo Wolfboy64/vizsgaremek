@@ -105,6 +105,30 @@
                     <MenuItem x:Name="EszkozTorleseMenu" Header="Eszköz törlése" Click="EszkozTorleseMenu_Click"/>
                     <MenuItem x:Name="EszkozModositasMenu" Header="Eszköz módosítása" Click="EszkozModositasMenu_Click"/>
                 </MenuItem>
+                <MenuItem x:Name="UzemeltetokMenu"
+                          Header="Üzemeltetők"
+                          FontSize="14">
+                    <MenuItem x:Name="UzemeltetokListajaMenu" Header="Üzemeltetők listája" Click="UzemeltetokListajaMenu_Click"/>
+                    <MenuItem x:Name="UjUzemeltetoMenu" Header="Új üzemeltető" Click="UjUzemeltetoMenu_Click"/>
+                    <MenuItem x:Name="UzemeltetoModositasMenu" Header="Üzemeltető módosítása" Click="UzemeltetoModositasMenu_Click"/>
+                    <MenuItem x:Name="UzemeltetoTorleseMenu" Header="Üzemeltető törlése" Click="UzemeltetoTorleseMenu_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="ErtekelesekMenu"
+                          Header="Értékelések"
+                          FontSize="14">
+                    <MenuItem x:Name="ErtekelesekListaMenu" Header="Értékelések Listázása" Click="ErtekelesekMenu_Click" />
+                    <MenuItem x:Name="ErtekelesTorleseMenu" Header="Értékelés törlése" Click="ErtekelesTorleseMenu_Click"/>
+                    <MenuItem x:Name="ErtekelesModositasMenu" Header="Értékelés módosítása" Click="ErtekelesModositasMenu_Click"/>
+                    <MenuItem x:Name="UjErtekelesMenu" Header="Új értékelés" Click="UjErtekelesMenu_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="NaplozasMenu" 
+                          Header="Naplózás"
+                          FontSize="14">
+                    <MenuItem x:Name="NaplozasListajaMenu" Header="Naplózás listája" Click="NaplozasListajaMenu_Click_1"/>
+                    <MenuItem x:Name="NaplozasTorleseMenu" Header="Naplózás törlése" Click="NaplozasTorleseMenu_Click_1"/>
+                    <MenuItem x:Name="NaplozasModositasMenu" Header="Naplózás módosítása" Click="NaplozasModositasMenu_Click"/>
+                    <MenuItem x:Name="UjNaplozasMenu" Header="Új naplózás" Click="UjNaplozasMenu_Click"/>
+                </MenuItem>
             </Menu>
             <Grid Height="412" Width="799" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
