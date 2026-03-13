@@ -176,8 +176,47 @@ namespace CyberNest_Admin
                 return false;
             }
         }
-
-
+        public async Task<Eszkoz> DeleteEszkozAsync(int eszkozId, string JWT)
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.DeleteAsync($"eszkoz/{eszkozId}");
+                if (!response.IsSuccessStatusCode) return null;
+                string jsonString = await response.Content.ReadAsStringAsync();
+                return Eszkoz.FromJson(jsonString).FirstOrDefault(); // Visszaadjuk a törölt eszközt
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Törlési hiba: {ex.Message}");
+                return null;
+            }
+        }
+        public async Task<bool> UpdateEszkozAsync(int eszkozId, string leiras, string cpu, string ram, string hdd, string uzemeltetoneve, string JWT)
+        {
+            try
+            {
+                Uzemelteto? u = Uzemelteto.uzemeltetokAll.FirstOrDefault(x => x.Nev == uzemeltetoneve);
+                if (u == null) return false;
+                var updateData = new
+                {
+                    id = eszkozId,
+                    leiras = leiras,
+                    cpu = cpu,
+                    ram = ram,
+                    hdd = hdd,
+                    uzemelteto_id = u.Id
+                };
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.PutAsJsonAsync($"eszkoz/{eszkozId}", updateData);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Frissítési hiba: {ex.Message}");
+                return false;
+            }
+        }
         /* |---------------------|
          * | Üzemeltetők szakasz |
          * |---------------------|

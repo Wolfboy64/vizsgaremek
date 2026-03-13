@@ -172,7 +172,15 @@ namespace CyberNest_Admin
             FelhasznaloTorlesPanel.Visibility = Visibility.Hidden; 
             WelocmePage.Visibility = Visibility.Visible;
         }
+        private void EszkozTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            EszkozTorlesPanel.Visibility = Visibility.Hidden;
+            WelocmePage.Visibility = Visibility.Visible;
+        }
+        private void modEszkozBackBtn_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             UjFelhasznaloPanel.Visibility = Visibility.Hidden;
@@ -191,6 +199,7 @@ namespace CyberNest_Admin
             WelocmePage.Visibility = Visibility.Visible;
 
         }
+
         private void EszkozokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
             EszkozokListPanel.Visibility = Visibility.Hidden;
@@ -223,16 +232,6 @@ namespace CyberNest_Admin
             {
                 MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
             }
-            /*
-            Uzemelteto.uzemeltetokAll.Clear();
-            Uzemelteto.uzemeltetokAll = await api.GetUzemeltetokAsync();
-            var lista2 = Uzemelteto.uzemeltetokAll
-                .Select(x => x.Nev)
-                .Where(nev => !string.IsNullOrEmpty(nev))
-                .Distinct()
-                .ToList();
-
-            ujEszkozUzemelteto.ItemsSource = lista2;*/
         }
 
         private async void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
@@ -250,15 +249,64 @@ namespace CyberNest_Admin
             }
             WelocmePage.Visibility = Visibility.Hidden;
         }
-
-        private void EszkozTorleseMenu_Click(object sender, RoutedEventArgs e)
+        private async void EszkozTorlesSaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            WelocmePage.Visibility = Visibility.Visible;
+            ApiService api = new ApiService();
+            //kiválasztott eszköz törlése majd vissza a főoldalra
+            // A SelectedValue közvetlenül az Id-t adja vissza a SelectedValuePath miatt
+            if (EszkozTorlesComboBox.SelectedValue != null)
+            {
+                int id = Convert.ToInt32(EszkozTorlesComboBox.SelectedValue);
+                try
+                {
+                    await api.DeleteEszkozAsync(id, Token); // await kell ide is!
+                }
+                catch (Exception ex)
+                {
 
+                    Debug.WriteLine($"Hiba, Störung! {ex.Message}");
+                }
+
+
+
+            }
+
+            EszkozTorlesPanel.Visibility = Visibility.Hidden;
+        }
+        private async void EszkozTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            WelocmePage.Visibility = Visibility.Hidden;
+
+            EszkozTorlesComboBox.Items.Clear();
+            ApiService api = new ApiService();
+            var a_ = await api.GetEszkozokAsync();
+            Debug.WriteLine($"Letöltött eszközök száma: {a_.Count}");
+            foreach (var item in a_)
+            {
+                EszkozTorlesComboBox.Items.Add(item.Id);
+            }
+
+
+            EszkozTorlesPanel.Visibility = Visibility.Visible;
         }
 
-        private void EszkozModositasMenu_Click(object sender, RoutedEventArgs e)
+        private async void EszkozModositasMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
+            ApiService api = new ApiService();
+            var a_ = await api.GetUzemeltetokAsync();
+            foreach (var item in a_)
+            {
+                modEszkozUzemelteto.Items.Add(item.Nev); //combo
+            }
+            var b_ = await api.GetEszkozokAsync();
+            foreach (var item in b_)
+            {
+                modEszkozEszkComboBox.Items.Add(item.Id);
+            }
+            
+            EszkozModositasPanel.Visibility = Visibility.Visible;
         }
         private async void ujEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -291,74 +339,92 @@ namespace CyberNest_Admin
                 MessageBox.Show("Hiba történt. Ellenőrizd a szerverkapcsolatot!");
             }
         }
+        private async void modEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            ApiService api = new ApiService();
+            
+
+            if (modEszkozEszkComboBox.SelectedValue != null)
+            {
+                int id = Convert.ToInt32(modEszkozEszkComboBox.SelectedValue);
+
+                modEszkozLeiras.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Leiras;
+                modEszkozCpu.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Cpu;
+                modEszkozRam.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Ram;
+                modEszkozHdd.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Hdd;
+
+                var leiras = modEszkozLeiras.Text;
+                var cpu = modEszkozCpu.Text;
+                var ram = modEszkozRam.Text;
+                var hdd = modEszkozHdd.Text;
+
+                await api.UpdateEszkozAsync(id, leiras, cpu, ram, hdd, modEszkozUzemelteto.SelectedItem as string, Token);
+
+            }
+            EszkozModositasPanel.Visibility = Visibility.Hidden;
+
+        }
 
         private void ErtekelesekMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void UzemeltetokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void UjUzemeltetoMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void UzemeltetoTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void UzemeltetoModositasMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
         private void NaplozasListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void NaplozasTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void ErtekelesTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void ErtekelesModositasMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void UjErtekelesMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
-
-        private void NaplozasListajaMenu_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void NaplozasTorleseMenu_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void NaplozasModositasMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void UjNaplozasMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            WelocmePage.Visibility = Visibility.Hidden;
         }
+
+        
     }
 }
