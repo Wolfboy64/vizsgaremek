@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CyberNest_Admin
 {
@@ -24,6 +25,13 @@ namespace CyberNest_Admin
             LoginPage.Visibility = Visibility.Visible;
             SideBrand_loginPage.Visibility = Visibility.Visible;
             MainContentPage.Visibility = Visibility.Hidden;
+
+            //Height="450" Width="800"
+            this.MinHeight = 450;
+            this.MinWidth = 800;
+
+            this.MaxHeight = 450;
+            this.MaxWidth = 800;
         }
 
 
@@ -41,15 +49,17 @@ namespace CyberNest_Admin
             if (eredmeny != null)
             {
                 Token = eredmeny.Token;
-                MessageBox.Show($"Sikeres belépés! Token: {Token} További infók: {eredmeny.User.Role}" );
+                this.Title = $"CyberNest Admin felület - Üdvözlünk, {eredmeny.User.Nev}";
+                //MessageBox.Show($"Sikeres belépés! Token: {Token} További infók: {eredmeny.User.Role}" );
                 // Itt átválthatsz egy másik ablakra vagy betöltheted az adatokat
                 Clipboard.SetText(Token); // Token másolása a vágólapra, ha szükséges   
                 LoginPage.Visibility = Visibility.Hidden;
                 SideBrand_loginPage.Visibility = Visibility.Hidden;
 
                 MainContentPage.Visibility = Visibility.Visible;
-
-
+                WelocmePage.Visibility = Visibility.Visible;
+                DateTime date = DateTime.Now;
+                DateSetup(date.Hour, eredmeny.User.Nev, eredmeny.User.Role, eredmeny.User.Elerhetoseg);
             }
             else
             {
@@ -59,7 +69,25 @@ namespace CyberNest_Admin
             // Visszaállítjuk a UI-t
             Bejelentkezes.IsEnabled = true;
         }
-
+        private void DateSetup(int hour, string nev, string role, string elerhetoseg)
+        {
+            if (hour < 8)
+            {
+                WelocmeTextblock.Text = $"Jó Reggelt, {nev}!\nJogolutsági szinted: {role}\nElérhetőséged: {elerhetoseg}";
+            }
+            else if (hour > 8 && hour < 12)
+            {
+                WelocmeTextblock.Text = $"Jó Napot, {nev}!\nJogolutsági szinted: {role}\nElérhetőséged: {elerhetoseg}";
+            }
+            else if (hour > 12 && hour < 16)
+            {
+                WelocmeTextblock.Text = $"Jó Napot, {nev} !\nJogolutsági szinted:  {role} \nElérhetőséged:  {elerhetoseg}";
+            }
+            else
+            {
+                WelocmeTextblock.Text = $"Jó Estét, {nev} !\nJogolutsági szinted:  {role} \nElérhetőséged:  {elerhetoseg}";
+            }
+        }
        /*
         *  |-----------------------------|
         *  |  Felhasználók kezelése      |
@@ -116,7 +144,9 @@ namespace CyberNest_Admin
         }
         private async void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
+            WelocmePage.Visibility = Visibility.Hidden;
             FelhasznaloListPanel.Visibility = Visibility.Visible;
+
 
             var api = new ApiService();
             var lista = await api.GetUsersAsync();
@@ -140,11 +170,13 @@ namespace CyberNest_Admin
         private void FelhasznalokTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
         {
             FelhasznaloTorlesPanel.Visibility = Visibility.Hidden; 
+            WelocmePage.Visibility = Visibility.Visible;
         }
 
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             UjFelhasznaloPanel.Visibility = Visibility.Hidden;
+            WelocmePage.Visibility = Visibility.Visible;
             var api = new ApiService();
             string role = ujFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
             var lista = api.AddFelhasznaloAsync(UjFelhasznaloNev.Text,
@@ -156,19 +188,24 @@ namespace CyberNest_Admin
         private void FelhasznalokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
             FelhasznaloListPanel.Visibility = Visibility.Hidden;
+            WelocmePage.Visibility = Visibility.Visible;
+
         }
         private void EszkozokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
             EszkozokListPanel.Visibility = Visibility.Hidden;
+            WelocmePage.Visibility = Visibility.Visible;
         }
         private void ujEszkozBackBtn_Click(object sender, RoutedEventArgs e)
         {
             ujEszkozPanel.Visibility = Visibility.Hidden;
+            WelocmePage.Visibility = Visibility.Visible;
         }
 
         //eszközökList
         private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
+            WelocmePage.Visibility = Visibility.Hidden;
             EszkozokListPanel.Visibility = Visibility.Visible;
 
             ApiService api = new ApiService();
@@ -211,6 +248,7 @@ namespace CyberNest_Admin
         private void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
         {
             ujEszkozPanel.Visibility = Visibility.Visible;
+            WelocmePage.Visibility = Visibility.Hidden;
         }
 
         private void EszkozTorleseMenu_Click(object sender, RoutedEventArgs e)

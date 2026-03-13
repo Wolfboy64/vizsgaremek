@@ -144,6 +144,18 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                <StackPanel x:Name="WelocmePage"
+                            Background="#3F3F46"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="2"
+                            Grid.RowSpan="2">
+                    <TextBlock x:Name="WelocmeTextblock"
+                               TextWrapping="Wrap" 
+                               Text="Üdvözlünk, "
+                               FontSize="23" FontFamily="Cascadia Mono SemiBold"/>
+
+                </StackPanel>
                 <!-- Felhasznalok listázás -->
                 <StackPanel x:Name="FelhasznaloListPanel"
                             Background="#3F3F46"
