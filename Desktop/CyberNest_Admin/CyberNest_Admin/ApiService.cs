@@ -56,6 +56,10 @@ namespace CyberNest_Admin
                 return null;
             }
         }
+        /* |----------------------|
+         * | Felhasználók szakasz |
+         * |----------------------|
+         */
         public async Task<List<User>> GetUsersAsync()
         {
             var response = await _httpClient.GetAsync("debug/users");
@@ -86,6 +90,30 @@ namespace CyberNest_Admin
                 return false;
             }
         }
+        //insert new felhasznalo to /api/auth/register with post method. with this datas: nev, elerhetoseg, jelszo, role = "user"
+        // CREATE: Új felhasználó hozzáadása
+        public async Task<bool> AddFelhasznaloAsync(string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+            var registerData = new
+            {
+                nev = nev,
+                elerhetoseg = elerhetoseg,
+                jelszo = jelszo,
+                role = szerepkor // A backend 'role' néven várja a modelltől függően
+            };
+            // Figyelem: A backend create útvonala általában /felhasznalo vagy /auth/register
+            var response = await _httpClient.PostAsJsonAsync("felhasznalo", registerData);
+            return response.IsSuccessStatusCode;
+        }
+
+
+        /* |------------------|
+         * | Eszközök szakasz |
+         * |------------------|
+         */
+
+
         public async Task<List<Eszkoz>> GetEszkozokAsync()
         {
             try
@@ -116,30 +144,47 @@ namespace CyberNest_Admin
                 return new List<Eszkoz>();
             }
         }
-        //insert new felhasznalo to /api/auth/register with post method. with this datas: nev, elerhetoseg, jelszo, role = "user"
-        // CREATE: Új felhasználó hozzáadása
-        public async Task<bool> AddFelhasznaloAsync(string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
+
+        public async Task<bool> InsertEszkozAsync(string leiras, string cpu, string ram, string hdd, string uzemeltetoneve, string JWT)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
-            var registerData = new
+            try
             {
-                nev = nev,
-                elerhetoseg = elerhetoseg,
-                jelszo = jelszo,
-                role = szerepkor // A backend 'role' néven várja a modelltől függően
-            };
-            // Figyelem: A backend create útvonala általában /felhasznalo vagy /auth/register
-            var response = await _httpClient.PostAsJsonAsync("felhasznalo", registerData);
-            return response.IsSuccessStatusCode;
+                // Megkeressük az üzemeltetőt a listában
+                Uzemelteto? u = Uzemelteto.uzemeltetokAll.FirstOrDefault(x => x.Nev == uzemeltetoneve);
+
+                if (u == null) return false;
+
+                // Az anonim objektum kulcsait PONTOSAN úgy add meg, ahogy a backend várja
+                var insertData = new
+                {
+                    leiras = leiras,
+                    cpu = cpu,
+                    ram = ram,
+                    hdd = hdd,
+                    uzemelteto_id = u.Id // Itt fixen megadjuk a nevet, így nincs ütközés
+                };
+
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+
+                var response = await _httpClient.PostAsJsonAsync("eszkoz", insertData);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Belső hiba: {ex.Message}");
+                return false;
+            }
         }
 
 
-
-        
-        /* |--------------------|
-         * | Eszköz létrehozása |
-         * |--------------------|
+        /* |---------------------|
+         * | Üzemeltetők szakasz |
+         * |---------------------|
          */
+
+
+
         //üzemeltető lekérés végpontból
         public async Task<List<Uzemelteto>> GetUzemeltetokAsync()
         {
@@ -157,46 +202,6 @@ namespace CyberNest_Admin
             }
         }
 
-
-        public async Task<bool> InsertEszkozAsync(string leiras, string cpu, string ram, string hdd, string uzemeltetoneve, string JWT)
-        {
-            try
-            {
-                Uzemelteto u = new Uzemelteto();
-                foreach (var item in Uzemelteto.uzemeltetokAll)
-                {
-                    if (item.Nev == uzemeltetoneve)
-                    {
-                        u = item;
-                        break;
-                    }
-                }
-
-                var insertData = new
-                {
-                    leiras,
-                    cpu,
-                    ram,
-                    hdd,
-                    u.Id,
-                    uzemeltetoneve,
-                    u.Leiras
-
-                };
-                //JWT token hozzáadása a kérés headeréhez
-                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
-                var response = await _httpClient.PostAsJsonAsync("eszkoz", insertData);
-                Debug.WriteLine($"Response: {response}");
-                return (response.IsSuccessStatusCode);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return false;
-            }
-            
-
-
-        }
+        
     }
 }

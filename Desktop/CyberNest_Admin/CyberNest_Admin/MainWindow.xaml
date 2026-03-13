@@ -149,7 +149,8 @@
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
                             Grid.Row="2"
-                            Grid.RowSpan="2">
+                            Grid.RowSpan="2"
+                            Visibility="Hidden">
                     <TextBlock x:Name="WelocmeTextblock"
                                TextWrapping="Wrap" 
                                Text="Üdvözlünk, "
@@ -318,6 +319,34 @@
                     </Grid>
 
 
+                </StackPanel>
+                <StackPanel x:Name="EszkozTorlesPanel"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Grid.RowSpan="4"
+                            Background="#3F3F46" Margin="0,82,0,82"
+                            Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Válassza ki a törölni kívánt eszközt:" Margin="10,10,10,10" Grid.ColumnSpan="2"/>
+                        <ComboBox x:Name="EszkozTorlesComboBox" Margin="10,3,10,3" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
+                        <!--Vissza gomb és Mentés-->
+                        <Button x:Name="EszkozTorlesVisszaBtn" Margin="10,3,10,3" Grid.Row="2" Content="Vissza"/>
+                        <Button x:Name="EszkozTorlesSaveBtn"
+                                Content="Mentés"
+                                Click="EszkozTorlesSaveBtn_Click"
+                                Grid.Column="2" Margin="8,3,41,3" Grid.Row="2"
+                            />
+                    </Grid>
                 </StackPanel>
             </Grid>
 

@@ -260,7 +260,6 @@ namespace CyberNest_Admin
         {
 
         }
-
         private async void ujEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             ApiService api = new ApiService();
@@ -269,25 +268,28 @@ namespace CyberNest_Admin
             var ram = ujEszkozRam.Text;
             var hdd = ujEszkozHdd.Text;
 
-            //itt van hiba, ezt kapom futtatás közben: 
-            /*
-             *  Exception thrown: 'System.InvalidOperationException' in System.Text.Json.dll
-                Exception thrown: 'System.InvalidOperationException' in System.Private.CoreLib.dll
-                The JSON property name for '<>f__AnonymousType2`7[System.String,System.String,System.String,System.String,System.Int64,System.String,System.String].leiras' collides with another property.
-             */
-            var uzemeltetoneve = ujEszkozUzemelteto.SelectedItem != null ? ujEszkozUzemelteto.SelectedItem.ToString() : string.Empty;
+            var uzemelteto = ujEszkozUzemelteto.SelectedItem as string;
+            
 
-            var eredmeny = api.InsertEszkozAsync(leiras, cpu, ram, hdd, uzemeltetoneve, Token);
-            if (eredmeny.Result)
+            if (string.IsNullOrEmpty(uzemelteto))
+            {
+                MessageBox.Show("Válassz üzemeltetőt!");
+                return;
+            }
+
+            // .Result HELYETT await!
+            bool siker = await api.InsertEszkozAsync(leiras, cpu, ram, hdd, uzemelteto, Token);
+
+            if (siker)
             {
                 MessageBox.Show("Sikeres eszköz hozzáadás!");
                 ujEszkozPanel.Visibility = Visibility.Hidden;
+                // Itt érdemes lehet frissíteni a fő listát is
             }
             else
             {
-                MessageBox.Show("Hiba történt az eszköz hozzáadásakor. Ellenőrizd az adatokat!");
+                MessageBox.Show("Hiba történt. Ellenőrizd a szerverkapcsolatot!");
             }
-
         }
 
         private void ErtekelesekMenu_Click(object sender, RoutedEventArgs e)
