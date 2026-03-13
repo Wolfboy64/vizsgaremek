@@ -212,19 +212,7 @@ namespace CyberNest_Admin
 
             var lista = await api.GetEszkozokAsync();
             Eszkoz.Eszkozok = lista;
-            Uzemelteto.uzemeltetokAll.Clear();
-
-            foreach (var item in lista)
-            {
-                Uzemelteto.uzemeltetokAll.Add(
-                    new Uzemelteto(
-                        (int)item.UzemeltetoId,
-                        item.UzemeltetoNev,
-                        item.UzemeltetoLeiras
-                    )
-                );
-            }
-
+            
             System.Diagnostics.Debug.WriteLine($"Letöltött eszközök száma: {lista.Count}");
 
             if (lista.Count > 0)
@@ -235,19 +223,31 @@ namespace CyberNest_Admin
             {
                 MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
             }
-
+            /*
+            Uzemelteto.uzemeltetokAll.Clear();
+            Uzemelteto.uzemeltetokAll = await api.GetUzemeltetokAsync();
             var lista2 = Uzemelteto.uzemeltetokAll
-                .Select(x => x.UzemeltetoNev)
+                .Select(x => x.Nev)
                 .Where(nev => !string.IsNullOrEmpty(nev))
                 .Distinct()
                 .ToList();
 
-            ujEszkozUzemelteto.ItemsSource = lista2;
+            ujEszkozUzemelteto.ItemsSource = lista2;*/
         }
 
-        private void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
+        private async void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
         {
             ujEszkozPanel.Visibility = Visibility.Visible;
+            
+            ApiService api = new ApiService();
+            Uzemelteto.uzemeltetokAll.Clear();
+            Uzemelteto.uzemeltetokAll = await api.GetUzemeltetokAsync();
+
+            ujEszkozUzemelteto.Items.Clear();
+            foreach (var item in Uzemelteto.uzemeltetokAll)
+            {
+                ujEszkozUzemelteto.Items.Add(item.ToString());
+            }
             WelocmePage.Visibility = Visibility.Hidden;
         }
 
@@ -269,7 +269,13 @@ namespace CyberNest_Admin
             var ram = ujEszkozRam.Text;
             var hdd = ujEszkozHdd.Text;
 
-            var uzemeltetoneve = ujEszkozUzemelteto.SelectedValue.ToString();
+            //itt van hiba, ezt kapom futtatás közben: 
+            /*
+             *  Exception thrown: 'System.InvalidOperationException' in System.Text.Json.dll
+                Exception thrown: 'System.InvalidOperationException' in System.Private.CoreLib.dll
+                The JSON property name for '<>f__AnonymousType2`7[System.String,System.String,System.String,System.String,System.Int64,System.String,System.String].leiras' collides with another property.
+             */
+            var uzemeltetoneve = ujEszkozUzemelteto.SelectedItem != null ? ujEszkozUzemelteto.SelectedItem.ToString() : string.Empty;
 
             var eredmeny = api.InsertEszkozAsync(leiras, cpu, ram, hdd, uzemeltetoneve, Token);
             if (eredmeny.Result)

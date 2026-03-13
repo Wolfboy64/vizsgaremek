@@ -135,40 +135,37 @@ namespace CyberNest_Admin
 
 
 
-        /*public async Task<List<Eszkoz>> GetEszkozokAsync()
+        
+        /* |--------------------|
+         * | Eszköz létrehozása |
+         * |--------------------|
+         */
+        //üzemeltető lekérés végpontból
+        public async Task<List<Uzemelteto>> GetUzemeltetokAsync()
         {
             try
             {
-                var response = await _httpClient.GetAsync("eszkoz");
-
-                if (!response.IsSuccessStatusCode) return new List<Eszkoz>();
-
-                
-
+                var response = await _httpClient.GetAsync("uzemelteto");
+                if (!response.IsSuccessStatusCode) return new List<Uzemelteto>();
                 string jsonString = await response.Content.ReadAsStringAsync();
-                //uzemelteto létrehozása a jsonból
-                //Adatok: UzemeltetoId, UzemeltetoNev, UzemeltetoLeiras
-                
-
-
-                return Eszkoz.FromJson(jsonString);
+                return Uzemelteto.FromJson(jsonString);
             }
             catch (Exception ex)
             {
-
                 Debug.WriteLine(ex.Message);
-                return new List<Eszkoz>();
+                return new List<Uzemelteto>();
             }
-            
-        }*/
+        }
+
+
         public async Task<bool> InsertEszkozAsync(string leiras, string cpu, string ram, string hdd, string uzemeltetoneve, string JWT)
         {
             try
             {
-                Uzemelteto u = new Uzemelteto(0, "", "");
+                Uzemelteto u = new Uzemelteto();
                 foreach (var item in Uzemelteto.uzemeltetokAll)
                 {
-                    if (item.UzemeltetoNev == uzemeltetoneve)
+                    if (item.Nev == uzemeltetoneve)
                     {
                         u = item;
                         break;
@@ -181,9 +178,9 @@ namespace CyberNest_Admin
                     cpu,
                     ram,
                     hdd,
-                    u.UzemeltetoId,
+                    u.Id,
                     uzemeltetoneve,
-                    u.UzemeltetoLeiras
+                    u.Leiras
 
                 };
                 //JWT token hozzáadása a kérés headeréhez

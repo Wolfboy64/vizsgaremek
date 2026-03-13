@@ -2,27 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+#pragma warning disable CS8618
+#pragma warning disable CS8601
+#pragma warning disable CS8603
 
 namespace CyberNest_Admin
 {
-    class Uzemelteto
-    {
-        public int UzemeltetoId { get; set; }
-        public string UzemeltetoNev { get; set; }
-        public string UzemeltetoLeiras { get; set; }
 
-        public Uzemelteto(int uzemeltetoId, string uzemeltetoNev, string uzemeltetoLeiras)
-        {
-            UzemeltetoId = uzemeltetoId;
-            UzemeltetoNev = uzemeltetoNev;
-            UzemeltetoLeiras = uzemeltetoLeiras;
-        }
+    public class Uzemelteto
+    {
+        [JsonPropertyName("id")]
+        public long Id { get; set; }
+
+        [JsonPropertyName("nev")]
+        public string Nev { get; set; }
+
+        [JsonPropertyName("leiras")]
+        public string Leiras { get; set; }
+
         public static List<Uzemelteto> uzemeltetokAll = new List<Uzemelteto>();
         public override string ToString()
         {
-            return $"{UzemeltetoNev}";
+            return $"{Nev}";
         }
+        public static List<Uzemelteto> FromJson(string json) => JsonSerializer.Deserialize<List<Uzemelteto>>(json, CyberNest_Admin.Converter.Settings);
     }
+
 }
+#pragma warning disable CS8618
+#pragma warning disable CS8601
+#pragma warning disable CS8603
+
