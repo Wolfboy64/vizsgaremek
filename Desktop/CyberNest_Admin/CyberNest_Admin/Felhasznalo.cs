@@ -30,6 +30,10 @@ namespace CyberNest_Admin
 
         [JsonPropertyName("user")]
         public User User { get; set; }
+
+        public static List<User> Felhasznalok  = new List<User>();
+
+        
     }
 
     public partial class User
@@ -45,6 +49,11 @@ namespace CyberNest_Admin
 
         [JsonPropertyName("role")]
         public string Role { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Nev}";
+        }
     }
 
     public partial class Felhasznalo

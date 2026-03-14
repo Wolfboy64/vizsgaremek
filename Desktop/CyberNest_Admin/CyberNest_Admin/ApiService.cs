@@ -106,7 +106,28 @@ namespace CyberNest_Admin
             var response = await _httpClient.PostAsJsonAsync("felhasznalo", registerData);
             return response.IsSuccessStatusCode;
         }
-
+        public async Task<bool> UpdateFelhasznaloAsync(int id, string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
+        {
+            try
+            {
+                var updateData = new
+                {
+                    id = id,
+                    nev = nev,
+                    elerhetoseg = elerhetoseg,
+                    jelszo = jelszo,
+                    role = szerepkor
+                };
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.PutAsJsonAsync($"felhasznalo/{id}", updateData);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Frissítési hiba: {ex.Message}");
+                return false;
+            }
+        }
 
         /* |------------------|
          * | Eszközök szakasz |

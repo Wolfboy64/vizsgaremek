@@ -101,10 +101,7 @@ namespace CyberNest_Admin
             
         }
 
-        private void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
 
         private async void FelhasznaloTorleseMenu_Click(object sender, RoutedEventArgs e)
@@ -164,8 +161,56 @@ namespace CyberNest_Admin
                 MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
             }
         }
+        private async void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Felhasznalo.Felhasznalok.Clear();
+            FelhasznaloModositasPanel.Visibility = Visibility.Visible;
+            WelocmePage.Visibility = Visibility.Hidden;
+            var api = new ApiService();
+            Felhasznalo.Felhasznalok = await api.GetUsersAsync();
+            modFelhasznaloComboBox.ItemsSource = Felhasznalo.Felhasznalok;
+        }
+        private async void FelhasznaloModositasSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // Ellenőrizzük, van-e kijelölés
+            if (modFelhasznaloComboBox.SelectedItem == null) return;
 
+            // A SelectedItem-et User objektummá alakítjuk, hogy elérjük az ID-t
+            var kijeloltUser = (User)modFelhasznaloComboBox.SelectedItem;
+            int id = (int)kijeloltUser.Id;
 
+            ApiService api = new ApiService();
+            var nev = modFelhasznaloNev.Text;
+            var elerhetoseg = modFelhasznaloEmail.Text;
+            var role = modFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
+
+            // Az igazi ID-t küldjük el!
+            bool siker = await api.UpdateFelhasznaloAsync(id, nev, elerhetoseg, "jelszo", role, Token);
+
+            if (siker)
+            {
+                // Lista frissítése
+                Felhasznalo.Felhasznalok = await api.GetUsersAsync();
+                modFelhasznaloComboBox.ItemsSource = null;
+                modFelhasznaloComboBox.ItemsSource = Felhasznalo.Felhasznalok;
+
+                FelhasznaloModositasPanel.Visibility = Visibility.Hidden;
+                WelocmePage.Visibility = Visibility.Visible;
+                MessageBox.Show("Sikeres módosítás!");
+            }
+        }
+        private void modFelhasznaloComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // A SelectedItem a kijelölt User objektumot adja vissza
+            var user = modFelhasznaloComboBox.SelectedItem as User;
+
+            if (user != null)
+            {
+                modFelhasznaloNev.Text = user.Nev ?? "";
+                modFelhasznaloEmail.Text = user.Elerhetoseg ?? "";
+                modFelhasznaloCheckBox.IsChecked = user.Role == "admin";
+            }
+        }
         //vissza gombok
         private void FelhasznalokTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -182,6 +227,12 @@ namespace CyberNest_Admin
             EszkozModositasPanel.Visibility = Visibility.Hidden;
             WelocmePage.Visibility = Visibility.Visible;
         }
+        private void FelhasznaloModositasBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FelhasznaloModositasPanel.Visibility = Visibility.Hidden;
+            WelocmePage.Visibility = Visibility.Visible;
+        }
+
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             UjFelhasznaloPanel.Visibility = Visibility.Hidden;
@@ -367,11 +418,9 @@ namespace CyberNest_Admin
                 var hdd = modEszkozHdd.Text;
                 if (modEszkozUzemelteto.SelectedItem != null)
                 {
-                    int uzemID = await api.GetUzemeltetoIDByNameAsync(modEszkozUzemelteto.SelectedItem.ToString()); 
+                    int uzemID = await api.GetUzemeltetoIDByNameAsync(modEszkozUzemelteto.SelectedItem.ToString());
                     await api.UpdateEszkozAsync(id, leiras, cpu, ram, hdd, uzemID, Token);
                 }
-               
-
             }
             EszkozModositasPanel.Visibility = Visibility.Hidden;
 
