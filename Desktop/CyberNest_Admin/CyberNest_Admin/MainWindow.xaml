@@ -359,8 +359,8 @@
                              Grid.ColumnSpan="2"
                              Grid.RowSpan="5"
                              Background="#3F3F46" Margin="0,82,0,82"
-                             Visibility="Visible">
-                    <Grid Height="165">
+                             Visibility="Hidden">
+                    <Grid Height="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -391,7 +391,7 @@
 
                         <Button x:Name="modEszkozSaveBtn" Content="Mentés" Width="84" Margin="25,4,25,5" Grid.Row="5" Grid.Column="1" Click="modEszkozSaveBtn_Click"/>
                         <Button x:Name="modEszkozBackBtn" Content="Vissza" Width="84" Margin="17,4,32,5" Grid.Row="5" Grid.Column="0" Click="modEszkozBackBtn_Click"/>
-                        <ComboBox x:Name="modEszkozEszkComboBox" Grid.Column="2" Margin="52,6,10,6"/>
+                        <ComboBox x:Name="modEszkozEszkComboBox" Grid.Column="2" Margin="52,6,10,27" Grid.RowSpan="2" SelectionChanged="modEszkozEszkComboBox_SelectionChanged" />
                         <TextBlock TextWrapping="Wrap" Text="Eszköz:" Margin="3,5,81,6" Grid.Column="2"/>
                     </Grid>
                 </StackPanel>

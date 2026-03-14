@@ -179,7 +179,8 @@ namespace CyberNest_Admin
         }
         private void modEszkozBackBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            EszkozModositasPanel.Visibility = Visibility.Hidden;
+            WelocmePage.Visibility = Visibility.Visible;
         }
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -305,8 +306,16 @@ namespace CyberNest_Admin
             {
                 modEszkozEszkComboBox.Items.Add(item.Id);
             }
-            
-            EszkozModositasPanel.Visibility = Visibility.Visible;
+            if (modEszkozEszkComboBox.SelectedValue != null)
+            {
+                int id = Convert.ToInt32(modEszkozEszkComboBox.SelectedValue);
+
+                modEszkozLeiras.Text = Eszkoz.Eszkozok[id].Leiras.ToString();
+                modEszkozCpu.Text = Eszkoz.Eszkozok[id].Cpu.ToString();
+                modEszkozRam.Text = Eszkoz.Eszkozok[id].Ram.ToString();
+                modEszkozHdd.Text = Eszkoz.Eszkozok[id].Hdd.ToString();
+            }
+                EszkozModositasPanel.Visibility = Visibility.Visible;
         }
         private async void ujEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -348,23 +357,36 @@ namespace CyberNest_Admin
 
             if (modEszkozEszkComboBox.SelectedValue != null)
             {
-                int id = Convert.ToInt32(modEszkozEszkComboBox.SelectedValue);
+                int id = Convert.ToInt32(modEszkozEszkComboBox.SelectedIndex);
 
-                modEszkozLeiras.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Leiras;
-                modEszkozCpu.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Cpu;
-                modEszkozRam.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Ram;
-                modEszkozHdd.Text = Eszkoz.Eszkozok.FirstOrDefault(e => e.Id == id)?.Hdd;
+               
 
                 var leiras = modEszkozLeiras.Text;
                 var cpu = modEszkozCpu.Text;
                 var ram = modEszkozRam.Text;
                 var hdd = modEszkozHdd.Text;
-
-                await api.UpdateEszkozAsync(id, leiras, cpu, ram, hdd, modEszkozUzemelteto.SelectedItem as string, Token);
+                if (modEszkozUzemelteto.SelectedItem != null)
+                {
+                    int uzemID = await api.GetUzemeltetoIDByNameAsync(modEszkozUzemelteto.SelectedItem.ToString()); 
+                    await api.UpdateEszkozAsync(id, leiras, cpu, ram, hdd, uzemID, Token);
+                }
+               
 
             }
             EszkozModositasPanel.Visibility = Visibility.Hidden;
 
+        }
+
+        private  async void modEszkozEszkComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int id = Convert.ToInt32(modEszkozEszkComboBox.SelectedIndex);
+            Eszkoz.Eszkozok.Clear();
+            Eszkoz.Eszkozok = await new ApiService().GetEszkozokAsync();
+
+            modEszkozLeiras.Text = Eszkoz.Eszkozok[id].Leiras.ToString();
+            modEszkozCpu.Text = Eszkoz.Eszkozok[id].Cpu.ToString();
+            modEszkozRam.Text = Eszkoz.Eszkozok[id].Ram.ToString();
+            modEszkozHdd.Text = Eszkoz.Eszkozok[id].Hdd.ToString();
         }
 
         private void ErtekelesekMenu_Click(object sender, RoutedEventArgs e)
@@ -425,6 +447,5 @@ namespace CyberNest_Admin
             WelocmePage.Visibility = Visibility.Hidden;
         }
 
-        
     }
 }

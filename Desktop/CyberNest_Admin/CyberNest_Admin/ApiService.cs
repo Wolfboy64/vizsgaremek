@@ -192,12 +192,11 @@ namespace CyberNest_Admin
                 return null;
             }
         }
-        public async Task<bool> UpdateEszkozAsync(int eszkozId, string leiras, string cpu, string ram, string hdd, string uzemeltetoneve, string JWT)
+        private int kijeloltEszkozId;
+        public async Task<bool> UpdateEszkozAsync(int eszkozId, string leiras, string cpu, string ram, string hdd, int uzemeltetoId, string JWT)
         {
             try
             {
-                Uzemelteto? u = Uzemelteto.uzemeltetokAll.FirstOrDefault(x => x.Nev == uzemeltetoneve);
-                if (u == null) return false;
                 var updateData = new
                 {
                     id = eszkozId,
@@ -205,9 +204,12 @@ namespace CyberNest_Admin
                     cpu = cpu,
                     ram = ram,
                     hdd = hdd,
-                    uzemelteto_id = u.Id
+                    uzemelteto_id = uzemeltetoId // Közvetlenül az ID-t küldjük
                 };
+
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+
+                // A visszatérési értéket javítsuk bool-ra, hogy tudjuk, sikerült-e
                 var response = await _httpClient.PutAsJsonAsync($"eszkoz/{eszkozId}", updateData);
                 return response.IsSuccessStatusCode;
             }
@@ -240,7 +242,22 @@ namespace CyberNest_Admin
                 return new List<Uzemelteto>();
             }
         }
+        public async Task<int> GetUzemeltetoIDByNameAsync(string nev)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"uzemelteto?nev={Uri.EscapeDataString(nev)}");
+                if (!response.IsSuccessStatusCode) return 0;
+                string jsonString = await response.Content.ReadAsStringAsync();
+                return Uzemelteto.FromJson(jsonString).FirstOrDefault().Id;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return -1;
+            }
 
-        
+
+        }
     }
 }
