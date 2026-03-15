@@ -81,7 +81,7 @@ namespace CyberNest_Admin
             }
             else if (hour > 12 && hour < 16)
             {
-                WelocmeTextblock.Text = $"Jó Napot, {nev} !\nJogolutsági szinted:  {role} \nElérhetőséged:  {elerhetoseg}";
+                WelocmeTextblock.Text = $"Jó Napot, {nev}!\nJogolutsági szinted: {role} \nElérhetőséged: {elerhetoseg}";
             }
             else
             {
@@ -106,7 +106,7 @@ namespace CyberNest_Admin
 
         private async void FelhasznaloTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
-            FelhasznaloTorlesPanel.Visibility = Visibility.Visible;
+            ShowPanel(FelhasznaloTorlesPanel);
             var api = new ApiService();
 
             // .Result helyett await, hogy ne fagyjon ki a UI
@@ -141,9 +141,7 @@ namespace CyberNest_Admin
         }
         private async void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-            WelocmePage.Visibility = Visibility.Hidden;
-            FelhasznaloListPanel.Visibility = Visibility.Visible;
-
+            ShowPanel(FelhasznaloListPanel);
 
             var api = new ApiService();
             var lista = await api.GetUsersAsync();
@@ -164,7 +162,7 @@ namespace CyberNest_Admin
         private async void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
         {
             Felhasznalo.Felhasznalok.Clear();
-            FelhasznaloModositasPanel.Visibility = Visibility.Visible;
+            ShowPanel(FelhasznaloModositasPanel);
             WelocmePage.Visibility = Visibility.Hidden;
             var api = new ApiService();
             Felhasznalo.Felhasznalok = await api.GetUsersAsync();
@@ -194,8 +192,7 @@ namespace CyberNest_Admin
                 modFelhasznaloComboBox.ItemsSource = null;
                 modFelhasznaloComboBox.ItemsSource = Felhasznalo.Felhasznalok;
 
-                FelhasznaloModositasPanel.Visibility = Visibility.Hidden;
-                WelocmePage.Visibility = Visibility.Visible;
+                ShowPanel(WelocmePage);
                 MessageBox.Show("Sikeres módosítás!");
             }
         }
@@ -214,29 +211,24 @@ namespace CyberNest_Admin
         //vissza gombok
         private void FelhasznalokTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
         {
-            FelhasznaloTorlesPanel.Visibility = Visibility.Hidden; 
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
         private void EszkozTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
         {
-            EszkozTorlesPanel.Visibility = Visibility.Hidden;
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
         private void modEszkozBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            EszkozModositasPanel.Visibility = Visibility.Hidden;
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
         private void FelhasznaloModositasBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            FelhasznaloModositasPanel.Visibility = Visibility.Hidden;
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
 
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            UjFelhasznaloPanel.Visibility = Visibility.Hidden;
-            WelocmePage.Visibility = Visibility.Visible;
+            
             var api = new ApiService();
             string role = ujFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
             var lista = api.AddFelhasznaloAsync(UjFelhasznaloNev.Text,
@@ -244,30 +236,27 @@ namespace CyberNest_Admin
             "jelszo",
             role,
             Token);
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
         private void FelhasznalokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            FelhasznaloListPanel.Visibility = Visibility.Hidden;
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage); //vissza a főoldalra
 
         }
 
         private void EszkozokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            EszkozokListPanel.Visibility = Visibility.Hidden;
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
         private void ujEszkozBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            ujEszkozPanel.Visibility = Visibility.Hidden;
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
 
         //eszközökList
         private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-            WelocmePage.Visibility = Visibility.Hidden;
-            EszkozokListPanel.Visibility = Visibility.Visible;
+            ShowPanel(EszkozokListPanel);
 
             ApiService api = new ApiService();
 
@@ -288,8 +277,8 @@ namespace CyberNest_Admin
 
         private async void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
         {
-            ujEszkozPanel.Visibility = Visibility.Visible;
-            
+            ShowPanel(ujEszkozPanel);
+
             ApiService api = new ApiService();
             Uzemelteto.uzemeltetokAll.Clear();
             Uzemelteto.uzemeltetokAll = await api.GetUzemeltetokAsync();
@@ -303,7 +292,7 @@ namespace CyberNest_Admin
         }
         private async void EszkozTorlesSaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            WelocmePage.Visibility = Visibility.Visible;
+            ShowPanel(WelocmePage);
             ApiService api = new ApiService();
             //kiválasztott eszköz törlése majd vissza a főoldalra
             // A SelectedValue közvetlenül az Id-t adja vissza a SelectedValuePath miatt
@@ -324,11 +313,10 @@ namespace CyberNest_Admin
 
             }
 
-            EszkozTorlesPanel.Visibility = Visibility.Hidden;
         }
         private async void EszkozTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
-            WelocmePage.Visibility = Visibility.Hidden;
+            
 
             EszkozTorlesComboBox.Items.Clear();
             ApiService api = new ApiService();
@@ -339,8 +327,7 @@ namespace CyberNest_Admin
                 EszkozTorlesComboBox.Items.Add(item.Id);
             }
 
-
-            EszkozTorlesPanel.Visibility = Visibility.Visible;
+            ShowPanel(EszkozTorlesPanel);
         }
 
         private async void EszkozModositasMenu_Click(object sender, RoutedEventArgs e)
@@ -366,7 +353,7 @@ namespace CyberNest_Admin
                 modEszkozRam.Text = Eszkoz.Eszkozok[id].Ram.ToString();
                 modEszkozHdd.Text = Eszkoz.Eszkozok[id].Hdd.ToString();
             }
-                EszkozModositasPanel.Visibility = Visibility.Visible;
+                ShowPanel(EszkozModositasPanel);
         }
         private async void ujEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -391,7 +378,7 @@ namespace CyberNest_Admin
             if (siker)
             {
                 MessageBox.Show("Sikeres eszköz hozzáadás!");
-                ujEszkozPanel.Visibility = Visibility.Hidden;
+                ShowPanel(WelocmePage);
                 // Itt érdemes lehet frissíteni a fő listát is
             }
             else
@@ -422,7 +409,7 @@ namespace CyberNest_Admin
                     await api.UpdateEszkozAsync(id, leiras, cpu, ram, hdd, uzemID, Token);
                 }
             }
-            EszkozModositasPanel.Visibility = Visibility.Hidden;
+            ShowPanel(WelocmePage);
 
         }
 
@@ -494,6 +481,45 @@ namespace CyberNest_Admin
         private void UjNaplozasMenu_Click(object sender, RoutedEventArgs e)
         {
             WelocmePage.Visibility = Visibility.Hidden;
+        }
+
+
+        //Utils
+        private void ShowPanel(StackPanel panelToShow)
+        {
+            // Az összes panel listája, amit kezelni akarunk
+            List<StackPanel> mindenPanel = new List<StackPanel>
+            {
+                WelocmePage,
+                FelhasznaloListPanel,
+                UjFelhasznaloPanel,
+                FelhasznaloTorlesPanel,
+                FelhasznaloModositasPanel,
+                EszkozokListPanel,
+                ujEszkozPanel,
+                EszkozTorlesPanel,
+                EszkozModositasPanel
+            };
+
+            // Első lépés: Minden panelt teljesen eltüntetünk
+            foreach (var panel in mindenPanel)
+            {
+                if (panel != null)
+                {
+                    panel.Visibility = Visibility.Collapsed;
+                }
+            }
+
+            // Második lépés: Csak a kért panelt megjelenítjük
+            if (panelToShow != null)
+            {
+                panelToShow.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Ha null-t kap (vagy nincs megadva semmi), a WelcomePage az alapértelmezett
+                WelocmePage.Visibility = Visibility.Visible;
+            }
         }
 
     }
