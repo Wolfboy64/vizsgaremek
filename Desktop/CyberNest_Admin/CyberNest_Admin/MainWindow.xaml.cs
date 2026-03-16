@@ -77,7 +77,7 @@ namespace CyberNest_Admin
             Bejelentkezes.IsEnabled = true;
         }
         private void DateSetup(int hour, string nev, string role, string elerhetoseg)
-        {
+        { 
             if (hour < 8)
             {
                 WelocmeTextblock.Text = $"Jó Reggelt, {nev}!\nJogolutsági szinted: {role}\nElérhetőséged: {elerhetoseg}";
@@ -92,7 +92,7 @@ namespace CyberNest_Admin
             }
             else
             {
-                WelocmeTextblock.Text = $"Jó Estét, {nev} !\nJogolutsági szinted:  {role} \nElérhetőséged:  {elerhetoseg}";
+                WelocmeTextblock.Text = $"Jó Estét, {nev}!\nJogolutsági szinted: {role} \nElérhetőséged:  {elerhetoseg}";
             }
         }
        /*
