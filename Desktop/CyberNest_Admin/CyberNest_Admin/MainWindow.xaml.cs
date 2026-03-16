@@ -220,6 +220,11 @@ namespace CyberNest_Admin
             }
         }
         //vissza gombok
+
+        private void UzemeltetokListBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage);
+        }
         private void FelhasznalokTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
         {
             ShowPanel(WelocmePage); //vissza a főoldalra
@@ -435,16 +440,34 @@ namespace CyberNest_Admin
             modEszkozRam.Text = Eszkoz.Eszkozok[id].Ram.ToString();
             modEszkozHdd.Text = Eszkoz.Eszkozok[id].Hdd.ToString();
         }
+        /* |--------------|
+         * | Uzemeltetok  |
+         * |--------------| */
+
+        private async void UzemeltetokListajaMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(UzemeltetoListPanel);
+            UzemeltetokListView.Items.Clear();
+            ApiService api = new ApiService();
+            var lista = await api.GetUzemeltetokAsync();
+            Uzemelteto.uzemeltetokAll = lista;
+            foreach (var item in lista)
+            {
+                UzemeltetokListView.Items.Add(item);
+            }
+        }
+
+
+
+
+
+
 
         private void ErtekelesekMenu_Click(object sender, RoutedEventArgs e)
         {
             WelocmePage.Visibility = Visibility.Hidden;
         }
 
-        private void UzemeltetokListajaMenu_Click(object sender, RoutedEventArgs e)
-        {
-            WelocmePage.Visibility = Visibility.Hidden;
-        }
 
         private void UjUzemeltetoMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -509,7 +532,8 @@ namespace CyberNest_Admin
                 EszkozokListPanel,
                 ujEszkozPanel,
                 EszkozTorlesPanel,
-                EszkozModositasPanel
+                EszkozModositasPanel,
+                UzemeltetoListPanel
             };
 
             // Első lépés: Minden panelt teljesen eltüntetünk
