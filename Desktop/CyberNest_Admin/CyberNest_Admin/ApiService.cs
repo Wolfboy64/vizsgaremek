@@ -106,20 +106,41 @@ namespace CyberNest_Admin
             var response = await _httpClient.PostAsJsonAsync("felhasznalo", registerData);
             return response.IsSuccessStatusCode;
         }
+        /* 
+         *   {
+                "nev": "név",
+                "elerhetoseg": "fff@local",
+                "allapot": "aktiv",
+                "role": "user"
+              }
+         */
         public async Task<bool> UpdateFelhasznaloAsync(int id, string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
         {
             try
             {
+                // Használjuk pontosan azokat a neveket, amiket az API vár!
                 var updateData = new
                 {
-                    id = id,
                     nev = nev,
                     elerhetoseg = elerhetoseg,
-                    jelszo = jelszo,
+                    allapot = "aktiv",
                     role = szerepkor
                 };
+
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+
+                // A PutAsJsonAsync alapból PascalCase-t használhat, ha nem vigyázunk. 
+                // Biztosabb megoldás:
                 var response = await _httpClient.PutAsJsonAsync($"felhasznalo/{id}", updateData);
+                Debug.WriteLine($"Hívott URL: {_httpClient.BaseAddress}felhasznalo/{id}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Debugoláshoz nézzük meg, mi a hibaüzenet a szervertől
+                    var errorBody = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"API Hiba ({response.StatusCode}): {errorBody}");
+                }
+
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)

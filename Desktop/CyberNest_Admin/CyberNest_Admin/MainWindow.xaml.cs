@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.VisualBasic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +28,10 @@ namespace CyberNest_Admin
             LoginPage.Visibility = Visibility.Visible;
             SideBrand_loginPage.Visibility = Visibility.Visible;
             MainContentPage.Visibility = Visibility.Hidden;
+
+            //modfelh. panel betöltésekor kell majd:
+            modFelhasznaloJogosultsag.Items.Add("admin");
+            modFelhasznaloJogosultsag.Items.Add("user");
 
             //Height="450" Width="800"
             this.MinHeight = 450;
@@ -180,7 +187,11 @@ namespace CyberNest_Admin
             ApiService api = new ApiService();
             var nev = modFelhasznaloNev.Text;
             var elerhetoseg = modFelhasznaloEmail.Text;
-            var role = modFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
+            string role = "user";
+
+            Debug.WriteLine($"Kijelölt szerepkör: {role}");
+            //Debug.WriteLine($"Kijelölt user ID: {id}, Név: {nev}, E-mail: {elerhetoseg}, Szerepkör: {role}");
+            // var role = modFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
 
             // Az igazi ID-t küldjük el!
             bool siker = await api.UpdateFelhasznaloAsync(id, nev, elerhetoseg, "jelszo", role, Token);
@@ -205,7 +216,7 @@ namespace CyberNest_Admin
             {
                 modFelhasznaloNev.Text = user.Nev ?? "";
                 modFelhasznaloEmail.Text = user.Elerhetoseg ?? "";
-                modFelhasznaloCheckBox.IsChecked = user.Role == "admin";
+                modFelhasznaloJogosultsag.SelectedIndex = user.Role == "admin" ? 0 : 1; // Admin: index 0, User: index 1
             }
         }
         //vissza gombok
@@ -353,7 +364,7 @@ namespace CyberNest_Admin
                 modEszkozRam.Text = Eszkoz.Eszkozok[id].Ram.ToString();
                 modEszkozHdd.Text = Eszkoz.Eszkozok[id].Hdd.ToString();
             }
-                ShowPanel(EszkozModositasPanel);
+            ShowPanel(EszkozModositasPanel);
         }
         private async void ujEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
         {
