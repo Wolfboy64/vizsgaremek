@@ -249,6 +249,23 @@ namespace CyberNest_Admin
         {
             ShowPanel(WelocmePage); //vissza a főoldalra
         }
+        private void FelhasznalokListBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage); //vissza a főoldalra
+
+        }
+        private void EszkozokListBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage); //vissza a főoldalra
+        }
+        private void ujEszkozBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage); //vissza a főoldalra
+        }
+        private void UzemeltetoTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage); //vissza a főoldalra
+        }
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             
@@ -261,20 +278,7 @@ namespace CyberNest_Admin
             Token);
             ShowPanel(WelocmePage); //vissza a főoldalra
         }
-        private void FelhasznalokListBackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ShowPanel(WelocmePage); //vissza a főoldalra
-
-        }
-
-        private void EszkozokListBackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ShowPanel(WelocmePage); //vissza a főoldalra
-        }
-        private void ujEszkozBackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ShowPanel(WelocmePage); //vissza a főoldalra
-        }
+       
 
         //eszközökList
         private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
@@ -447,9 +451,10 @@ namespace CyberNest_Admin
             modEszkozRam.Text = Eszkoz.Eszkozok[id].Ram.ToString();
             modEszkozHdd.Text = Eszkoz.Eszkozok[id].Hdd.ToString();
         }
-        /* |--------------|
-         * | Uzemeltetok  |
-         * |--------------| */
+        /*      |--------------|
+         *      | Uzemeltetok  |
+         *      |--------------| 
+         */
 
         private async void UzemeltetokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -477,41 +482,100 @@ namespace CyberNest_Admin
             }
             else
             {
-                MessageBox.Show("Hiba történt. Ellenőrizd a szerverkapcsolatot!");
+                
                 Debug.WriteLine($"{nev}; {leiras}");
 
             }
         }
-        private void UzemeltetoModositasSaveBtn_Click(object sender, RoutedEventArgs e)
+        private async void UzemeltetoModositasMenu_Click(object sender, RoutedEventArgs e)
         {
+            ShowPanel(UzemeltetoModositasPanel);
+            ApiService api = new ApiService();
 
+            var list = await api.GetUzemeltetokAsync();
+
+            UzemeltetoModComboBox.ItemsSource = list;
+
+            UzemeltetoModComboBox.DisplayMemberPath = "Nev";
+        }
+        private async void UzemeltetoModositasSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (UzemeltetoModComboBox.SelectedItem is Uzemelteto kijelolt)
+            {
+                int id = kijelolt.Id; // Ez az igazi adatbázis ID!
+                string nev = modUzemeltetoNev.Text;
+                string leiras = modUzemeltetoLeiras.Text;
+
+                ApiService api = new ApiService();
+                bool siker = await api.UpdateUzemeltetoAsync(id, nev, leiras, Token);
+
+                if (siker)
+                {
+                    ShowPanel(WelocmePage);
+                    // Itt frissítheted a listát, ha szükséges
+                }
+            }
+            else
+            {
+                MessageBox.Show("Kérlek, válassz ki egy üzemeltetőt!");
+            }
+        }
+        private void UzemeltetoModComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // A SelectedItem most már egy komplett Uzemelteto objektum!
+            if (UzemeltetoModComboBox.SelectedItem is Uzemelteto kijelolt)
+            {
+                modUzemeltetoNev.Text = kijelolt.Nev;
+                modUzemeltetoLeiras.Text = kijelolt.Leiras;
+            }
         }
 
+        private async void UzemeltetoTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            UzemeltetoTorlesComboBox.Items.Clear();
+            ApiService api = new ApiService();
+            var list = await api.GetUzemeltetokAsync();
+            if (list != null)
+            {
+                foreach (var item in list)
+                {
+                    UzemeltetoTorlesComboBox.Items.Add(item.Nev);
+                }
+            }
+            ShowPanel(UzemeltetoTorlesPanel);
+        }
 
+        private async void UzemeltetoTorlesSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ApiService api = new ApiService();
+            var nev = UzemeltetoTorlesComboBox.SelectedItem as string;
+            if (nev != null)
+            {
+                // Először meg kell szerezni az ID-t a név alapján
+                int id = await api.GetUzemeltetoIDByNameAsync(nev);
+                bool siker = await api.DeleteUzemeltetoAsync(id, Token);
+                if (siker)
+                {
+                    
+                    ShowPanel(WelocmePage);
+                }
+                else
+                {
+                    MessageBox.Show("Hiba történt a törlés során. Ellenőrizd a szerverkapcsolatot!");
+                }
 
-
-
+            }
+        }
+        private void UjUzemeltetoMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(UjUzemeltetoPanel);
+        }
 
         private void ErtekelesekMenu_Click(object sender, RoutedEventArgs e)
         {
             WelocmePage.Visibility = Visibility.Hidden;
         }
 
-
-        private void UjUzemeltetoMenu_Click(object sender, RoutedEventArgs e)
-        {
-            WelocmePage.Visibility = Visibility.Hidden;
-        }
-
-        private void UzemeltetoTorleseMenu_Click(object sender, RoutedEventArgs e)
-        {
-            WelocmePage.Visibility = Visibility.Hidden;
-        }
-
-        private void UzemeltetoModositasMenu_Click(object sender, RoutedEventArgs e)
-        {
-            WelocmePage.Visibility = Visibility.Hidden;
-        }
         private void NaplozasListajaMenu_Click(object sender, RoutedEventArgs e)
         {
             WelocmePage.Visibility = Visibility.Hidden;
@@ -563,7 +627,9 @@ namespace CyberNest_Admin
                 EszkozTorlesPanel,
                 EszkozModositasPanel,
                 UzemeltetoListPanel,
-                UjUzemeltetoPanel
+                UjUzemeltetoPanel,
+                UzemeltetoModositasPanel,
+                UzemeltetoTorlesPanel
             };
 
             // Első lépés: Minden panelt teljesen eltüntetünk

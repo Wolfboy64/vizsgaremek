@@ -321,6 +321,43 @@ namespace CyberNest_Admin
                 return false;
             }
         }
+        //uzemeltető update
+        public async Task<bool> UpdateUzemeltetoAsync(int id, string nev, string leiras, string JWT)
+        {
+            try
+            {
+                var updateData = new
+                {
+                    id = id,
+                    nev = nev,
+                    leiras = leiras
+                };
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.PutAsJsonAsync($"uzemelteto/{id}", updateData);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Frissítési hiba: {ex.Message}");
+                return false;
+            }
+        }
+        //üzemeltető törlése
+        public async Task<bool> DeleteUzemeltetoAsync(int id, string JWT)
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.DeleteAsync($"uzemelteto/{id}");
+                Debug.WriteLine($"Törlési kísérlet ID: {id}, StatusCode: {response.StatusCode}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Törlési hiba: {ex.Message}");
+                return false;
+            }
+        }
     }
-     
+
 }
