@@ -301,5 +301,26 @@ namespace CyberNest_Admin
 
 
         }
+        //uzemeltetok hozzáadása
+        public async Task<bool> AddUzemeltetoAsync(string nev, string leiras, string JWT)
+        {
+            try
+            {
+                var insertData = new
+                {
+                    nev = nev,
+                    leiras = leiras
+                };
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.PostAsJsonAsync("uzemelteto", insertData);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Belső hiba: {ex.Message}");
+                return false;
+            }
+        }
     }
+     
 }

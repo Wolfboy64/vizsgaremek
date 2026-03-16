@@ -221,9 +221,13 @@ namespace CyberNest_Admin
         }
         //vissza gombok
 
+        private void UjUzemeltetoBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage); //vissza a főoldalra
+        }
         private void UzemeltetokListBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            ShowPanel(WelocmePage);
+            ShowPanel(WelocmePage); //vissza a főoldalra
         }
         private void FelhasznalokTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -241,7 +245,10 @@ namespace CyberNest_Admin
         {
             ShowPanel(WelocmePage); //vissza a főoldalra
         }
-
+        private void UzemeltetoModositasBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage); //vissza a főoldalra
+        }
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             
@@ -457,6 +464,28 @@ namespace CyberNest_Admin
             }
         }
 
+        private async void UjUzemeltetoSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ApiService api = new ApiService();
+            var nev = UjUzemeltetoNev.Text;
+            var leiras = UjUzemeltetoLeiras.Text;
+            bool response = await api.AddUzemeltetoAsync(nev, leiras, Token);
+            if (response)
+            {
+                
+                ShowPanel(WelocmePage);
+            }
+            else
+            {
+                MessageBox.Show("Hiba történt. Ellenőrizd a szerverkapcsolatot!");
+                Debug.WriteLine($"{nev}; {leiras}");
+
+            }
+        }
+        private void UzemeltetoModositasSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
 
 
@@ -533,7 +562,8 @@ namespace CyberNest_Admin
                 ujEszkozPanel,
                 EszkozTorlesPanel,
                 EszkozModositasPanel,
-                UzemeltetoListPanel
+                UzemeltetoListPanel,
+                UjUzemeltetoPanel
             };
 
             // Első lépés: Minden panelt teljesen eltüntetünk
@@ -557,5 +587,6 @@ namespace CyberNest_Admin
             }
         }
 
+        
     }
 }
