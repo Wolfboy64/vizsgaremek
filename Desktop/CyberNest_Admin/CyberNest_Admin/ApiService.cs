@@ -375,6 +375,28 @@ namespace CyberNest_Admin
                 return new List<Foglalas>();
             }
         }
+        //foglalas lekérése név alapján
+        public async Task<int> GetFoglalasIdByName(string name, string JWT)
+        {
+            return 0;
+        }
+
+        //foglalás törlése
+        public async Task<bool> DeleteFoglalasAsync(string JWT, int id)
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.DeleteAsync($"foglalas/{id}");
+                Debug.WriteLine($"Törlési kísérlet ID: {id}, StatusCode: {response.StatusCode}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Törlési hiba: {ex.Message}");
+                return false;
+            }
+        }
     }
 
 }

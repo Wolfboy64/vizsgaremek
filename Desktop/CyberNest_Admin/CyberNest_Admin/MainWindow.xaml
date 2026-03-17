@@ -598,7 +598,38 @@
                     </ListView>
                 </StackPanel>
                 <!-- Foglalas Törlése -->
-                
+                <StackPanel x:Name="FoglalasTorlesPanel"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Grid.RowSpan="3"
+                            Background="#3F3F46" Margin="0,82,0,82"
+                            Visibility="Visible">       
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Válassza ki a törölni kívánt foglalást:" Margin="10,10,10,10" Grid.ColumnSpan="2"/>
+                        <ComboBox x:Name="FoglalasTorlesComboBox" Margin="10,3,10,3" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
+                        <!--Vissza gomb és Mentés-->
+                        <Button x:Name="FoglalasTorlesVisszaBtn" 
+                                Margin="10,3,10,3"
+                                Grid.Row="2"
+                                Content="Vissza"
+                                Click="FoglalasTorlesVisszaBtn_Click"/>
+                        <Button x:Name="FoglalasTorlesSaveBtn"
+                             Content="Mentés"
+                             Click="FoglalasTorlesSaveBtn_Click"
+                             Grid.Column="2" Margin="8,3,41,3" Grid.Row="2"
+                         />
+                    </Grid>
+                </StackPanel>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="LoginPage"

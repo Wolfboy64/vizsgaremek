@@ -106,7 +106,7 @@ namespace CyberNest_Admin
 
         private void UjFelhasznaloMenu_Click(object sender, RoutedEventArgs e)
         {
-            UjFelhasznaloPanel.Visibility = Visibility.Visible;
+            ShowPanel(UjFelhasznaloPanel);
             
         }
 
@@ -273,6 +273,11 @@ namespace CyberNest_Admin
         {
             ShowPanel(WelocmePage); //vissza a főoldalra
         }
+        private void FoglalasTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage);
+        }
+
         private void UjFelhasznaloSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             
@@ -589,15 +594,47 @@ namespace CyberNest_Admin
                 FoglalasListView.Items.Add(item);
             }
         }
+        private async void FoglalasTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
 
+            FoglalasTorlesComboBox.Items.Clear();
+            ApiService api = new ApiService();
+            var a_ = await api.GetFoglalasokAsync(Token);
+            Debug.WriteLine($"Letöltött eszközök száma: {a_.Count}");
+            foreach (var item in a_)
+            {
+                FoglalasTorlesComboBox.Items.Add(item.Id);
+            }
 
+            ShowPanel(FoglalasTorlesPanel);
+
+        }
+
+        private async void FoglalasTorlesSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ApiService api = new ApiService();
+            var nev = UzemeltetoTorlesComboBox.SelectedItem as string;
+            if (nev != null)
+            {
+                // Először meg kell szerezni az ID-t a név alapján
+                int id = await api.GetFoglalasIdByName(Token, "a"); //JAVÍTANI!!!!!
+                bool siker = await api.DeleteFoglalasAsync(Token, id);
+                if (siker)
+                {
+
+                    ShowPanel(WelocmePage);
+                }
+                else
+                {
+                    MessageBox.Show("Hiba történt a törlés során. Ellenőrizd a szerverkapcsolatot!");
+                }
+
+            }
+        }
         /*      |-----------------|
          *      |    Ertekeles    |
          *      |-----------------| 
          */
-
-
-
 
 
 
@@ -677,7 +714,8 @@ namespace CyberNest_Admin
                 UjUzemeltetoPanel,
                 UzemeltetoModositasPanel,
                 UzemeltetoTorlesPanel,
-                FoglalasListPanel
+                FoglalasListPanel,
+                FoglalasTorlesPanel
             };
 
             // Első lépés: Minden panelt teljesen eltüntetünk
@@ -701,11 +739,6 @@ namespace CyberNest_Admin
             }
         }
 
-
-        private void FoglalasTorleseMenu_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+      
     }
 }
