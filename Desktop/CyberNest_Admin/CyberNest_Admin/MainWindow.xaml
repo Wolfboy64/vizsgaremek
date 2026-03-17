@@ -129,6 +129,13 @@
                     <MenuItem x:Name="NaplozasModositasMenu" Header="Naplózás módosítása" Click="NaplozasModositasMenu_Click"/>
                     <MenuItem x:Name="UjNaplozasMenu" Header="Új naplózás" Click="UjNaplozasMenu_Click"/>
                 </MenuItem>
+                <MenuItem x:Name="FoglalasMenu"
+                          Header="Foglalás"
+                          FontSize="14">
+                    <MenuItem x:Name="FoglalasListajaMenu" Header="Foglalás listája" Click="FoglalasListajaMenu_Click"/>
+                    <MenuItem x:Name="FoglalasTorleseMenu" Header="Foglalás törlése" Click="FoglalasTorleseMenu_Click"/>
+
+                </MenuItem>
             </Menu>
             <Grid Height="412" Width="799" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
@@ -455,7 +462,7 @@
                             Grid.Column="1"
                             Grid.RowSpan="3"
                             Grid.ColumnSpan="2"
-                            Visibility="Visible" Grid.Row="1">
+                            Visibility="Hidden" Grid.Row="1">
                     <Grid Height="143">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -503,9 +510,9 @@
                         <TextBox x:Name="modUzemeltetoLeiras" Margin="10,10,10,10" Grid.Column="1" Grid.Row="2"/>
                         <Button x:Name="UzemeltetoModositasSaveBtn" Content="Mentés" Width="84" Margin="24,10,25,7" Click="UzemeltetoModositasSaveBtn_Click" Grid.Column="2" Grid.Row="3"/>
                         <Button x:Name="UzemeltetoModositasBackBtn" Content="Vissza" Width="84" Margin="25,10,24,7" Grid.Row="3" Click="UzemeltetoModositasBackBtn_Click"/>
-                        
+
                     </Grid>
-                    
+
                 </StackPanel>
                 <!-- Üzemeltető törlése -->
                 <StackPanel x:Name="UzemeltetoTorlesPanel"
@@ -542,6 +549,56 @@
                             />
                     </Grid>
                 </StackPanel>
+                <!-- Foglalás Listázása -->
+                <StackPanel x:Name="FoglalasListPanel"
+                            Background="#3F3F46"
+                            Margin="0,10,0,0"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Grid.RowSpan="3"
+                            Grid.ColumnSpan="4"
+                            Visibility="Hidden">
+                    <Button x:Name="FoglalasListBackBtn" Content="Vissza" Width="84" Click="FoglalasListBackBtn_Click"/>
+                    <ListView x:Name="FoglalasListView">
+                        <ListView.View>
+                            <GridView>
+                                <!--
+                                  {
+                                    "id": 1,
+                                    "felhasznalo_id": 1,
+                                    "eszkoz_id": 1,
+                                    "idopont_id": 524,
+                                    "berlesi_kezdete": "2026-03-26T23:00:00.000Z",
+                                    "berlesi_vege": "2026-03-26T23:00:00.000Z",
+                                    "mentor_id": "mentor-toth-david",
+                                    "mentor_nev": "Tóth Dávid",
+                                    "ugyfel_nev": "admin",
+                                    "szamlazasi_nev": "jdhkashd",
+                                    "email": "admin@local",
+                                    "telefon": "45678",
+                                    "megjegyzes": "jweqkjeh",
+                                    "foglalas_datuma": "2026-03-17T07:15:55.000Z",
+                                    "felhasznalo_nev": "admin",
+                                    "elerhetoseg": "admin@local",
+                                    "cpu": "Intel Xeon E5-2680 v4 (4 cores)",
+                                    "ram": "8 GB DDR4",
+                                    "hdd": "120 GB SSD",
+                                    "eszkoz_leiras": "Alapszintű VPS szerver weboldal hostinghoz"
+                                  }
+                                
+                                -->
+                                <GridViewColumn Header="IdőpontID" DisplayMemberBinding="{Binding IdopontId}" Width="75"/>
+                                <GridViewColumn Header="Berles Kezdete" DisplayMemberBinding="{Binding BerlesiKezdete}" Width="100"/>
+                                <GridViewColumn Header="Berles Vege" DisplayMemberBinding="{Binding BerlesiVege}" Width="100"/>
+                                <GridViewColumn Header="MentorID" DisplayMemberBinding="{Binding MentorId}" Width="100"/>
+                                <GridViewColumn Header="Mentor Név" DisplayMemberBinding="{Binding MentorNev}" Width="100"/>
+                                <GridViewColumn Header="Ugyfel Név" DisplayMemberBinding="{Binding UgyfelNev}" Width="100"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <!-- Foglalas Törlése -->
+                
             </Grid>
         </StackPanel>
         <StackPanel x:Name="LoginPage"

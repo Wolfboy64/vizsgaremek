@@ -358,6 +358,23 @@ namespace CyberNest_Admin
                 return false;
             }
         }
+        //foglalások lekérése
+        public async Task<List<Foglalas>> GetFoglalasokAsync(string JWT)
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+                var response = await _httpClient.GetAsync("foglalas");
+                if (!response.IsSuccessStatusCode) return new List<Foglalas>();
+                string jsonString = await response.Content.ReadAsStringAsync();
+                return Foglalas.FromJson(jsonString);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return new List<Foglalas>();
+            }
+        }
     }
 
 }

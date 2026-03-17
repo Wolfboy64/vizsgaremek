@@ -66,7 +66,8 @@ namespace CyberNest_Admin
                 MainContentPage.Visibility = Visibility.Visible;
                 WelocmePage.Visibility = Visibility.Visible;
                 DateTime date = DateTime.Now;
-                DateSetup(date.Hour, eredmeny.User.Nev, eredmeny.User.Role, eredmeny.User.Elerhetoseg);
+                MessageBox.Show($"Sikeres belépés! Üdvözlünk, {date.ToString()}!");
+                DateSetup(date, eredmeny.User.Nev, eredmeny.User.Role, eredmeny.User.Elerhetoseg);
             }
             else
             {
@@ -76,17 +77,18 @@ namespace CyberNest_Admin
             // Visszaállítjuk a UI-t
             Bejelentkezes.IsEnabled = true;
         }
-        private void DateSetup(int hour, string nev, string role, string elerhetoseg)
-        { 
-            if (hour < 8)
+        private void DateSetup(DateTime d, string nev, string role, string elerhetoseg)
+        {
+            //8:57-kor jó estét, ez nem jó, de majd finomhangoljuk a határokat
+            if (d.Hour < 8)
             {
                 WelocmeTextblock.Text = $"Jó Reggelt, {nev}!\nJogolutsági szinted: {role}\nElérhetőséged: {elerhetoseg}";
             }
-            else if (hour > 8 && hour < 12)
+            else if ((d.Hour > 8 && d.Minute < 59) && d.Hour < 12)
             {
                 WelocmeTextblock.Text = $"Jó Napot, {nev}!\nJogolutsági szinted: {role}\nElérhetőséged: {elerhetoseg}";
             }
-            else if (hour > 12 && hour < 16)
+            else if ((d.Hour > 12 && d.Minute < 59)  && d.Hour < 16)
             {
                 WelocmeTextblock.Text = $"Jó Napot, {nev}!\nJogolutsági szinted: {role} \nElérhetőséged: {elerhetoseg}";
             }
@@ -263,6 +265,11 @@ namespace CyberNest_Admin
             ShowPanel(WelocmePage); //vissza a főoldalra
         }
         private void UzemeltetoTorlesVisszaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage); //vissza a főoldalra
+        }
+
+        private void FoglalasListBackBtn_Click(object sender, RoutedEventArgs e)
         {
             ShowPanel(WelocmePage); //vissza a főoldalra
         }
@@ -566,6 +573,46 @@ namespace CyberNest_Admin
 
             }
         }
+        /*      |-----------------|
+         *      |    Foglalas     |
+         *      |-----------------| 
+         */
+        private async void FoglalasListajaMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(FoglalasListPanel);
+            FoglalasListView.Items.Clear();
+            ApiService api = new ApiService();
+            var lista = await api.GetFoglalasokAsync(Token);
+            Foglalas.FoglalasAll = lista;
+            foreach (var item in lista)
+            {
+                FoglalasListView.Items.Add(item);
+            }
+        }
+
+
+        /*      |-----------------|
+         *      |    Ertekeles    |
+         *      |-----------------| 
+         */
+
+
+
+
+
+
+        /*      |-----------------|
+         *      |    Naplozas     |
+         *      |-----------------| 
+         */
+
+
+
+
+        /*      |-----------------|
+         *      |    Menu         |
+         *      |-----------------| 
+         */
         private void UjUzemeltetoMenu_Click(object sender, RoutedEventArgs e)
         {
             ShowPanel(UjUzemeltetoPanel);
@@ -629,7 +676,8 @@ namespace CyberNest_Admin
                 UzemeltetoListPanel,
                 UjUzemeltetoPanel,
                 UzemeltetoModositasPanel,
-                UzemeltetoTorlesPanel
+                UzemeltetoTorlesPanel,
+                FoglalasListPanel
             };
 
             // Első lépés: Minden panelt teljesen eltüntetünk
@@ -653,6 +701,11 @@ namespace CyberNest_Admin
             }
         }
 
-        
+
+        private void FoglalasTorleseMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
