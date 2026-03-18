@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows; // Az async-hez szükséges
 
@@ -160,29 +161,36 @@ namespace CyberNest_Admin
         {
             try
             {
+                // 1. Kérés elküldése
                 var response = await _httpClient.GetAsync("eszkoz");
 
-                System.Diagnostics.Debug.WriteLine($"StatusCode: {response.StatusCode}");
-
+                // 3. JSON beolvasása
                 string jsonString = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine($"Kapott JSON: {jsonString}");
 
-                System.Diagnostics.Debug.WriteLine($"Kapott JSON: {jsonString}");
-
-                if (!response.IsSuccessStatusCode)
+                // 4. Üres válasz kezelése
+                if (string.IsNullOrWhiteSpace(jsonString) || jsonString == "[]")
                 {
-                    System.Diagnostics.Debug.WriteLine("A kérés nem volt sikeres.");
                     return new List<Eszkoz>();
                 }
 
+                // 5. Deszerializáció a javított Eszkoz osztályba (ami már kezeli a null-t)
+                // Fontos: a Converter.Settings használata biztosítja a kompatibilitást
                 var lista = Eszkoz.FromJson(jsonString);
+                Debug.WriteLine(lista);
+                if (lista == null)
+                {
+                    Debug.WriteLine("A deszerializáció null eredményt adott.");
+                    return new List<Eszkoz>();
+                }
 
-                System.Diagnostics.Debug.WriteLine($"Deszerializált lista elemszám: {lista.Count}");
-
+                Debug.WriteLine($"Sikeresen betöltve: {lista.Count} eszköz.");
                 return lista;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Eszköz lekérési hiba: {ex.Message}");
+                // Minden más hiba (hálózat, timeout, stb.)
+                Debug.WriteLine($"Általános hiba az eszközök lekérésekor: {ex.Message}");
                 return new List<Eszkoz>();
             }
         }
@@ -276,7 +284,7 @@ namespace CyberNest_Admin
                 var response = await _httpClient.GetAsync("uzemelteto");
                 if (!response.IsSuccessStatusCode) return new List<Uzemelteto>();
                 string jsonString = await response.Content.ReadAsStringAsync();
-                return Uzemelteto.FromJson(jsonString);
+                return Uzemelteto.FromJsonUzemelteto(jsonString);
             }
             catch (Exception ex)
             {
@@ -291,7 +299,7 @@ namespace CyberNest_Admin
                 var response = await _httpClient.GetAsync($"uzemelteto?nev={Uri.EscapeDataString(nev)}");
                 if (!response.IsSuccessStatusCode) return 0;
                 string jsonString = await response.Content.ReadAsStringAsync();
-                return Uzemelteto.FromJson(jsonString).FirstOrDefault().Id;
+                return Uzemelteto.FromJsonUzemelteto(jsonString).FirstOrDefault().Id;
             }
             catch (Exception ex)
             {

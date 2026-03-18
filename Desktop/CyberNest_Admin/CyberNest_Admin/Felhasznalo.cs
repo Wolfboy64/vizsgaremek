@@ -75,6 +75,7 @@ namespace CyberNest_Admin
                 new DateOnlyConverter(),
                 new TimeOnlyConverter(),
                 IsoDateTimeOffsetConverter.Singleton
+
             },
         };
     }

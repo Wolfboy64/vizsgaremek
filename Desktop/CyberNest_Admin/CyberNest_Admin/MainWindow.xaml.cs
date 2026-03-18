@@ -290,30 +290,43 @@ namespace CyberNest_Admin
             Token);
             ShowPanel(WelocmePage); //vissza a főoldalra
         }
-       
+
 
         //eszközökList
         private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-            ShowPanel(EszkozokListPanel);
+            try
+            {
+                ShowPanel(EszkozokListPanel);
 
-            ApiService api = new ApiService();
+                // Vizuális visszajelzés (opcionális, de jó, ha lassú az internet)
+                EszkozokListView.Cursor = Cursors.Wait;
 
-            var lista = await api.GetEszkozokAsync();
-            Eszkoz.Eszkozok = lista;
+                ApiService api = new ApiService();
+                var lista = await api.GetEszkozokAsync();
+
+                // Frissítjük a statikus tárolót is
+                Eszkoz.Eszkozok = null;
+                Eszkoz.Eszkozok = lista;
+                System.Diagnostics.Debug.WriteLine($"Letöltött eszközök száma: {lista.Count}");
+
+                // UI frissítése
+                EszkozokListView.ItemsSource = null;
+                if (lista != null && lista.Count > 0)
+                {
+                    EszkozokListView.ItemsSource = lista;
+                }
+                else
+                {
+                    MessageBox.Show($"Nincsenek megjeleníthető eszközök. {Eszkoz.Eszkozok.Count}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba történt a felület frissítésekor: {ex.Message}");
+            }
             
-            System.Diagnostics.Debug.WriteLine($"Letöltött eszközök száma: {lista.Count}");
-
-            if (lista.Count > 0)
-            {
-                EszkozokListView.ItemsSource = lista;
-            }
-            else
-            {
-                MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
-            }
         }
-
         private async void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
         {
             ShowPanel(ujEszkozPanel);
@@ -596,40 +609,59 @@ namespace CyberNest_Admin
         }
         private async void FoglalasTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
-
-            FoglalasTorlesComboBox.Items.Clear();
-            ApiService api = new ApiService();
-            var a_ = await api.GetFoglalasokAsync(Token);
-            Debug.WriteLine($"Letöltött eszközök száma: {a_.Count}");
-            foreach (var item in a_)
+            try
             {
-                FoglalasTorlesComboBox.Items.Add(item.Id);
+                ApiService api = new ApiService();
+                var foglalasok = await api.GetFoglalasokAsync(Token);
+
+                // A teljes listát adjuk oda
+               /* FoglalasTorlesComboBox.ItemsSource = foglalasok;
+                // Csak a nevet jelenítjük meg a listában
+                FoglalasTorlesComboBox.DisplayMemberPath = "UgyfelNev";
+                FoglalasTorlesComboBox.SelectedValuePath = "Id"; // Ez segít majd a törlésnél, hogy az ID-t kapjuk vissza*/
+                foreach (var item in foglalasok)
+                {
+                    FoglalasTorlesComboBox.Items.Add($"{item.UgyfelNev} ({item.Id})");
+                }
+
+                ShowPanel(FoglalasTorlesPanel);
             }
-
-            ShowPanel(FoglalasTorlesPanel);
-
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hiba a foglalások betöltésekor: {ex.Message}");
+            }
         }
-
         private async void FoglalasTorlesSaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            ApiService api = new ApiService();
-            var nev = UzemeltetoTorlesComboBox.SelectedItem as string;
-            if (nev != null)
+            // 1. Megnézzük, ki van-e jelölve valami
+            var kijeloltFoglalas = FoglalasTorlesComboBox.SelectedItem as Foglalas;
+
+            if (kijeloltFoglalas == null)
             {
-                // Először meg kell szerezni az ID-t a név alapján
-                int id = await api.GetFoglalasIdByName(Token, "a"); //JAVÍTANI!!!!!
-                bool siker = await api.DeleteFoglalasAsync(Token, id);
-                if (siker)
-                {
-
-                    ShowPanel(WelocmePage);
-                }
-                else
-                {
-                    MessageBox.Show("Hiba történt a törlés során. Ellenőrizd a szerverkapcsolatot!");
-                }
-
+                MessageBox.Show("Kérlek, válassz ki egy foglalást a törléshez!");
+                return;
             }
+
+            // 2. Megerősítés (Erősen ajánlott törlés előtt!)
+            var confirm = MessageBox.Show($"Biztosan törlöd {kijeloltFoglalas.UgyfelNev} foglalását?",
+                                          "Törlés", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            // 3. Törlés végrehajtása a VALÓDI ID-val
+            ApiService api = new ApiService();
+            bool siker = await api.DeleteFoglalasAsync(Token, (int)kijeloltFoglalas.Id);
+
+            if (siker)
+            {
+                MessageBox.Show("Sikeres törlés!");
+                ShowPanel(WelocmePage);
+            }
+            else
+            {
+                MessageBox.Show("A törlés nem sikerült. Ellenőrizd a szerver naplóját!");
+            }
+        
         }
         /*      |-----------------|
          *      |    Ertekeles    |

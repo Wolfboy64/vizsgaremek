@@ -12,7 +12,7 @@ namespace CyberNest_Admin
     public partial class Eszkoz
     {
         [JsonPropertyName("id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("leiras")]
         public string Leiras { get; set; }
@@ -27,7 +27,7 @@ namespace CyberNest_Admin
         public string Hdd { get; set; }
 
         [JsonPropertyName("uzemelteto_id")]
-        public long UzemeltetoId { get; set; }
+        public int UzemeltetoId { get; set; }
 
         [JsonPropertyName("uzemelteto_nev")]
         public string UzemeltetoNev { get; set; }

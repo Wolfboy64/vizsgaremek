@@ -28,7 +28,7 @@ namespace CyberNest_Admin
         {
             return $"{Nev}";
         }
-        public static List<Uzemelteto> FromJson(string json) => JsonSerializer.Deserialize<List<Uzemelteto>>(json, CyberNest_Admin.Converter.Settings);
+        public static List<Uzemelteto> FromJsonUzemelteto(string json) => JsonSerializer.Deserialize<List<Uzemelteto>>(json, CyberNest_Admin.Converter.Settings);
     }
 
 }
