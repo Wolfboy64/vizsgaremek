@@ -38,7 +38,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Background="#FF3426DE"
+        <StackPanel Background="#1E1E1E"
                     Grid.RowSpan="5" 
                     Grid.ColumnSpan="3"
                     Visibility="Hidden"/>
@@ -50,10 +50,8 @@
                     Visibility="Hidden">
             <StackPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF153CDA"/>
-                    <GradientStop Color="#FF1D64C5" Offset="1"/>
-
-                    <GradientStop Color="#FF2AB5B2" Offset="0.506"/>
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF0C447D" Offset="1"/>
                 </LinearGradientBrush>
             </StackPanel.Background>
             <Grid>
@@ -65,16 +63,18 @@
 
                 </Grid.RowDefinitions>
 
-                <TextBlock TextWrapping="Wrap" Foreground="White" Text="CyberNest - Admin felület" FontSize="20" Margin="0,213,0,-266" Grid.Row="2" FontWeight="Bold" TextTrimming="WordEllipsis" FontFamily="Corbel" HorizontalAlignment="Center" Width="132" FontStyle="Italic">
-                    <TextBlock.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF91700"/>
-                            <GradientStop Color="#FFFF21F7" Offset="1"/>
-                            <GradientStop Color="#FF0839FF" Offset="0.473"/>
-                            <GradientStop Color="#FF81277E" Offset="0.159"/>
-                        </LinearGradientBrush>
-                    </TextBlock.Background>
-                </TextBlock>
+                <TextBlock TextWrapping="Wrap"
+                           Foreground="#007ACC"
+                           Text="CyberNest - Admin felület" 
+                           FontSize="20"
+                           Margin="0,213,0,-266"
+                           Grid.Row="2"
+                           FontWeight="Bold"
+                           TextTrimming="WordEllipsis"
+                           FontFamily="Corbel"
+                           HorizontalAlignment="Center"
+                           Width="132" FontStyle="Italic"/>
+
 
             </Grid>
         </StackPanel>
@@ -87,7 +87,8 @@
             <Menu x:Name="TopMainMenu"
                   Height="21" 
                   Background="#2D2D30"
-                  Foreground="#007ACC">
+                  Foreground="#007ACC"
+                  HorizontalAlignment="Stretch">
 
                 <MenuItem x:Name="FelhasznalokMenu"
                          Header="Felhasználók" 
@@ -113,6 +114,13 @@
                     <MenuItem x:Name="UzemeltetoModositasMenu" Header="Üzemeltető módosítása" Click="UzemeltetoModositasMenu_Click"/>
                     <MenuItem x:Name="UzemeltetoTorleseMenu" Header="Üzemeltető törlése" Click="UzemeltetoTorleseMenu_Click"/>
                 </MenuItem>
+                <MenuItem x:Name="FoglalasMenu"
+                          Header="Foglalás"
+                          FontSize="14">
+                    <MenuItem x:Name="FoglalasListajaMenu" Header="Foglalás listája" Click="FoglalasListajaMenu_Click"/>
+                    <MenuItem x:Name="FoglalasTorleseMenu" Header="Foglalás törlése" Click="FoglalasTorleseMenu_Click"/>
+
+                </MenuItem>
                 <MenuItem x:Name="ErtekelesekMenu"
                           Header="Értékelések"
                           FontSize="14">
@@ -129,14 +137,13 @@
                     <MenuItem x:Name="NaplozasModositasMenu" Header="Naplózás módosítása" Click="NaplozasModositasMenu_Click"/>
                     <MenuItem x:Name="UjNaplozasMenu" Header="Új naplózás" Click="UjNaplozasMenu_Click"/>
                 </MenuItem>
-                <MenuItem x:Name="FoglalasMenu"
-                          Header="Foglalás"
-                          FontSize="14">
-                    <MenuItem x:Name="FoglalasListajaMenu" Header="Foglalás listája" Click="FoglalasListajaMenu_Click"/>
-                    <MenuItem x:Name="FoglalasTorleseMenu" Header="Foglalás törlése" Click="FoglalasTorleseMenu_Click"/>
+                <MenuItem x:Name="kijelentkezesMenu" 
+                          Header="kijelentkezés"
+                          FontSize="14"
+                          Click="kijelentkezesMenu_Click"/>
 
-                </MenuItem>
             </Menu>
+            
             <Grid Height="412" Width="799" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
@@ -603,7 +610,7 @@
                             Grid.ColumnSpan="2"
                             Grid.RowSpan="3"
                             Background="#3F3F46" Margin="0,82,0,82"
-                            Visibility="Visible">       
+                            Visibility="Hidden">       
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

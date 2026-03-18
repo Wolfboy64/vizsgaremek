@@ -44,37 +44,33 @@ namespace CyberNest_Admin
 
         private async void Bejelentkezes_Click(object sender, RoutedEventArgs e)
         {
-            // Vizuális visszajelzés (opcionális, de ajánlott)
             Bejelentkezes.IsEnabled = false;
-       
-
             var api = new ApiService();
-
-            // Itt a program nem áll meg, a UI szál szabad marad!
             var eredmeny = await api.LoginAsync(txtUser.Text, txtPass.Password);
 
             if (eredmeny != null)
             {
                 Token = eredmeny.Token;
+
+                User.Bejelentkezett = eredmeny.User;
+
+                await api.UpdateStatusAsync(User.Bejelentkezett, Token, "aktív");
+
+
                 this.Title = $"CyberNest Admin felület - Üdvözlünk, {eredmeny.User.Nev}";
-                //MessageBox.Show($"Sikeres belépés! Token: {Token} További infók: {eredmeny.User.Role}" );
-                // Itt átválthatsz egy másik ablakra vagy betöltheted az adatokat
-                Clipboard.SetText(Token); // Token másolása a vágólapra, ha szükséges   
                 LoginPage.Visibility = Visibility.Hidden;
                 SideBrand_loginPage.Visibility = Visibility.Hidden;
 
                 MainContentPage.Visibility = Visibility.Visible;
                 WelocmePage.Visibility = Visibility.Visible;
+
                 DateTime date = DateTime.Now;
-                MessageBox.Show($"Sikeres belépés! Üdvözlünk, {date.ToString()}!");
                 DateSetup(date, eredmeny.User.Nev, eredmeny.User.Role, eredmeny.User.Elerhetoseg);
             }
             else
             {
-                MessageBox.Show("Hiba a bejelentkezés során. Ellenőrizd az adatokat!");
+                MessageBox.Show("Hiba a bejelentkezés során!");
             }
-
-            // Visszaállítjuk a UI-t
             Bejelentkezes.IsEnabled = true;
         }
         private void DateSetup(DateTime d, string nev, string role, string elerhetoseg)
@@ -97,11 +93,28 @@ namespace CyberNest_Admin
                 WelocmeTextblock.Text = $"Jó Estét, {nev}!\nJogolutsági szinted: {role} \nElérhetőséged:  {elerhetoseg}";
             }
         }
-       /*
-        *  |-----------------------------|
-        *  |  Felhasználók kezelése      |
-        *  |-----------------------------|
-        */
+        private async void kijelentkezesMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ApiService api = new ApiService();
+
+            // Meghívjuk a Logout-ot, ami belsőleg "inaktív"-ra állítja a felhasználót
+            await api.Logout(User.Bejelentkezett, Token);
+
+            // Töröljük a helyi adatokat
+            Token = "";
+            User.Bejelentkezett = new User(); // Reseteljük a példányt
+
+            MainContentPage.Visibility = Visibility.Collapsed;
+            txtUser.Text = "";
+            txtPass.Password = "";
+            LoginPage.Visibility = Visibility.Visible;
+            SideBrand_loginPage.Visibility = Visibility.Visible;
+        }
+        /*
+         *  |-----------------------------|
+         *  |  Felhasználók kezelése      |
+         *  |-----------------------------|
+         */
 
 
         private void UjFelhasznaloMenu_Click(object sender, RoutedEventArgs e)
@@ -771,6 +784,6 @@ namespace CyberNest_Admin
             }
         }
 
-      
+        
     }
 }

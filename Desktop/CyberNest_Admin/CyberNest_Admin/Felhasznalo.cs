@@ -32,7 +32,7 @@ namespace CyberNest_Admin
         public User User { get; set; }
 
         public static List<User> Felhasznalok  = new List<User>();
-
+        
         
     }
 
@@ -49,7 +49,7 @@ namespace CyberNest_Admin
 
         [JsonPropertyName("role")]
         public string Role { get; set; }
-
+        public static User Bejelentkezett = new User();
         public override string ToString()
         {
             return $"{Nev}";

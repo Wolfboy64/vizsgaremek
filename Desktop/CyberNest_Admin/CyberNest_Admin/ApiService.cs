@@ -29,11 +29,9 @@ namespace CyberNest_Admin
 
             try
             {
-                // Fontos: Pontosan olyan neveket használj az anonim objektumban, 
-                // amilyeneket a Backend (PHP/NodeJS/C#) elvár!
                 var loginData = new
                 {
-                    elerhetoseg = email,  // Itt volt a hiba: 'nev' helyett 'elerhetoseg' kell
+                    elerhetoseg = email, 
                     jelszo = password
                 };
 
@@ -56,6 +54,39 @@ namespace CyberNest_Admin
                 System.Diagnostics.Debug.WriteLine($"Hálózati hiba: {ex.Message}");
                 return null;
             }
+        }
+        // Általános állapotfrissítő (Bejelentkezéskor "aktív", kijelentkezéskor "inaktív")
+        public async Task UpdateStatusAsync(User user, string JWT, string ujAllapot)
+        {
+            if (user == null || user.Id == 0) return;
+
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWT);
+
+            var updateData = new
+            {
+                nev = user.Nev,
+                elerhetoseg = user.Elerhetoseg,
+                allapot = ujAllapot, // Itt megy át az "aktív" vagy "inaktív"
+                role = user.Role
+            };
+
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"felhasznalo/{user.Id}", updateData);
+                Debug.WriteLine($"Állapot frissítve: {ujAllapot} (ID: {user.Id})");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hiba az állapotfrissítésnél: {ex.Message}");
+            }
+        }
+
+        // A Logout most már csak meghívja az állapotfrissítőt
+
+        public async Task Logout(User bejelentkezettfelhasznalo, string JWT)
+        {
+
+            await UpdateStatusAsync(bejelentkezettfelhasznalo, JWT, "inaktív");
         }
         /* |----------------------|
          * | Felhasználók szakasz |
