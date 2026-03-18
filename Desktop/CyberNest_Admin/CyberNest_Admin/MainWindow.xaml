@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberNest_Admin"
         mc:Ignorable="d"
-        Title="CyberNest Admin felület" Height="450" Width="800" Background="#1E1E1E" Foreground="#007ACC">
+        Title="CyberNest Admin felület" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ThreeDBorderWindow"
+        Background="#1E1E1E" Foreground="#007ACC">
     <Grid>
         <!--FIGYELEM! ÁLTALÁNOS TÁJÉKOZTATÓ ERRŐL AZ XAML FÁJLRÓL:
         1. Fontos panelek nevei és láthatósággal kapcsolatos beállításaik:
