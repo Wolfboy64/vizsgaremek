@@ -143,7 +143,7 @@
                           Click="kijelentkezesMenu_Click"/>
 
             </Menu>
-            
+
             <Grid Height="412" Width="799" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
@@ -610,7 +610,7 @@
                             Grid.ColumnSpan="2"
                             Grid.RowSpan="3"
                             Background="#3F3F46" Margin="0,82,0,82"
-                            Visibility="Hidden">       
+                            Visibility="Hidden">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -678,5 +678,28 @@
             </Grid>
 
         </StackPanel>
+        <!-- Hiba panel, de jelenleg inaktív -->
+        <!-- 
+        <StackPanel x:Name="ErrorPanel"
+                    Background="#DC3545"
+                    Grid.Column="1" Margin="64,22,100,55"
+                    Grid.RowSpan="2" 
+                    Grid.ColumnSpan="2"
+                    Visibility="Hidden">
+            <Grid Height="66">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="ErrorPanelCloseBtn" Content="X" HorizontalAlignment="Right" Margin="0,0,10,0" Click="ErrorPanelCloseBtn_Click"/>
+                <TextBlock x:Name="ErrorPanelText" Foreground="White" TextWrapping="Wrap" Text="Hiba!" Margin="103,4,103,6"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap" Text="Hiba történt a művelet végrehajtása során. Kérem próbálja újra." Margin="10,6,10,-26" Grid.Row="1"/>
+            </Grid>
+        </StackPanel>
+        -->
     </Grid>
 </Window>

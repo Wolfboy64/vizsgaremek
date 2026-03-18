@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -761,6 +762,7 @@ namespace CyberNest_Admin
                 UzemeltetoTorlesPanel,
                 FoglalasListPanel,
                 FoglalasTorlesPanel
+                //ErrorPanel -> inaktív, de ha majd lesz, ide kell majd tenni
             };
 
             // Első lépés: Minden panelt teljesen eltüntetünk
@@ -784,6 +786,12 @@ namespace CyberNest_Admin
             }
         }
 
-        
+        /* 
+         * Hiba panel bezárása gomb
+         * Ez egy inaktív funkció
+        private void ErrorPanelCloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Showpanel(Welocmepage);
+        }*/
     }
 }
