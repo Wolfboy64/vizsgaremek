@@ -88,53 +88,47 @@
 
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
-                  Height="21" 
+                  Height="31" 
                   Background="#2D2D30"
                   Foreground="#007ACC"
-                  HorizontalAlignment="Stretch">
+                  HorizontalAlignment="Stretch" FontSize="20">
 
                 <MenuItem x:Name="FelhasznalokMenu"
-                         Header="Felhasználók" 
-                          FontSize="14">
+                         Header="Felhasználók" >
                     <MenuItem x:Name="FelhasznalokListajaMenu" Header="Felhasználók listája" Click="FelhasznalokListajaMenu_Click"/>
                     <MenuItem x:Name="UjFelhasznaloMenu" Header="Új felhasználó" Click="UjFelhasznaloMenu_Click"/>
                     <MenuItem x:Name="FelhasznaloTorleseMenu" Header="Felhasználó törlése" Click="FelhasznaloTorleseMenu_Click"/>
                     <MenuItem x:Name="FelhasznaloModositasMenu" Header="Felhasználó módosítása" Click="FelhasznaloModositasMenu_Click"/>
                 </MenuItem>
                 <MenuItem x:Name="EszkozokMenu"
-                          Header="Eszközök" 
-                          FontSize="14">
+                          Header="Eszközök" >
                     <MenuItem x:Name="EszkozokListajaMenu" Header="Eszközök listája" Click="EszkozokListajaMenu_Click"/>
                     <MenuItem x:Name="UjEszkozMenu" Header="Új eszköz" Click="UjEszkozMenu_Click"/>
                     <MenuItem x:Name="EszkozTorleseMenu" Header="Eszköz törlése" Click="EszkozTorleseMenu_Click"/>
                     <MenuItem x:Name="EszkozModositasMenu" Header="Eszköz módosítása" Click="EszkozModositasMenu_Click"/>
                 </MenuItem>
                 <MenuItem x:Name="UzemeltetokMenu"
-                          Header="Üzemeltetők"
-                          FontSize="14">
+                          Header="Üzemeltetők">
                     <MenuItem x:Name="UzemeltetokListajaMenu" Header="Üzemeltetők listája" Click="UzemeltetokListajaMenu_Click"/>
                     <MenuItem x:Name="UjUzemeltetoMenu" Header="Új üzemeltető" Click="UjUzemeltetoMenu_Click"/>
                     <MenuItem x:Name="UzemeltetoModositasMenu" Header="Üzemeltető módosítása" Click="UzemeltetoModositasMenu_Click"/>
                     <MenuItem x:Name="UzemeltetoTorleseMenu" Header="Üzemeltető törlése" Click="UzemeltetoTorleseMenu_Click"/>
                 </MenuItem>
                 <MenuItem x:Name="FoglalasMenu"
-                          Header="Foglalás"
-                          FontSize="14">
+                          Header="Foglalás">
                     <MenuItem x:Name="FoglalasListajaMenu" Header="Foglalás listája" Click="FoglalasListajaMenu_Click"/>
                     <MenuItem x:Name="FoglalasTorleseMenu" Header="Foglalás törlése" Click="FoglalasTorleseMenu_Click"/>
 
                 </MenuItem>
                 <MenuItem x:Name="ErtekelesekMenu"
-                          Header="Értékelések"
-                          FontSize="14">
+                          Header="Értékelések">
                     <MenuItem x:Name="ErtekelesekListaMenu" Header="Értékelések Listázása" Click="ErtekelesekMenu_Click" />
                     <MenuItem x:Name="ErtekelesTorleseMenu" Header="Értékelés törlése" Click="ErtekelesTorleseMenu_Click"/>
                     <MenuItem x:Name="ErtekelesModositasMenu" Header="Értékelés módosítása" Click="ErtekelesModositasMenu_Click"/>
                     <MenuItem x:Name="UjErtekelesMenu" Header="Új értékelés" Click="UjErtekelesMenu_Click"/>
                 </MenuItem>
                 <MenuItem x:Name="NaplozasMenu" 
-                          Header="Naplózás"
-                          FontSize="14">
+                          Header="Naplózás">
                     <MenuItem x:Name="NaplozasListajaMenu" Header="Naplózás listája" Click="NaplozasListajaMenu_Click"/>
                     <MenuItem x:Name="NaplozasTorleseMenu" Header="Naplózás törlése" Click="NaplozasTorleseMenu_Click"/>
                     <MenuItem x:Name="NaplozasModositasMenu" Header="Naplózás módosítása" Click="NaplozasModositasMenu_Click"/>
@@ -142,7 +136,6 @@
                 </MenuItem>
                 <MenuItem x:Name="kijelentkezesMenu" 
                           Header="kijelentkezés"
-                          FontSize="14"
                           Click="kijelentkezesMenu_Click"/>
 
             </Menu>
