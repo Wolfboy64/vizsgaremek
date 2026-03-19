@@ -50,7 +50,7 @@
         <StackPanel x:Name="SideBrand_loginPage" 
                     Grid.Column="3"
                     Grid.RowSpan="5"
-                    Visibility="Hidden">
+                    Visibility="Visible">
             <StackPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -84,7 +84,7 @@
         <StackPanel x:Name="MainContentPage"
                     Grid.ColumnSpan="5"
                     Grid.RowSpan="5"
-                    Visibility="Visible">
+                    Visibility="Hidden">
 
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
@@ -637,14 +637,14 @@
         </StackPanel>
         <StackPanel x:Name="LoginPage"
                     Background="#3F3F46"
-                    Width="200"
+                    Width="356"
                     RenderTransformOrigin="0.5,0.5"
-                    HorizontalAlignment="Center"
-                    Grid.Row="2"
-                    Grid.ColumnSpan="3"
-                    Visibility="Hidden">
+                    HorizontalAlignment="Left"
+                    Grid.Row="1"
+                    Visibility="Visible" Margin="144,43,0,86" 
+                    Grid.RowSpan="3" Grid.ColumnSpan="3">
 
-            <Grid Height="86" >
+            <Grid Height="127">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="67*"/>
                     <ColumnDefinition Width="43*"/>
@@ -657,20 +657,31 @@
                 </Grid.RowDefinitions>
                 <TextBlock TextWrapping="Wrap" 
                                 Text="Felhasználónév:"
-                                Margin="0,6,0,7" />
+                                Margin="0,6,0,7" 
+                                FontSize="17"/>
                 <TextBox x:Name="txtUser"
                             Text="TextBox" 
-                            Grid.ColumnSpan="2" Margin="17,8,0,3" HorizontalAlignment="Left" Width="106" Grid.Column="1"/>
+                            Grid.ColumnSpan="2" Margin="17,8,0,3" 
+                            FontSize="17"
+                            HorizontalAlignment="Left" Width="210" Grid.Column="1"/>
                 <Button x:Name="Bejelentkezes"
                             Content="Bejelentkezés" 
                             Grid.Column="2" 
-                            Grid.Row="1" Margin="1,28,0,5" Grid.RowSpan="2" Click="Bejelentkezes_Click"/>
+                            Grid.Row="2" Margin="0,5,0,5"
+                            FontSize="17"
+                            Click="Bejelentkezes_Click" HorizontalAlignment="Center" Width="140"/>
 
                 <TextBlock TextWrapping="Wrap" 
                                Text="Jelszó:" 
                                Margin="0,7,0,7" 
-                               Grid.Row="1" />
-                <PasswordBox x:Name="txtPass" Grid.Column="1" Grid.ColumnSpan="2" Margin="17,7,0,6" Grid.Row="1" HorizontalAlignment="Left" Width="106"/>
+                               Grid.Row="1" 
+                           FontSize="17"/>
+                <PasswordBox x:Name="txtPass"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="2" Margin="17,7,0,6"
+                             Grid.Row="1" HorizontalAlignment="Left"
+                             Width="210"
+                             FontSize="17"/>
             </Grid>
 
         </StackPanel>
