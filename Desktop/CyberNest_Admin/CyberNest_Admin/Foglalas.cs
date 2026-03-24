@@ -22,16 +22,16 @@ namespace CyberNest_Admin
     public partial class Foglalas
     {
         [JsonPropertyName("id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("felhasznalo_id")]
-        public long FelhasznaloId { get; set; }
+        public int FelhasznaloId { get; set; }
 
         [JsonPropertyName("eszkoz_id")]
-        public long EszkozId { get; set; }
+        public int EszkozId { get; set; }
 
         [JsonPropertyName("idopont_id")]
-        public long IdopontId { get; set; }
+        public int IdopontId { get; set; }
 
         [JsonPropertyName("berlesi_kezdete")]
         public DateTimeOffset BerlesiKezdete { get; set; }

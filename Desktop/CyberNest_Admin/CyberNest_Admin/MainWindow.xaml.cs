@@ -36,7 +36,7 @@ namespace CyberNest_Admin
 
             //Height="450" Width="800"
             this.MinHeight = 500;
-            this.MinWidth = 800;
+            this.MinWidth = 900;
 
             this.MaxHeight = 500;
             this.MaxWidth = 800;
@@ -46,59 +46,69 @@ namespace CyberNest_Admin
         private async void Bejelentkezes_Click(object sender, RoutedEventArgs e)
         {
             Bejelentkezes.IsEnabled = false;
-            var api = new ApiService();
-            var eredmeny = await api.LoginAsync(txtUser.Text, txtPass.Password);
-
-            if (eredmeny != null)
+            try
             {
-                Token = eredmeny.Token;
+                var api = new ApiService();
+                var eredmeny = await api.LoginAsync(txtUser.Text, txtPass.Password);
 
-                User.Bejelentkezett = eredmeny.User;
+                if (eredmeny != null && eredmeny.User.Role == "admin")
+                {
+                    Token = eredmeny.Token;
 
-                await api.UpdateStatusAsync(User.Bejelentkezett, Token, "aktív");
+                    User.Bejelentkezett = eredmeny.User;
+
+                    await api.UpdateStatusAsync(User.Bejelentkezett, Token, "aktív");
 
 
-                this.Title = $"CyberNest Admin felület - Üdvözlünk, {eredmeny.User.Nev}";
-                LoginPage.Visibility = Visibility.Hidden;
-                SideBrand_loginPage.Visibility = Visibility.Hidden;
+                    this.Title = $"CyberNest Admin felület - Üdvözlünk, {eredmeny.User.Nev}";
+                    LoginPage.Visibility = Visibility.Hidden;
+                    SideBrand_loginPage.Visibility = Visibility.Hidden;
 
-                MainContentPage.Visibility = Visibility.Visible;
-                WelocmePage.Visibility = Visibility.Visible;
+                    MainContentPage.Visibility = Visibility.Visible;
+                    WelocmePage.Visibility = Visibility.Visible;
 
-                DateTime date = DateTime.Now;
-                DateSetup(date, eredmeny.User.Nev, eredmeny.User.Role, eredmeny.User.Elerhetoseg);
+                    DateTime date = DateTime.Now;
+                    DateSetup(date, eredmeny.User.Nev, eredmeny.User.Role, eredmeny.User.Elerhetoseg);
+                }
+                else
+                {
+                    MessageBox.Show("Hiba a bejelentkezés során!");
+                }
+                Bejelentkezes.IsEnabled = true;
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Hiba a bejelentkezés során!");
+
+                MessageBox.Show($"Hiba történt: {ex.Message}");
             }
-            Bejelentkezes.IsEnabled = true;
+            
         }
         private void DateSetup(DateTime d, string nev, string role, string elerhetoseg)
         {
-            //8:57-kor jó estét, ez nem jó, de majd finomhangoljuk a határokat
-            if (d.Hour < 8)
+            string koszones;
+            int ora = d.Hour;
+
+            if (ora >= 5 && ora < 9)
             {
-                WelocmeTextblock.Text = $"Jó Reggelt, {nev}!\nJogolutsági szinted: {role}\nElérhetőséged: {elerhetoseg}";
+                koszones = "Jó reggelt";
             }
-            else if ((d.Hour > 8 && d.Minute < 59) && d.Hour < 12)
+            else if (ora >= 9 && ora < 18)
             {
-                WelocmeTextblock.Text = $"Jó Napot, {nev}!\nJogolutsági szinted: {role}\nElérhetőséged: {elerhetoseg}";
-            }
-            else if ((d.Hour > 12 && d.Minute < 59)  && d.Hour < 16)
-            {
-                WelocmeTextblock.Text = $"Jó Napot, {nev}!\nJogolutsági szinted: {role} \nElérhetőséged: {elerhetoseg}";
+                koszones = "Jó napot";
             }
             else
             {
-                WelocmeTextblock.Text = $"Jó Estét, {nev}!\nJogolutsági szinted: {role} \nElérhetőséged:  {elerhetoseg}";
+                koszones = "Jó estét";
             }
+
+            WelocmeTextblock.Text = $"{koszones}, {nev}!\n" +
+                                    $"Jogosultsági szinted: {role}\n" +
+                                    $"Elérhetőséged: {elerhetoseg}";
         }
         private async void kijelentkezesMenu_Click(object sender, RoutedEventArgs e)
         {
             ApiService api = new ApiService();
 
-            // Meghívjuk a Logout-ot, ami belsőleg "inaktív"-ra állítja a felhasználót
             await api.Logout(User.Bejelentkezett, Token);
 
             // Töröljük a helyi adatokat
@@ -151,6 +161,15 @@ namespace CyberNest_Admin
                 {
                     ApiService api = new ApiService();
                     bool siker = await api.DeleteUserAsync(id, Token); // await kell ide is!
+                    if (siker)
+                    {
+                        FelhasznaloTorlesComboBox.ItemsSource = await api.GetUsersAsync(); // Kényszerített frissítés
+                        ShowPanel(WelocmePage);
+                    }
+                    else
+                    {
+                        MessageBox.Show("A törlés nem sikerült. Ellenőrizd a szerver naplóját!");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -374,11 +393,7 @@ namespace CyberNest_Admin
 
                     Debug.WriteLine($"Hiba, Störung! {ex.Message}");
                 }
-
-
-
             }
-
         }
         private async void EszkozTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -454,11 +469,7 @@ namespace CyberNest_Admin
         }
         private async void modEszkozSaveBtn_Click(object sender, RoutedEventArgs e)
         {
-
-
             ApiService api = new ApiService();
-            
-
             if (modEszkozEszkComboBox.SelectedValue != null)
             {
                 int id = Convert.ToInt32(modEszkozEszkComboBox.SelectedIndex);
@@ -623,59 +634,39 @@ namespace CyberNest_Admin
         }
         private async void FoglalasTorleseMenu_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                ApiService api = new ApiService();
-                var foglalasok = await api.GetFoglalasokAsync(Token);
-
-                // A teljes listát adjuk oda
-               /* FoglalasTorlesComboBox.ItemsSource = foglalasok;
-                // Csak a nevet jelenítjük meg a listában
-                FoglalasTorlesComboBox.DisplayMemberPath = "UgyfelNev";
-                FoglalasTorlesComboBox.SelectedValuePath = "Id"; // Ez segít majd a törlésnél, hogy az ID-t kapjuk vissza*/
-                foreach (var item in foglalasok)
-                {
-                    FoglalasTorlesComboBox.Items.Add($"{item.UgyfelNev} ({item.Id})");
-                }
-
-                ShowPanel(FoglalasTorlesPanel);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Hiba a foglalások betöltésekor: {ex.Message}");
-            }
+            // Amikor a törlés ablakot megnyitod:
+            ApiService api = new ApiService();
+            var lista = await api.GetFoglalasokAsync(Token);
+            FoglalasTorlesComboBox.ItemsSource = lista; // A teljes listát adjuk oda
+            FoglalasTorlesComboBox.DisplayMemberPath = "UgyfelNev";
+            ShowPanel(FoglalasTorlesPanel);
         }
         private async void FoglalasTorlesSaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Megnézzük, ki van-e jelölve valami
-            var kijeloltFoglalas = FoglalasTorlesComboBox.SelectedItem as Foglalas;
+            // 1. Castoljuk az elemet a konkrét osztályra (pl. Foglalas)
+            var kijelolt = FoglalasTorlesComboBox.SelectedItem as Foglalas;
 
-            if (kijeloltFoglalas == null)
+            // 2. Ha nem null, akkor megvan az objektumunk és az ID-nk
+            if (kijelolt != null)
             {
-                MessageBox.Show("Kérlek, válassz ki egy foglalást a törléshez!");
-                return;
-            }
+                int id = (int)kijelolt.Id; // Itt már nem stringgel bűvészkedünk
 
-            // 2. Megerősítés (Erősen ajánlott törlés előtt!)
-            var confirm = MessageBox.Show($"Biztosan törlöd {kijeloltFoglalas.UgyfelNev} foglalását?",
-                                          "Törlés", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                try
+                {
+                    ApiService api = new ApiService();
+                    bool siker = await api.DeleteFoglalasAsync(Token, id);
 
-            if (confirm != MessageBoxResult.Yes) return;
-
-            // 3. Törlés végrehajtása a VALÓDI ID-val
-            ApiService api = new ApiService();
-            bool siker = await api.DeleteFoglalasAsync(Token, (int)kijeloltFoglalas.Id);
-
-            if (siker)
-            {
-                MessageBox.Show("Sikeres törlés!");
-                ShowPanel(WelocmePage);
+                    if (siker) ShowPanel(WelocmePage);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Hiba: {ex.Message}");
+                }
             }
             else
             {
-                MessageBox.Show("A törlés nem sikerült. Ellenőrizd a szerver naplóját!");
+                MessageBox.Show("Kérlek, válassz ki egy elemet a listából!");
             }
-        
         }
         /*      |-----------------|
          *      |    Ertekeles    |

@@ -53,8 +53,9 @@
                     Visibility="Visible">
             <StackPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black"/>
-                    <GradientStop Color="#FF0C447D" Offset="1"/>
+                    <GradientStop Color="#FF4E4E4E"/>
+                    <GradientStop Color="#FF150C7D" Offset="0.494"/>
+                    <GradientStop Color="#FF4A4A4A" Offset="1"/>
                 </LinearGradientBrush>
             </StackPanel.Background>
             <Grid>
@@ -619,7 +620,12 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="Válassza ki a törölni kívánt foglalást:" Margin="10,10,10,10" Grid.ColumnSpan="2"/>
-                        <ComboBox x:Name="FoglalasTorlesComboBox" Margin="10,3,10,3" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
+                        <ComboBox x:Name="FoglalasTorlesComboBox"
+                                  Margin="10,3,10,3"
+                                  Grid.Row="2"
+                                  Grid.Column="1"
+                                  DisplayMemberPath="UgyfelNev" 
+                                  SelectedValuePath="Id"/>
                         <!--Vissza gomb és Mentés-->
                         <Button x:Name="FoglalasTorlesVisszaBtn" 
                                 Margin="10,3,10,3"

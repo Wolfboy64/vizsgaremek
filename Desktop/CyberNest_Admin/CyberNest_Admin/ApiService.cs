@@ -417,7 +417,10 @@ namespace CyberNest_Admin
         //foglalas lekérése név alapján
         public async Task<int> GetFoglalasIdByName(string name, string JWT)
         {
-            return 0;
+            await GetFoglalasokAsync(JWT); // Először töltsük be a foglalásokat
+            var foglalas = Foglalas.FoglalasAll.FirstOrDefault(f => f.FelhasznaloNev.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return foglalas != null ? foglalas.Id : -1; // Visszaadjuk a foglalás ID-jét, vagy -1-et, ha nincs találat
+
         }
 
         //foglalás törlése
