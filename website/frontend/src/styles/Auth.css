@@ -46,6 +46,16 @@
   font-size: 0.95rem;
 }
 
+.success-message {
+  background: rgba(46, 213, 115, 0.12);
+  border-left: 4px solid var(--success-color);
+  color: #7dffb0;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+}
+
 .auth-form {
   display: flex;
   flex-direction: column;

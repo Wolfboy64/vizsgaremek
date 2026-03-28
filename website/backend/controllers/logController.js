@@ -4,7 +4,7 @@ import FoglalasModel from "../models/Foglalas.js";
 const ensureFoglalasAccess = async (req, res, foglalas_id) => {
   const foglalas = await FoglalasModel.findById(foglalas_id);
   if (!foglalas) {
-    res.status(404).json({ message: "Foglalas nem talalhato." });
+    res.status(404).json({ message: "Foglalás nem található." });
     return false;
   }
 
@@ -14,7 +14,7 @@ const ensureFoglalasAccess = async (req, res, foglalas_id) => {
   if (!isAdmin && !isOwner) {
     res
       .status(403)
-      .json({ message: "Nincs jogosultsagod ehhez a foglalashoz." });
+      .json({ message: "Nincs jogosultságod ehhez a foglaláshoz." });
     return false;
   }
 
@@ -26,9 +26,9 @@ export const getAll = async (req, res) => {
     const logs = await LogModel.getAll();
     res.json(logs);
   } catch (error) {
-    console.error("Hiba a logok lekeresekor:", error);
+    console.error("Hiba a logok lekérésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba a logok lekerdezese soran.",
+      message: "Szerver hiba a logok lekérdezése során.",
     });
   }
 };
@@ -39,7 +39,7 @@ export const getById = async (req, res) => {
     const log = await LogModel.findById(id);
 
     if (!log) {
-      return res.status(404).json({ message: "Log nem talalhato." });
+      return res.status(404).json({ message: "Log nem található." });
     }
 
     const hasAccess = await ensureFoglalasAccess(req, res, log.foglalas_id);
@@ -47,9 +47,9 @@ export const getById = async (req, res) => {
 
     res.json(log);
   } catch (error) {
-    console.error("Hiba a log lekeresekor:", error);
+    console.error("Hiba a log lekérésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba a log lekerdezese soran.",
+      message: "Szerver hiba a log lekérdezése során.",
     });
   }
 };
@@ -64,9 +64,9 @@ export const getByFoglalasId = async (req, res) => {
     const logs = await LogModel.findByFoglalasId(foglalas_id);
     res.json(logs);
   } catch (error) {
-    console.error("Hiba a logok lekeresekor:", error);
+    console.error("Hiba a logok lekérésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba a logok lekerdezese soran.",
+      message: "Szerver hiba a logok lekérdezése során.",
     });
   }
 };
@@ -78,7 +78,7 @@ export const create = async (req, res) => {
     if (!foglalas_id || !uzenet) {
       return res
         .status(400)
-        .json({ message: "Foglalas azonosito es uzenet kotelezo." });
+        .json({ message: "Foglalás azonosító és üzenet kötelező." });
     }
 
     const hasAccess = await ensureFoglalasAccess(req, res, foglalas_id);
@@ -86,11 +86,11 @@ export const create = async (req, res) => {
 
     const logId = await LogModel.create(foglalas_id, uzenet);
 
-    res.status(201).json({ message: "Log letrehozva.", id: logId });
+    res.status(201).json({ message: "Log létrehozva.", id: logId });
   } catch (error) {
-    console.error("Hiba a log letrehozasakor:", error);
+    console.error("Hiba a log létrehozásakor:", error);
     res.status(500).json({
-      message: "Szerver hiba a log letrehozasa soran.",
+      message: "Szerver hiba a log létrehozása során.",
     });
   }
 };
@@ -101,12 +101,12 @@ export const update = async (req, res) => {
     const { uzenet } = req.body;
 
     if (!uzenet) {
-      return res.status(400).json({ message: "Uzenet megadasa kotelezo." });
+      return res.status(400).json({ message: "Üzenet megadása kötelező." });
     }
 
     const existing = await LogModel.findById(id);
     if (!existing) {
-      return res.status(404).json({ message: "Log nem talalhato." });
+      return res.status(404).json({ message: "Log nem található." });
     }
 
     const hasAccess = await ensureFoglalasAccess(
@@ -119,14 +119,14 @@ export const update = async (req, res) => {
     const affectedRows = await LogModel.update(id, uzenet);
 
     if (affectedRows === 0) {
-      return res.status(404).json({ message: "Log nem talalhato." });
+      return res.status(404).json({ message: "Log nem található." });
     }
 
-    res.json({ message: "Log sikeresen frissitve." });
+    res.json({ message: "Log sikeresen frissítve." });
   } catch (error) {
-    console.error("Hiba a log frissitesekor:", error);
+    console.error("Hiba a log frissítésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba a log frissitese soran.",
+      message: "Szerver hiba a log frissítése során.",
     });
   }
 };
@@ -137,7 +137,7 @@ export const deleteLog = async (req, res) => {
     const existing = await LogModel.findById(id);
 
     if (!existing) {
-      return res.status(404).json({ message: "Log nem talalhato." });
+      return res.status(404).json({ message: "Log nem található." });
     }
 
     const hasAccess = await ensureFoglalasAccess(
@@ -150,14 +150,14 @@ export const deleteLog = async (req, res) => {
     const affectedRows = await LogModel.delete(id);
 
     if (affectedRows === 0) {
-      return res.status(404).json({ message: "Log nem talalhato." });
+      return res.status(404).json({ message: "Log nem található." });
     }
 
-    res.json({ message: "Log sikeresen torolve." });
+    res.json({ message: "Log sikeresen törölve." });
   } catch (error) {
-    console.error("Hiba a log torlesekor:", error);
+    console.error("Hiba a log törlésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba a log torlese soran.",
+      message: "Szerver hiba a log törlése során.",
     });
   }
 };

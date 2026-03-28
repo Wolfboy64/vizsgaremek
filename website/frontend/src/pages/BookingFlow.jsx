@@ -4,6 +4,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import "../styles/BookingFlow.css";
+import {
+  isValidEmail,
+  isValidFullName,
+  isValidName,
+  isValidPhone,
+} from "../utils/validation";
 
 const buildAvatar = (name, color) => {
   const initials = name
@@ -124,7 +130,9 @@ const BookingFlow = () => {
         ]);
 
         setServer(serverResponse.data);
-        setPickupTimes(Array.isArray(slotsResponse.data) ? slotsResponse.data : []);
+        setPickupTimes(
+          Array.isArray(slotsResponse.data) ? slotsResponse.data : [],
+        );
       } catch (err) {
         setError(
           err.response?.data?.message ||
@@ -144,7 +152,9 @@ const BookingFlow = () => {
   );
 
   const mentorSlots = useMemo(() => {
-    const grouped = Object.fromEntries(MENTORS.map((mentor) => [mentor.id, []]));
+    const grouped = Object.fromEntries(
+      MENTORS.map((mentor) => [mentor.id, []]),
+    );
 
     pickupTimes.forEach((slot, index) => {
       const mentor = MENTORS[index % MENTORS.length];
@@ -198,7 +208,27 @@ const BookingFlow = () => {
       !email.trim() ||
       !phone.trim()
     ) {
-      setError("Kérlek tölts ki minden kötelező mezőt.");
+      setError("Kérlek, tölts ki minden kötelező mezőt.");
+      return;
+    }
+
+    if (!isValidName(contactName)) {
+      setError("A név formátuma érvénytelen.");
+      return;
+    }
+
+    if (!isValidFullName(billingName)) {
+      setError("A számlázási névhez teljes név szükséges.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError("Érvényes email címet adj meg.");
+      return;
+    }
+
+    if (!isValidPhone(phone)) {
+      setError("Érvényes telefonszámot adj meg.");
       return;
     }
 
@@ -235,7 +265,10 @@ const BookingFlow = () => {
 
       setStep(5);
     } catch (err) {
-      setError(err.response?.data?.message || "Nem sikerült véglegesíteni a foglalást.");
+      setError(
+        err.response?.data?.message ||
+          "Nem sikerült véglegesíteni a foglalást.",
+      );
     } finally {
       setLoading(false);
     }
@@ -476,6 +509,7 @@ const BookingFlow = () => {
 
               <form
                 className="booking-form-grid"
+                noValidate
                 onSubmit={(event) => {
                   event.preventDefault();
                   handleBookingDataContinue();
@@ -589,7 +623,8 @@ const BookingFlow = () => {
                     <span>Mentor:</span> <strong>{selectedMentor.name}</strong>
                   </p>
                   <p>
-                    <span>Szerepkör:</span> <strong>{selectedMentor.title}</strong>
+                    <span>Szerepkör:</span>{" "}
+                    <strong>{selectedMentor.title}</strong>
                   </p>
                   <p>
                     <span>Dátum:</span>{" "}
@@ -614,7 +649,8 @@ const BookingFlow = () => {
                     <span>Email:</span> <strong>{bookingData.email}</strong>
                   </p>
                   <p>
-                    <span>Telefonszám:</span> <strong>{bookingData.phone}</strong>
+                    <span>Telefonszám:</span>{" "}
+                    <strong>{bookingData.phone}</strong>
                   </p>
                   <p>
                     <span>Megjegyzés:</span>{" "}
@@ -629,7 +665,9 @@ const BookingFlow = () => {
                   checked={termsAccepted}
                   onChange={(event) => setTermsAccepted(event.target.checked)}
                 />
-                <span>Elolvastam és elfogadom az Általános Szerződési Feltételeket.</span>
+                <span>
+                  Elolvastam és elfogadom az Általános Szerződési Feltételeket.
+                </span>
               </label>
 
               <div className="step-actions">

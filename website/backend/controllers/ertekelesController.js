@@ -4,7 +4,7 @@ import FoglalasModel from "../models/Foglalas.js";
 const ensureFoglalasAccess = async (req, res, foglalas_id) => {
   const foglalas = await FoglalasModel.findById(foglalas_id);
   if (!foglalas) {
-    res.status(404).json({ message: "Foglalas nem talalhato." });
+    res.status(404).json({ message: "Foglalás nem található." });
     return false;
   }
 
@@ -14,7 +14,7 @@ const ensureFoglalasAccess = async (req, res, foglalas_id) => {
   if (!isAdmin && !isOwner) {
     res
       .status(403)
-      .json({ message: "Nincs jogosultsagod ehhez a foglalashoz." });
+      .json({ message: "Nincs jogosultságod ehhez a foglaláshoz." });
     return false;
   }
 
@@ -26,9 +26,9 @@ export const getAll = async (req, res) => {
     const ertekelesek = await ErtekelesModel.getAll();
     res.json(ertekelesek);
   } catch (error) {
-    console.error("Hiba az ertekelesek lekeresekor:", error);
+    console.error("Hiba az értékelések lekérésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba az ertekelesek lekerdezese soran.",
+      message: "Szerver hiba az értékelések lekérdezése során.",
     });
   }
 };
@@ -39,7 +39,7 @@ export const getById = async (req, res) => {
     const ertekeles = await ErtekelesModel.findById(id);
 
     if (!ertekeles) {
-      return res.status(404).json({ message: "Ertekeles nem talalhato." });
+      return res.status(404).json({ message: "Értékelés nem található." });
     }
 
     const hasAccess = await ensureFoglalasAccess(
@@ -51,9 +51,9 @@ export const getById = async (req, res) => {
 
     res.json(ertekeles);
   } catch (error) {
-    console.error("Hiba az ertekeles lekeresekor:", error);
+    console.error("Hiba az értékelés lekérésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba az ertekeles lekerdezese soran.",
+      message: "Szerver hiba az értékelés lekérdezése során.",
     });
   }
 };
@@ -68,14 +68,14 @@ export const getByFoglalasId = async (req, res) => {
     const ertekeles = await ErtekelesModel.findByFoglalasId(foglalas_id);
 
     if (!ertekeles) {
-      return res.status(404).json({ message: "Ertekeles nem talalhato." });
+      return res.status(404).json({ message: "Értékelés nem található." });
     }
 
     res.json(ertekeles);
   } catch (error) {
-    console.error("Hiba az ertekeles lekeresekor:", error);
+    console.error("Hiba az értékelés lekérésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba az ertekeles lekerdezese soran.",
+      message: "Szerver hiba az értékelés lekérdezése során.",
     });
   }
 };
@@ -85,9 +85,13 @@ export const create = async (req, res) => {
     const { foglalas_id, eszkoz_pontszam, uzemelteto_pontszam, megjegyzes } =
       req.body;
 
-    if (!foglalas_id || eszkoz_pontszam == null || uzemelteto_pontszam == null) {
+    if (
+      !foglalas_id ||
+      eszkoz_pontszam == null ||
+      uzemelteto_pontszam == null
+    ) {
       return res.status(400).json({
-        message: "Foglalas azonosito es pontszamok megadasa kotelezo.",
+        message: "Foglalás azonosító és pontszámok megadása kötelező.",
       });
     }
 
@@ -102,19 +106,19 @@ export const create = async (req, res) => {
     );
 
     res.status(201).json({
-      message: "Ertekeles sikeresen letrehozva.",
+      message: "Értékelés sikeresen létrehozva.",
       id: ertekelesId,
     });
   } catch (error) {
     if (error?.code === "ER_DUP_ENTRY") {
       return res
         .status(409)
-        .json({ message: "Ehhez a foglalashoz mar van ertekeles." });
+        .json({ message: "Ehhez a foglaláshoz már van értékelés." });
     }
 
-    console.error("Hiba az ertekeles letrehozasakor:", error);
+    console.error("Hiba az értékelés létrehozásakor:", error);
     res.status(500).json({
-      message: "Szerver hiba az ertekeles letrehozasa soran.",
+      message: "Szerver hiba az értékelés létrehozása során.",
     });
   }
 };
@@ -126,13 +130,13 @@ export const update = async (req, res) => {
 
     if (eszkoz_pontszam == null || uzemelteto_pontszam == null) {
       return res.status(400).json({
-        message: "Pontszamok megadasa kotelezo.",
+        message: "Pontszámok megadása kötelező.",
       });
     }
 
     const existing = await ErtekelesModel.findById(id);
     if (!existing) {
-      return res.status(404).json({ message: "Ertekeles nem talalhato." });
+      return res.status(404).json({ message: "Értékelés nem található." });
     }
 
     const hasAccess = await ensureFoglalasAccess(
@@ -150,14 +154,14 @@ export const update = async (req, res) => {
     );
 
     if (affectedRows === 0) {
-      return res.status(404).json({ message: "Ertekeles nem talalhato." });
+      return res.status(404).json({ message: "Értékelés nem található." });
     }
 
-    res.json({ message: "Ertekeles sikeresen frissitve." });
+    res.json({ message: "Értékelés sikeresen frissítve." });
   } catch (error) {
-    console.error("Hiba az ertekeles frissitesekor:", error);
+    console.error("Hiba az értékelés frissítésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba az ertekeles frissitese soran.",
+      message: "Szerver hiba az értékelés frissítése során.",
     });
   }
 };
@@ -168,7 +172,7 @@ export const deleteErtekeles = async (req, res) => {
     const existing = await ErtekelesModel.findById(id);
 
     if (!existing) {
-      return res.status(404).json({ message: "Ertekeles nem talalhato." });
+      return res.status(404).json({ message: "Értékelés nem található." });
     }
 
     const hasAccess = await ensureFoglalasAccess(
@@ -181,14 +185,14 @@ export const deleteErtekeles = async (req, res) => {
     const affectedRows = await ErtekelesModel.delete(id);
 
     if (affectedRows === 0) {
-      return res.status(404).json({ message: "Ertekeles nem talalhato." });
+      return res.status(404).json({ message: "Értékelés nem található." });
     }
 
-    res.json({ message: "Ertekeles sikeresen torolve." });
+    res.json({ message: "Értékelés sikeresen törölve." });
   } catch (error) {
-    console.error("Hiba az ertekeles torlesekor:", error);
+    console.error("Hiba az értékelés törlésekor:", error);
     res.status(500).json({
-      message: "Szerver hiba az ertekeles torlese soran.",
+      message: "Szerver hiba az értékelés törlése során.",
     });
   }
 };

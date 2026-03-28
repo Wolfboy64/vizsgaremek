@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import api from "../services/api";
 import "../styles/Auth.css";
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidUsername,
+} from "../utils/validation";
+
+const MotionDiv = motion.div;
+const MotionButton = motion.button;
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,8 +20,18 @@ const Register = () => {
     jelszoMegerosites: "",
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const redirectTimeoutRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,19 +39,35 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
     setError("");
+    setSuccess("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
-    if (formData.jelszo !== formData.jelszoMegerosites) {
-      setError("A jelszavak nem egyeznek");
+    if (!isValidUsername(formData.nev)) {
+      setError(
+        "A felhasználónév érvénytelen. 3-30 karakter, csak betű, szám, pont, kötőjel és aláhúzás engedett.",
+      );
       return;
     }
 
-    if (formData.jelszo.length < 6) {
-      setError("A jelszónak legalább 6 karakter hosszúnak kell lennie");
+    if (!isValidEmail(formData.elerhetoseg)) {
+      setError("Érvényes email címet adj meg (kötelező @ és .).");
+      return;
+    }
+
+    if (!isValidPassword(formData.jelszo)) {
+      setError(
+        "A jelszó legyen legalább 6 karakter, tartalmazzon betűt és számot, és ne legyen benne szóköz.",
+      );
+      return;
+    }
+
+    if (formData.jelszo !== formData.jelszoMegerosites) {
+      setError("A jelszavak nem egyeznek.");
       return;
     }
 
@@ -41,15 +75,19 @@ const Register = () => {
 
     try {
       await api.post("/auth/register", {
-        nev: formData.nev,
-        elerhetoseg: formData.elerhetoseg,
+        nev: formData.nev.trim(),
+        elerhetoseg: formData.elerhetoseg.trim(),
         jelszo: formData.jelszo,
       });
 
-      alert("Sikeres regisztráció! Most már bejelentkezhetsz.");
-      navigate("/ugyfelportal/login");
+      setSuccess(
+        "Sikeres regisztráció! Átirányítás a bejelentkezés oldalra...",
+      );
+      redirectTimeoutRef.current = setTimeout(() => {
+        navigate("/ugyfelportal/login");
+      }, 1700);
     } catch (err) {
-      setError(err.response?.data?.message || "Regisztrációs hiba történt");
+      setError(err.response?.data?.message || "Regisztrációs hiba történt.");
     } finally {
       setLoading(false);
     }
@@ -57,7 +95,7 @@ const Register = () => {
 
   return (
     <div className="auth-page">
-      <motion.div
+      <MotionDiv
         className="auth-container"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -69,32 +107,42 @@ const Register = () => {
         </div>
 
         {error && (
-          <motion.div
+          <MotionDiv
             className="error-message"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
             {error}
-          </motion.div>
+          </MotionDiv>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        {success && (
+          <MotionDiv
+            className="success-message"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {success}
+          </MotionDiv>
+        )}
+
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <div className="form-group">
-            <label htmlFor="nev">Teljes név</label>
+            <label htmlFor="nev">Felhasználónév</label>
             <input
               type="text"
               id="nev"
               name="nev"
               value={formData.nev}
               onChange={handleChange}
-              placeholder="Kovács János"
+              placeholder="pl. cyberuser_01"
               required
               autoComplete="name"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="elerhetoseg">Email / Elérhetőség</label>
+            <label htmlFor="elerhetoseg">Email</label>
             <input
               type="text"
               id="elerhetoseg"
@@ -135,7 +183,7 @@ const Register = () => {
             />
           </div>
 
-          <motion.button
+          <MotionButton
             type="submit"
             className="auth-btn"
             disabled={loading}
@@ -143,7 +191,7 @@ const Register = () => {
             whileTap={{ scale: loading ? 1 : 0.98 }}
           >
             {loading ? "Regisztráció..." : "Regisztráció"}
-          </motion.button>
+          </MotionButton>
         </form>
 
         <div className="auth-footer">
@@ -151,7 +199,7 @@ const Register = () => {
             Van már fiókod? <Link to="/ugyfelportal/login">Bejelentkezés</Link>
           </p>
         </div>
-      </motion.div>
+      </MotionDiv>
     </div>
   );
 };
