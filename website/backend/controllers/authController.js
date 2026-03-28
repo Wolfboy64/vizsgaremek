@@ -1,11 +1,19 @@
-import FelhasznaloModel from "../models/Felhasznalo.js";
-import db from "../config/database.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import db from "../config/database.js";
+import FelhasznaloModel from "../models/Felhasznalo.js";
+import {
+  EMAIL_REGEX,
+  PASSWORD_REGEX,
+  USERNAME_REGEX,
+  normalizeText,
+} from "../utils/validation.js";
 
 export const register = async (req, res) => {
   try {
-    const { nev, elerhetoseg, jelszo } = req.body;
+    const nev = normalizeText(req.body?.nev);
+    const elerhetoseg = normalizeText(req.body?.elerhetoseg).toLowerCase();
+    const jelszo = String(req.body?.jelszo || "");
 
     if (!nev || !elerhetoseg || !jelszo) {
       return res
@@ -13,9 +21,23 @@ export const register = async (req, res) => {
         .json({ message: "Minden mező kitöltése kötelező." });
     }
 
-    if (jelszo.length < 6) {
+    if (!USERNAME_REGEX.test(nev)) {
       return res.status(400).json({
-        message: "A jelszónak legalább 6 karakter hosszúnak kell lennie.",
+        message:
+          "A felhasználónév érvénytelen. 3-30 karakter, csak betű, szám, pont, kötőjel és aláhúzás engedett.",
+      });
+    }
+
+    if (!EMAIL_REGEX.test(elerhetoseg)) {
+      return res
+        .status(400)
+        .json({ message: "Érvényes email címet adj meg (kötelező @ és .)." });
+    }
+
+    if (!PASSWORD_REGEX.test(jelszo)) {
+      return res.status(400).json({
+        message:
+          "A jelszónak minimum 6 karakteresnek kell lennie, legyen benne betű és szám, és ne tartalmazzon szóközt.",
       });
     }
 
@@ -27,7 +49,6 @@ export const register = async (req, res) => {
     }
 
     const userId = await FelhasznaloModel.create(nev, elerhetoseg, jelszo);
-
     res.status(201).json({ message: "Sikeres regisztráció.", userId });
   } catch (error) {
     console.error("Regisztrációs hiba:", error);
@@ -37,12 +58,19 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { elerhetoseg, jelszo } = req.body;
+    const elerhetoseg = normalizeText(req.body?.elerhetoseg).toLowerCase();
+    const jelszo = String(req.body?.jelszo || "");
 
     if (!elerhetoseg || !jelszo) {
       return res
         .status(400)
         .json({ message: "Minden mező kitöltése kötelező." });
+    }
+
+    if (!EMAIL_REGEX.test(elerhetoseg)) {
+      return res
+        .status(400)
+        .json({ message: "Érvényes email címet adj meg (kötelező @ és .)." });
     }
 
     const user = await FelhasznaloModel.findByElerhetoseg(elerhetoseg);
@@ -56,10 +84,10 @@ export const login = async (req, res) => {
     if (!isPasswordValid && user.elerhetoseg === "admin@local") {
       if (jelszo === "admin123") {
         const newHash = await bcrypt.hash(jelszo, 10);
-        await db.execute(
-          "UPDATE felhasznalo SET jelszo = ? WHERE id = ?",
-          [newHash, user.id],
-        );
+        await db.execute("UPDATE felhasznalo SET jelszo = ? WHERE id = ?", [
+          newHash,
+          user.id,
+        ]);
         isPasswordValid = true;
       }
     }
@@ -71,7 +99,6 @@ export const login = async (req, res) => {
     }
 
     if (user.allapot === "inaktiv") {
-      // Auto-activate the local admin account if credentials are correct.
       if (user.elerhetoseg === "admin@local") {
         await db.execute(
           "UPDATE felhasznalo SET allapot = 'aktiv', role = 'admin' WHERE id = ?",
@@ -82,7 +109,7 @@ export const login = async (req, res) => {
       } else {
         return res.status(403).json({
           message:
-            "A fiók inaktív. Kérem, vegye fel a kapcsolatot az ügyfélszolgálattal.",
+            "A fiók inaktív. Vedd fel a kapcsolatot az ügyfélszolgálattal.",
         });
       }
     }

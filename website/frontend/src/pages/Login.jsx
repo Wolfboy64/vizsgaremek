@@ -4,6 +4,10 @@ import { motion } from "framer-motion";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
+import { isValidEmail, isValidPassword } from "../utils/validation";
+
+const MotionDiv = motion.div;
+const MotionButton = motion.button;
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -26,14 +30,28 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!isValidEmail(formData.elerhetoseg)) {
+      setError("Érvényes email címet adj meg (kötelező @ és .).");
+      return;
+    }
+
+    if (!isValidPassword(formData.jelszo)) {
+      setError("A jelszó formátuma érvénytelen.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await api.post("/auth/login", formData);
+      const response = await api.post("/auth/login", {
+        elerhetoseg: formData.elerhetoseg.trim(),
+        jelszo: formData.jelszo,
+      });
       login(response.data.user, response.data.token);
       navigate("/ugyfelportal/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Bejelentkezési hiba történt");
+      setError(err.response?.data?.message || "Bejelentkezési hiba történt.");
     } finally {
       setLoading(false);
     }
@@ -41,7 +59,7 @@ const Login = () => {
 
   return (
     <div className="auth-page">
-      <motion.div
+      <MotionDiv
         className="auth-container"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,18 +71,18 @@ const Login = () => {
         </div>
 
         {error && (
-          <motion.div
+          <MotionDiv
             className="error-message"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
             {error}
-          </motion.div>
+          </MotionDiv>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <div className="form-group">
-            <label htmlFor="elerhetoseg">Email / Elérhetőség</label>
+            <label htmlFor="elerhetoseg">Email</label>
             <input
               type="text"
               id="elerhetoseg"
@@ -91,7 +109,7 @@ const Login = () => {
             />
           </div>
 
-          <motion.button
+          <MotionButton
             type="submit"
             className="auth-btn"
             disabled={loading}
@@ -99,7 +117,7 @@ const Login = () => {
             whileTap={{ scale: loading ? 1 : 0.98 }}
           >
             {loading ? "Bejelentkezés..." : "Bejelentkezés"}
-          </motion.button>
+          </MotionButton>
         </form>
 
         <div className="auth-footer">
@@ -108,7 +126,7 @@ const Login = () => {
             <Link to="/ugyfelportal/register">Regisztráció</Link>
           </p>
         </div>
-      </motion.div>
+      </MotionDiv>
     </div>
   );
 };
