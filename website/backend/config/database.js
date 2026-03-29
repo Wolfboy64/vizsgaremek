@@ -4,10 +4,10 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import { dirname as pathDirname, join } from "path";
 
-dotenv.config();
-
 const filename = fileURLToPath(import.meta.url);
 const __dirname = pathDirname(filename);
+
+dotenv.config({ path: join(__dirname, "..", ".env") });
 
 const dbHost = process.env.DB_HOST;
 const dbUser = process.env.DB_USER;
@@ -115,6 +115,24 @@ try {
     "ALTER TABLE foglalas ADD COLUMN statusz enum('draft','confirmed','cancelled') DEFAULT 'draft'",
     "ALTER TABLE foglalas ADD KEY idopont_id (idopont_id)",
     "ALTER TABLE foglalas ADD CONSTRAINT foglalas_ibfk_3 FOREIGN KEY (idopont_id) REFERENCES idopont (id) ON DELETE SET NULL ON UPDATE CASCADE",
+    "ALTER TABLE felhasznalo ADD COLUMN avatar_url longtext NULL",
+    "ALTER TABLE felhasznalo MODIFY COLUMN avatar_url longtext NULL",
+    `CREATE TABLE IF NOT EXISTS mentor_ertekeles (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      foglalas_id int(11) NOT NULL,
+      mentor_id varchar(64) NOT NULL,
+      felhasznalo_id int(11) NOT NULL,
+      pontszam decimal(2,1) NOT NULL,
+      review text DEFAULT NULL,
+      created_at datetime DEFAULT current_timestamp(),
+      updated_at datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+      PRIMARY KEY (id),
+      UNIQUE KEY uniq_mentor_ertekeles_foglalas (foglalas_id),
+      KEY idx_mentor_ertekeles_mentor (mentor_id),
+      KEY idx_mentor_ertekeles_user (felhasznalo_id),
+      CONSTRAINT mentor_ertekeles_ibfk_1 FOREIGN KEY (foglalas_id) REFERENCES foglalas (id) ON DELETE CASCADE ON UPDATE CASCADE,
+      CONSTRAINT mentor_ertekeles_ibfk_2 FOREIGN KEY (felhasznalo_id) REFERENCES felhasznalo (id) ON DELETE CASCADE ON UPDATE CASCADE
+    )`,
   ];
 
   for (const sql of migrations) {
@@ -141,3 +159,4 @@ try {
 }
 
 export default db;
+

@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `felhasznalo` (
   `allapot` enum('aktiv','inaktiv') DEFAULT 'aktiv',
   `jelszo` varchar(255) NOT NULL,
   `role` enum('user','admin') DEFAULT 'user',
+  `avatar_url` longtext NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -82,6 +83,24 @@ CREATE TABLE IF NOT EXISTS `ertekeles` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `foglalas_id` (`foglalas_id`),
   CONSTRAINT `ertekeles_ibfk_1` FOREIGN KEY (`foglalas_id`) REFERENCES `foglalas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Mentor ertekeles tabla
+CREATE TABLE IF NOT EXISTS `mentor_ertekeles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `foglalas_id` int(11) NOT NULL,
+  `mentor_id` varchar(64) NOT NULL,
+  `felhasznalo_id` int(11) NOT NULL,
+  `pontszam` decimal(2,1) NOT NULL,
+  `review` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_mentor_ertekeles_foglalas` (`foglalas_id`),
+  KEY `idx_mentor_ertekeles_mentor` (`mentor_id`),
+  KEY `idx_mentor_ertekeles_user` (`felhasznalo_id`),
+  CONSTRAINT `mentor_ertekeles_ibfk_1` FOREIGN KEY (`foglalas_id`) REFERENCES `foglalas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `mentor_ertekeles_ibfk_2` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Log tábla
@@ -140,3 +159,4 @@ SELECT 'admin', 'admin@local', 'aktiv', '$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxb
 WHERE NOT EXISTS (
   SELECT 1 FROM `felhasznalo` WHERE `elerhetoseg` = 'admin@local'
 );
+

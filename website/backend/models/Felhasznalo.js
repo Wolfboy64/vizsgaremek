@@ -15,7 +15,7 @@ class FelhasznaloModel {
   // Felhasználó keresése elérhetőség alapján
   static async findByElerhetoseg(elerhetoseg) {
     const [rows] = await db.execute(
-      "SELECT * FROM felhasznalo WHERE elerhetoseg = ?",
+      "SELECT id, nev, elerhetoseg, allapot, jelszo, role, avatar_url AS avatarUrl FROM felhasznalo WHERE elerhetoseg = ?",
       [elerhetoseg],
     );
     return rows[0];
@@ -24,7 +24,7 @@ class FelhasznaloModel {
   // Felhasználó keresése ID alapján
   static async findById(id) {
     const [rows] = await db.execute(
-      "SELECT id, nev, elerhetoseg, allapot, role FROM felhasznalo WHERE id = ?",
+      "SELECT id, nev, elerhetoseg, allapot, role, avatar_url AS avatarUrl FROM felhasznalo WHERE id = ?",
       [id],
     );
     return rows[0];
@@ -33,7 +33,7 @@ class FelhasznaloModel {
   // Felhasználók lekérése (csak admin)
   static async getAll() {
     const [rows] = await db.execute(
-      "SELECT id, nev, elerhetoseg, allapot, role FROM felhasznalo",
+      "SELECT id, nev, elerhetoseg, allapot, role, avatar_url AS avatarUrl FROM felhasznalo",
     );
     return rows;
   }

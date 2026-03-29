@@ -1,17 +1,74 @@
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import { MENTOR_BY_ID } from "../data/mentors";
 import "../styles/Dashboard.css";
 
 const MotionDiv = motion.div;
 const MotionButton = motion.button;
+
+const emptyDraft = { pontszam: 5, review: "" };
+
+const formatPontszam = (value) => {
+  if (value == null || value === "") return "-";
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return "-";
+  return numeric.toFixed(1);
+};
+
+const buildFallbackAvatar = (name) => {
+  const initials = String(name || "M")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() || "")
+    .join("");
+
+  const svg = `
+    <svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'>
+      <defs>
+        <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+          <stop offset='0%' stop-color='#00d4ff' />
+          <stop offset='100%' stop-color='#1a1f42' />
+        </linearGradient>
+      </defs>
+      <rect width='96' height='96' rx='48' fill='url(#g)' />
+      <text x='48' y='56' text-anchor='middle' fill='white' font-size='30' font-family='Arial, sans-serif' font-weight='700'>${initials}</text>
+    </svg>
+  `;
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+};
+
+const renderStaticStars = (value) => {
+  const numeric = Number(value) || 0;
+  return Array.from({ length: 5 }, (_, index) => {
+    const starIndex = index + 1;
+    let className = "empty";
+
+    if (numeric >= starIndex) {
+      className = "full";
+    } else if (numeric >= starIndex - 0.5) {
+      className = "half";
+    }
+
+    return (
+      <span key={starIndex} className={`rating-star ${className}`}>
+        ★
+      </span>
+    );
+  });
+};
 
 const Dashboard = () => {
   const { user } = useAuth();
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [ratingDrafts, setRatingDrafts] = useState({});
+  const [hoverRatings, setHoverRatings] = useState({});
+  const [savingRatingFor, setSavingRatingFor] = useState(null);
 
   async function fetchReservations() {
     try {
@@ -19,35 +76,115 @@ const Dashboard = () => {
       const fetchedReservations = Array.isArray(response.data)
         ? response.data
         : response.data?.foglalasok || [];
+
       setReservations(fetchedReservations);
-      setLoading(false);
+
+      const nextDrafts = {};
+      fetchedReservations.forEach((reservation) => {
+        if (!reservation.mentor_id) return;
+        nextDrafts[reservation.id] = {
+          pontszam:
+            reservation.mentor_pontszam != null
+              ? Number(reservation.mentor_pontszam)
+              : 5,
+          review: reservation.mentor_review || "",
+        };
+      });
+      setRatingDrafts(nextDrafts);
     } catch (err) {
       console.error("Error fetching reservations:", err);
+    } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchReservations();
-    }, 0);
-
-    return () => clearTimeout(timer);
+    fetchReservations();
   }, []);
 
+  const reservationsWithMentor = useMemo(
+    () => reservations.filter((reservation) => Boolean(reservation.mentor_id)),
+    [reservations],
+  );
+
   const handleCancelReservation = async (id) => {
-    if (!window.confirm("Biztosan szeretnéd törölni a foglalást?")) {
+    if (!window.confirm("Biztosan szeretned torolni a foglalast?")) {
       return;
     }
 
     try {
       await api.delete(`/foglalas/${id}`);
-      setMessage("Foglalás sikeresen törölve");
+      setMessage("Foglalas sikeresen torolve");
       fetchReservations();
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      setMessage(err.response?.data?.message || "Hiba történt a törlés során");
+      setMessage(err.response?.data?.message || "Hiba tortent a torles soran");
       setTimeout(() => setMessage(""), 3000);
+    }
+  };
+
+  const updateRatingDraft = (reservationId, field, value) => {
+    setRatingDrafts((prev) => ({
+      ...prev,
+      [reservationId]: {
+        ...(prev[reservationId] || emptyDraft),
+        [field]: value,
+      },
+    }));
+  };
+
+  const getVisualRating = (reservationId) => {
+    if (hoverRatings[reservationId] != null) return hoverRatings[reservationId];
+    return ratingDrafts[reservationId]?.pontszam ?? 5;
+  };
+
+  const pointerToRating = (event, starIndex) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const pointerX = event.clientX - rect.left;
+    const half = pointerX <= rect.width / 2;
+    return half ? starIndex - 0.5 : starIndex;
+  };
+
+  const handleStarHover = (reservationId, starIndex, event) => {
+    const value = pointerToRating(event, starIndex);
+    setHoverRatings((prev) => ({ ...prev, [reservationId]: value }));
+  };
+
+  const handleStarLeave = (reservationId) => {
+    setHoverRatings((prev) => {
+      const next = { ...prev };
+      delete next[reservationId];
+      return next;
+    });
+  };
+
+  const handleStarClick = (reservationId, starIndex, event) => {
+    const value = pointerToRating(event, starIndex);
+    updateRatingDraft(reservationId, "pontszam", value);
+    setHoverRatings((prev) => ({ ...prev, [reservationId]: value }));
+  };
+
+  const handleSaveMentorRating = async (reservation) => {
+    const draft = ratingDrafts[reservation.id] || emptyDraft;
+    setSavingRatingFor(reservation.id);
+
+    try {
+      await api.post("/ertekeles/mentor", {
+        foglalas_id: reservation.id,
+        pontszam: Number(draft.pontszam),
+        review: draft.review,
+      });
+
+      setMessage("Mentor ertekeles sikeresen mentve");
+      await fetchReservations();
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      setMessage(
+        err.response?.data?.message || "Hiba tortent az ertekeles mentesekor",
+      );
+      setTimeout(() => setMessage(""), 3500);
+    } finally {
+      setSavingRatingFor(null);
     }
   };
 
@@ -68,9 +205,9 @@ const Dashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1>Üdvözöllek, {user?.nev}!</h1>
+        <h1>Udv, {user?.nev}!</h1>
         <p className="user-role">
-          Role: {user?.role === "admin" ? "Adminisztrátor" : "Felhasználó"}
+          Role: {user?.role === "admin" ? "Adminisztrator" : "Felhasznalo"}
         </p>
       </MotionDiv>
 
@@ -90,39 +227,14 @@ const Dashboard = () => {
           variants={fadeIn}
           initial="hidden"
           animate="visible"
-        >
-          <h2>Profilinformációk</h2>
-          <div className="profile-info">
-            <div className="info-row">
-              <span className="info-label">Név:</span>
-              <span className="info-value">{user?.nev}</span>
-            </div>
-            <div className="info-row">
-              <span className="info-label">Elérhetőség:</span>
-              <span className="info-value">{user?.elerhetoseg}</span>
-            </div>
-            <div className="info-row">
-              <span className="info-label">Szerepkör:</span>
-              <span className="info-value">
-                {user?.role === "admin" ? "Adminisztrátor" : "Felhasználó"}
-              </span>
-            </div>
-          </div>
-        </MotionDiv>
-
-        <MotionDiv
-          className="dashboard-section"
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
           transition={{ delay: 0.2 }}
         >
-          <h2>Foglalásaim</h2>
+          <h2>Foglalasaim</h2>
 
           {loading ? (
-            <p>Betöltés...</p>
+            <p>Betoltes...</p>
           ) : reservations.length === 0 ? (
-            <p className="no-data">Még nincs aktív foglalásod</p>
+            <p className="no-data">Meg nincs aktiv foglalasod</p>
           ) : (
             <div className="reservations-list">
               {reservations.map((reservation) => (
@@ -146,44 +258,26 @@ const Dashboard = () => {
                       </p>
                       {reservation.eszkoz_leiras && (
                         <p>
-                          <strong>Leírás:</strong> {reservation.eszkoz_leiras}
+                          <strong>Leiras:</strong> {reservation.eszkoz_leiras}
                         </p>
                       )}
 
-                      {/* Bérlési időszak */}
-                      {reservation.berlesi_kezdete &&
-                        reservation.berlesi_vege && (
-                          <div className="rental-period-display">
-                            <p className="rental-label">📅 Bérlési időszak:</p>
-                            <p className="rental-dates">
-                              {new Date(
-                                reservation.berlesi_kezdete,
-                              ).toLocaleDateString("hu-HU")}
-                              {" → "}
-                              {new Date(
-                                reservation.berlesi_vege,
-                              ).toLocaleDateString("hu-HU")}
-                            </p>
-                            <p className="rental-duration">
-                              (
-                              {Math.ceil(
-                                (new Date(reservation.berlesi_vege) -
-                                  new Date(reservation.berlesi_kezdete)) /
-                                  (1000 * 60 * 60 * 24),
-                              )}{" "}
-                              nap)
-                            </p>
-                          </div>
-                        )}
+                      {reservation.berlesi_kezdete && reservation.berlesi_vege && (
+                        <div className="rental-period-display">
+                          <p className="rental-label">Berlesi idoszak:</p>
+                          <p className="rental-dates">
+                            {new Date(reservation.berlesi_kezdete).toLocaleDateString("hu-HU")}
+                            {" -> "}
+                            {new Date(reservation.berlesi_vege).toLocaleDateString("hu-HU")}
+                          </p>
+                        </div>
+                      )}
 
-                      {/* Átvételi időpont */}
                       {reservation.atvetel_datum && (
                         <div className="pickup-display">
-                          <p className="pickup-label">🚗 Átvétel:</p>
+                          <p className="pickup-label">Atvetel:</p>
                           <p className="pickup-datetime">
-                            {new Date(
-                              reservation.atvetel_datum,
-                            ).toLocaleDateString("hu-HU")}
+                            {new Date(reservation.atvetel_datum).toLocaleDateString("hu-HU")}
                             {reservation.atvetel_idopont &&
                               ` - ${reservation.atvetel_idopont.substring(0, 5)}`}
                           </p>
@@ -192,49 +286,14 @@ const Dashboard = () => {
 
                       {reservation.mentor_nev && (
                         <div className="mentor-display">
-                          <p className="mentor-label">🧑‍🏫 Mentor:</p>
-                          <p className="mentor-value">
-                            {reservation.mentor_nev}
-                          </p>
+                          <p className="mentor-label">Mentor:</p>
+                          <p className="mentor-value">{reservation.mentor_nev}</p>
                         </div>
                       )}
 
-                      {reservation.ugyfel_nev && (
-                        <p>
-                          <strong>Név:</strong> {reservation.ugyfel_nev}
-                        </p>
-                      )}
-
-                      {reservation.szamlazasi_nev && (
-                        <p>
-                          <strong>Számlázási név:</strong>{" "}
-                          {reservation.szamlazasi_nev}
-                        </p>
-                      )}
-
-                      {reservation.email && (
-                        <p>
-                          <strong>Email:</strong> {reservation.email}
-                        </p>
-                      )}
-
-                      {reservation.telefon && (
-                        <p>
-                          <strong>Telefon:</strong> {reservation.telefon}
-                        </p>
-                      )}
-
-                      {reservation.megjegyzes && (
-                        <p>
-                          <strong>Megjegyzés:</strong> {reservation.megjegyzes}
-                        </p>
-                      )}
-
                       <p className="reservation-date">
-                        <strong>Foglalás létrehozva:</strong>{" "}
-                        {new Date(reservation.foglalas_datuma).toLocaleString(
-                          "hu-HU",
-                        )}
+                        <strong>Foglalas letrehozva:</strong>{" "}
+                        {new Date(reservation.foglalas_datuma).toLocaleString("hu-HU")}
                       </p>
                     </div>
                   </div>
@@ -244,10 +303,123 @@ const Dashboard = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Törlés
+                    Torles
                   </MotionButton>
                 </MotionDiv>
               ))}
+            </div>
+          )}
+        </MotionDiv>
+
+        <MotionDiv
+          className="dashboard-section"
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 0.3 }}
+        >
+          <h2>Mentor ertekelesek</h2>
+
+          {loading ? (
+            <p>Betoltes...</p>
+          ) : reservationsWithMentor.length === 0 ? (
+            <p className="no-data">Meg nincs mentoros foglalasod ertekeleshez.</p>
+          ) : (
+            <div className="mentor-rating-list">
+              {reservationsWithMentor.map((reservation) => {
+                const ratingDraft = ratingDrafts[reservation.id] || emptyDraft;
+                const visualRating = getVisualRating(reservation.id);
+                const mentorMeta = MENTOR_BY_ID[reservation.mentor_id] || null;
+                const mentorImage =
+                  mentorMeta?.image || buildFallbackAvatar(reservation.mentor_nev || "Mentor");
+                const mentorAtlag =
+                  reservation.mentor_atlag_pontszam != null
+                    ? Number(reservation.mentor_atlag_pontszam)
+                    : null;
+                const mentorErtekelesDb = Number(reservation.mentor_ertekeles_db || 0);
+
+                return (
+                  <div key={`rating-${reservation.id}`} className="mentor-rating-card">
+                    <div className="mentor-rating-head">
+                      <img
+                        src={mentorImage}
+                        alt={`${reservation.mentor_nev || "Mentor"} profilkep`}
+                        className="mentor-rating-avatar"
+                      />
+                      <div>
+                        <p className="mentor-rating-title">{reservation.mentor_nev || "Mentor"}</p>
+                        <p className="mentor-rating-subtitle">
+                          Foglalas: #{reservation.id} - Szerver #{reservation.eszkoz_id}
+                        </p>
+                        <p className="mentor-rating-summary">
+                          Mentor atlag: <strong>{formatPontszam(mentorAtlag)}</strong>
+                          {mentorErtekelesDb > 0
+                            ? ` (${mentorErtekelesDb} db)`
+                            : " (meg nincs ertekeles)"}
+                        </p>
+                        <div className="mentor-rating-avg-stars">{renderStaticStars(mentorAtlag)}</div>
+                      </div>
+                    </div>
+
+                    <div className="mentor-rating-input-row">
+                      <p className="mentor-rating-label">
+                        Sajat pontszam: <strong>{formatPontszam(visualRating)}</strong>
+                      </p>
+                      <div
+                        className="interactive-stars"
+                        onMouseLeave={() => handleStarLeave(reservation.id)}
+                      >
+                        {Array.from({ length: 5 }, (_, index) => {
+                          const starIndex = index + 1;
+                          let className = "empty";
+                          if (visualRating >= starIndex) {
+                            className = "full";
+                          } else if (visualRating >= starIndex - 0.5) {
+                            className = "half";
+                          }
+
+                          return (
+                            <button
+                              key={`${reservation.id}-${starIndex}`}
+                              type="button"
+                              className={`interactive-star ${className}`}
+                              onMouseMove={(event) =>
+                                handleStarHover(reservation.id, starIndex, event)
+                              }
+                              onClick={(event) =>
+                                handleStarClick(reservation.id, starIndex, event)
+                              }
+                              aria-label={`${starIndex} csillag`}
+                            >
+                              ★
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <textarea
+                      className="mentor-review-input"
+                      rows="3"
+                      placeholder="Rovid review a mentorrol (opcionalis)"
+                      value={ratingDraft.review}
+                      onChange={(event) =>
+                        updateRatingDraft(reservation.id, "review", event.target.value)
+                      }
+                    />
+
+                    <MotionButton
+                      className="save-rating-btn"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      disabled={savingRatingFor === reservation.id}
+                      onClick={() => handleSaveMentorRating(reservation)}
+                    >
+                      {savingRatingFor === reservation.id ? "Mentes..." : "Ertekeles kuldese"}
+                    </MotionButton>
+                  </div>
+                );
+              })}
             </div>
           )}
         </MotionDiv>
@@ -260,10 +432,10 @@ const Dashboard = () => {
             animate="visible"
             transition={{ delay: 0.4 }}
           >
-            <h2>Admin Funkciók</h2>
+            <h2>Admin Funkciok</h2>
             <p>
-              Admin funkciók később bővíthetők (pl. összes foglalás
-              megtekintése, szerver kezelés, stb.)
+              Admin funkciok kesobb bovithetok (pl. osszes foglalas megtekintese,
+              szerver kezeles, stb.)
             </p>
           </MotionDiv>
         )}
