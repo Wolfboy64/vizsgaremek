@@ -93,10 +93,21 @@ class FoglalasModel {
         e.hdd,
         e.leiras as eszkoz_leiras,
         i.atvetel_datum,
-        i.atvetel_idopont
+        i.atvetel_idopont,
+        me.pontszam AS mentor_pontszam,
+        me.review AS mentor_review,
+        me.updated_at AS mentor_ertekeles_datum,
+        ma.atlag AS mentor_atlag_pontszam,
+        ma.darab AS mentor_ertekeles_db
       FROM foglalas f
       JOIN eszkoz e ON f.eszkoz_id = e.id
       LEFT JOIN idopont i ON f.idopont_id = i.id
+      LEFT JOIN mentor_ertekeles me ON me.foglalas_id = f.id
+      LEFT JOIN (
+        SELECT mentor_id, ROUND(AVG(pontszam), 2) AS atlag, COUNT(*) AS darab
+        FROM mentor_ertekeles
+        GROUP BY mentor_id
+      ) ma ON ma.mentor_id = f.mentor_id
       WHERE f.felhasznalo_id = ?
       ORDER BY f.foglalas_datuma DESC
       `,
@@ -115,7 +126,7 @@ class FoglalasModel {
 
   static async findById(id) {
     const [rows] = await db.execute(
-      "SELECT id, felhasznalo_id, idopont_id FROM foglalas WHERE id = ?",
+      "SELECT id, felhasznalo_id, idopont_id, mentor_id, mentor_nev FROM foglalas WHERE id = ?",
       [id],
     );
     return rows[0];

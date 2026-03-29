@@ -10,7 +10,9 @@ import BookingFlow from "./pages/BookingFlow";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import OAuthCallback from "./pages/OAuthCallback";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import "./styles/global.css";
 
 function App() {
@@ -40,11 +42,20 @@ function App() {
             <Route path="/kapcsolat" element={<Contact />} />
             <Route path="/ugyfelportal/login" element={<Login />} />
             <Route path="/ugyfelportal/register" element={<Register />} />
+            <Route path="/ugyfelportal/oauth/callback" element={<OAuthCallback />} />
             <Route
               path="/ugyfelportal/dashboard"
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ugyfelportal/profil"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

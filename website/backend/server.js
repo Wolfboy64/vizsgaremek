@@ -1,10 +1,14 @@
-import express from "express";
+﻿import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import db from "./config/database.js";
 
 // Env betöltése
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(__dirname, ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,8 +37,8 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions));
 app.options("/api/{*splat}", cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "30mb" }));
+app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 console.log("CLIENT_URL:", process.env.CLIENT_URL);
 
 // Database connection is initialized on import
@@ -68,8 +72,8 @@ app.get("/api/debug/users", async (req, res) => {
     );
     res.json(rows);
   } catch (error) {
-    console.error("Hiba a debug users lekérésekor:", error);
-    res.status(500).json({ message: "Szerver hiba történt." });
+    console.error("Hiba a debug users lekĂ©rĂ©sekor:", error);
+    res.status(500).json({ message: "Szerver hiba tĂ¶rtĂ©nt." });
   }
 });
 
@@ -121,11 +125,11 @@ app.get("/", async (req, res) => {
         </head>
         <body>
           <h1>CyberNest Database</h1>
-          <div class="count">Összesen: ${felhasznalok.length} felhasználó, ${uzemeltetok.length} üzemeltető, ${eszkozok.length} eszköz, ${idopontok.length} időpont, ${foglalasok.length} foglalás</div>
+          <div class="count">Ă–sszesen: ${felhasznalok.length} felhasznĂˇlĂł, ${uzemeltetok.length} ĂĽzemeltetĹ‘, ${eszkozok.length} eszkĂ¶z, ${idopontok.length} idĹ‘pont, ${foglalasok.length} foglalĂˇs</div>
 
-          <h2>Üzemeltetők</h2>
+          <h2>ĂśzemeltetĹ‘k</h2>
           <table>
-            <tr><th>ID</th><th>Név</th><th>Leírás</th></tr>
+            <tr><th>ID</th><th>NĂ©v</th><th>LeĂ­rĂˇs</th></tr>
             ${uzemeltetok
               .map(
                 (u) =>
@@ -134,9 +138,9 @@ app.get("/", async (req, res) => {
               .join("")}
           </table>
 
-          <h2>Eszközök</h2>
+          <h2>EszkĂ¶zĂ¶k</h2>
           <table>
-            <tr><th>ID</th><th>Leírás</th><th>CPU</th><th>RAM</th><th>HDD</th><th>Üzemeltető</th></tr>
+            <tr><th>ID</th><th>LeĂ­rĂˇs</th><th>CPU</th><th>RAM</th><th>HDD</th><th>ĂśzemeltetĹ‘</th></tr>
             ${eszkozok
               .map(
                 (e) =>
@@ -145,9 +149,9 @@ app.get("/", async (req, res) => {
               .join("")}
           </table>
 
-          <h2>Időpontok</h2>
+          <h2>IdĹ‘pontok</h2>
           <table>
-            <tr><th>ID</th><th>Eszköz ID</th><th>Dátum</th><th>Időpont</th><th>Státusz</th></tr>
+            <tr><th>ID</th><th>EszkĂ¶z ID</th><th>DĂˇtum</th><th>IdĹ‘pont</th><th>StĂˇtusz</th></tr>
             ${idopontok
               .map(
                 (i) =>
@@ -156,9 +160,9 @@ app.get("/", async (req, res) => {
               .join("")}
           </table>
 
-          <h2>Foglalások</h2>
+          <h2>FoglalĂˇsok</h2>
           <table>
-            <tr><th>ID</th><th>Felhasználó ID</th><th>Eszköz ID</th><th>Időpont ID</th><th>Kezdete</th><th>Vége</th><th>Dátum</th><th>Státusz</th></tr>
+            <tr><th>ID</th><th>FelhasznĂˇlĂł ID</th><th>EszkĂ¶z ID</th><th>IdĹ‘pont ID</th><th>Kezdete</th><th>VĂ©ge</th><th>DĂˇtum</th><th>StĂˇtusz</th></tr>
             ${foglalasok
               .map(
                 (f) =>
@@ -167,9 +171,9 @@ app.get("/", async (req, res) => {
               .join("")}
           </table>
 
-          <h2>Felhasználók</h2>
+          <h2>FelhasznĂˇlĂłk</h2>
           <table>
-            <tr><th>ID</th><th>Név</th><th>Elérhetőség</th><th>Szerepkör</th><th>Állapot</th></tr>
+            <tr><th>ID</th><th>NĂ©v</th><th>ElĂ©rhetĹ‘sĂ©g</th><th>SzerepkĂ¶r</th><th>Ăllapot</th></tr>
             ${felhasznalok
               .map(
                 (f) =>
@@ -184,8 +188,8 @@ app.get("/", async (req, res) => {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.send(html);
   } catch (error) {
-    console.error("Hiba a főoldal betöltésekor:", error);
-    res.status(500).send("Szerver hiba történt.");
+    console.error("Hiba a fĹ‘oldal betĂ¶ltĂ©sekor:", error);
+    res.status(500).send("Szerver hiba tĂ¶rtĂ©nt.");
   }
 });
 
@@ -196,19 +200,42 @@ app.get("/api/health", (req, res) => {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: "Endpoint nem található" });
+  res.status(404).json({ message: "Endpoint nem talĂˇlhatĂł" });
 });
 
 // Error handler
 app.use((err, req, res, next) => {
+  if (err?.type === "entity.too.large") {
+    return res.status(413).json({
+      message: "A feltöltött adat túl nagy. Maximum 20 MB képet válassz.",
+    });
+  }
   console.error(err.stack);
-  res.status(500).json({ message: "Szerver hiba történt" });
+  res.status(500).json({ message: "Szerver hiba tĂ¶rtĂ©nt" });
 });
 
 // Start server
 app.listen(PORT, () => {
+  const oauthRequired = [
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_REDIRECT_URI",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "GITHUB_REDIRECT_URI",
+  ];
+  const missingOauth = oauthRequired.filter(
+    (key) => !process.env[key] || String(process.env[key]).trim() === "",
+  );
+
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
+  if (missingOauth.length > 0) {
+    console.warn("[OAuth] Missing env vars:", missingOauth.join(", "));
+  } else {
+    console.log("[OAuth] Google/GitHub config loaded.");
+  }
 });
 
 export default app;
+

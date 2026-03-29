@@ -4,10 +4,17 @@ import { motion } from "framer-motion";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
+import googleIcon from "../assets/icons/google-color-icon.svg";
+import githubIcon from "../assets/icons/github-white-icon.svg";
 import { isValidEmail, isValidPassword } from "../utils/validation";
 
 const MotionDiv = motion.div;
 const MotionButton = motion.button;
+
+const apiBase = (import.meta.env.VITE_API_BASE_URL || "/api").replace(
+  /\/$/,
+  "",
+);
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -57,6 +64,10 @@ const Login = () => {
     }
   };
 
+  const startProviderLogin = (provider) => {
+    window.location.href = `${apiBase}/auth/${provider}/start`;
+  };
+
   return (
     <div className="auth-page">
       <MotionDiv
@@ -79,6 +90,38 @@ const Login = () => {
             {error}
           </MotionDiv>
         )}
+
+        <div className="social-auth">
+          <button
+            type="button"
+            className="social-btn google-btn"
+            onClick={() => startProviderLogin("google")}
+          >
+            <span className="social-btn-content">
+              <span className="social-icon" aria-hidden="true">
+                <img src={googleIcon} alt="" />
+              </span>
+              <span>Folytatás Google-lel</span>
+            </span>
+          </button>
+
+          <button
+            type="button"
+            className="social-btn github-btn"
+            onClick={() => startProviderLogin("github")}
+          >
+            <span className="social-btn-content">
+              <span className="social-icon" aria-hidden="true">
+                <img src={githubIcon} alt="" />
+              </span>
+              <span>Folytatás GitHubbal</span>
+            </span>
+          </button>
+        </div>
+
+        <div className="auth-divider">
+          <span>vagy</span>
+        </div>
 
         <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <div className="form-group">
@@ -103,7 +146,7 @@ const Login = () => {
               name="jelszo"
               value={formData.jelszo}
               onChange={handleChange}
-              placeholder="••••••••"
+              placeholder="********"
               required
               autoComplete="current-password"
             />

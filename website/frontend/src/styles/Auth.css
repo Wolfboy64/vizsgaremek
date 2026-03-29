@@ -56,6 +56,95 @@
   font-size: 0.95rem;
 }
 
+.social-auth {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.social-btn {
+  width: 100%;
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--text-light);
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  transition: var(--transition);
+}
+
+.social-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 212, 255, 0.45);
+  background: rgba(0, 212, 255, 0.12);
+}
+
+.google-btn {
+  background: #ffffff;
+  color: #1f1f1f;
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+.google-btn:hover {
+  color: #111;
+  border-color: #ffffff;
+  background: #f4f4f4;
+}
+
+.github-btn {
+  background: #24292f;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.github-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: #1c2025;
+}
+
+.social-btn-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.social-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+}
+
+.social-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: 6px 0 18px;
+}
+
+.auth-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.auth-divider span {
+  position: relative;
+  background: var(--dark-card);
+  color: var(--text-gray);
+  font-size: 0.85rem;
+  padding: 0 10px;
+}
+
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -156,3 +245,11 @@
     padding: 12px 15px;
   }
 }
+
+.social-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
