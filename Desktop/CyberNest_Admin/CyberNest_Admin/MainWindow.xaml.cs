@@ -256,6 +256,10 @@ namespace CyberNest_Admin
         }
         //vissza gombok
 
+        private void UjFelhasznaloBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPanel(WelocmePage);
+        }
         private void UjUzemeltetoBackBtn_Click(object sender, RoutedEventArgs e)
         {
             ShowPanel(WelocmePage); //vissza a főoldalra
@@ -776,6 +780,7 @@ namespace CyberNest_Admin
                 WelocmePage.Visibility = Visibility.Visible;
             }
         }
+
 
         /* 
          * Hiba panel bezárása gomb
