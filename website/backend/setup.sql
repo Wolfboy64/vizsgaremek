@@ -155,8 +155,8 @@ WHERE i.id IS NULL;
 
 -- Alap admin felhasználó (admin123)
 INSERT INTO `felhasznalo` (`nev`, `elerhetoseg`, `allapot`, `jelszo`, `role`)
-SELECT 'admin', 'admin@local', 'aktiv', '$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu', 'admin'
+SELECT 'admin', 'admin@local.com', 'aktiv', '$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu', 'admin'
 WHERE NOT EXISTS (
-  SELECT 1 FROM `felhasznalo` WHERE `elerhetoseg` = 'admin@local'
+  SELECT 1 FROM `felhasznalo` WHERE `elerhetoseg` = 'admin@local.com'
 );
 
