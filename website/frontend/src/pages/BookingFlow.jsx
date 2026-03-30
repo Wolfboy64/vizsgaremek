@@ -75,7 +75,7 @@ const BookingFlow = () => {
       } catch (err) {
         setError(
           err.response?.data?.message ||
-            "Hiba tÄ‚Â¶rtÄ‚Â©nt a foglalÄ‚Ë‡si adatok betÄ‚Â¶ltÄ‚Â©sekor.",
+            "Hiba történt a foglalási adatok betöltésekor.",
         );
       } finally {
         setIsPageLoading(false);
@@ -113,7 +113,7 @@ const BookingFlow = () => {
 
   const handleMentorContinue = () => {
     if (!selectedMentor) {
-      setError("KÄ‚Â©rlek vÄ‚Ë‡lassz mentort a tovÄ‚Ë‡bblÄ‚Â©pÄ‚Â©shez.");
+      setError("Kérlek válassz mentort a továbblépéshez.");
       return;
     }
     setError("");
@@ -122,7 +122,7 @@ const BookingFlow = () => {
 
   const handleSlotContinue = () => {
     if (!selectedSlot) {
-      setError("KÄ‚Â©rlek vÄ‚Ë‡lassz egy elÄ‚Â©rhetÄąâ€ mentor idÄąâ€pontot.");
+      setError("Kérlek válassz egy elérhető mentor időpontot.");
       return;
     }
     setError("");
@@ -147,44 +147,44 @@ const BookingFlow = () => {
       !email.trim() ||
       !phone.trim()
     ) {
-      setError("KÄ‚Â©rlek, tÄ‚Â¶lts ki minden kÄ‚Â¶telezÄąâ€ mezÄąâ€t.");
-      return;
+      setError("Kérlek, tölts ki minden kötelező mezőt.");
+    return;
     }
 
     if (!isValidName(contactName)) {
-      setError("A nÄ‚Â©v formÄ‚Ë‡tuma Ä‚Â©rvÄ‚Â©nytelen.");
+      setError("A név formátuma érvénytelen.");
       return;
     }
 
     if (!isValidFullName(billingName)) {
-      setError("A szÄ‚Ë‡mlÄ‚Ë‡zÄ‚Ë‡si nÄ‚Â©vhez teljes nÄ‚Â©v szÄ‚Ä˝ksÄ‚Â©ges.");
+      setError("A számlázási névhez teljes név szükséges.");
       return;
     }
 
     if (!isValidEmail(email)) {
-      setError("Ä‚â€°rvÄ‚Â©nyes email cÄ‚Â­met adj meg.");
+      setError("Érvényes email címet adj meg.");
       return;
     }
 
     if (!isValidPhone(phone)) {
-      setError("Ä‚â€°rvÄ‚Â©nyes telefonszÄ‚Ë‡mot adj meg.");
+      setError("Érvényes telefonszámot adj meg.");
       return;
     }
 
     setError("");
     setStep(4);
-  };
+    };
 
-  const handleConfirm = async () => {
-    if (!termsAccepted) {
-      setError("KÄ‚Â©rlek fogadd el az Ä‚ÂSZF-et a foglalÄ‚Ë‡s vÄ‚Â©glegesÄ‚Â­tÄ‚Â©sÄ‚Â©hez.");
-      return;
-    }
+const handleConfirm = async () => {
+  if (!termsAccepted) {
+    setError("Kérlek fogadd el az ÁSZF-et a foglalás véglegesítéséhez.");
+    return;
+  }
 
-    if (!selectedSlot || !selectedMentor) {
-      setError("HiÄ‚Ë‡nyzÄ‚Ĺ‚ mentor vagy idÄąâ€pont. KÄ‚Â©rlek vÄ‚Ë‡laszd ki Ä‚Ĺźjra.");
-      return;
-    }
+  if (!selectedSlot || !selectedMentor) {
+    setError("Hiányzó mentor vagy időpont. Kérlek válaszd ki újra.");
+    return;
+  }
 
     try {
       setLoading(true);
@@ -206,7 +206,7 @@ const BookingFlow = () => {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Nem sikerÄ‚Ä˝lt vÄ‚Â©glegesÄ‚Â­teni a foglalÄ‚Ë‡st.",
+          "Nem sikerült véglegesíteni a foglalást.",
       );
     } finally {
       setLoading(false);
@@ -223,7 +223,7 @@ const BookingFlow = () => {
     return (
       <main className="booking-flow-page">
         <div className="booking-shell">
-          <p className="loading-text">FoglalÄ‚Ë‡si folyamat betÄ‚Â¶ltÄ‚Â©se...</p>
+          <p className="loading-text">Foglalási folyamat betöltése...</p>
         </div>
       </main>
     );
@@ -233,13 +233,13 @@ const BookingFlow = () => {
     return (
       <main className="booking-flow-page">
         <div className="booking-shell">
-          <p className="error-text">{error || "A szerver nem talÄ‚Ë‡lhatÄ‚Ĺ‚."}</p>
+        <p className="error-text">{error || "A szerver nem található."}</p>
           <button
             type="button"
             className="btn-secondary"
             onClick={() => navigate("/termekek")}
           >
-            Vissza a termÄ‚Â©kekhez
+            Vissza a termékekhez
           </button>
         </div>
       </main>
@@ -251,10 +251,10 @@ const BookingFlow = () => {
       <section className="booking-shell">
         <header className="booking-header">
           <span className="server-chip">Szerver #{server.id}</span>
-          <h1>MentorÄ‚Ë‡lt foglalÄ‚Ë‡si folyamat</h1>
+          <h1>Mentorált foglalási folyamat</h1>
           <p>
-            VÄ‚Ë‡lassz mentort, idÄąâ€pontot, add meg a foglalÄ‚Ë‡si adatokat, majd
-            vÄ‚Â©glegesÄ‚Â­tsd a foglalÄ‚Ë‡st.
+            Válassz mentort, időpontot, add meg a foglalási adatokat, majd
+            véglegesítsd a foglalást.
           </p>
         </header>
 
@@ -276,7 +276,7 @@ const BookingFlow = () => {
             onClick={() => handleProgressStepClick(2)}
           >
             <span>2</span>
-            <small>NaptÄ‚Ë‡r</small>
+            <small>Naptár</small>
           </div>
           <div className="progress-line" />
           <div
@@ -296,7 +296,7 @@ const BookingFlow = () => {
             onClick={() => handleProgressStepClick(4)}
           >
             <span>4</span>
-            <small>Ä‚â€“sszegzÄ‚Â©s</small>
+            <small>Összegzés</small>
           </div>
           <div className="progress-line" />
           <div
@@ -306,7 +306,7 @@ const BookingFlow = () => {
             onClick={() => handleProgressStepClick(5)}
           >
             <span>5</span>
-            <small>KÄ‚Â©sz</small>
+            <small>Kész</small>
           </div>
         </div>
 
@@ -321,10 +321,10 @@ const BookingFlow = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <h2>VÄ‚Ë‡lassz mentort</h2>
+              <h2>Válassz mentort</h2>
               <p className="step-intro">
-                A mentor a teljes folyamatban segÄ‚Â­t: elÄąâ€kÄ‚Â©szÄ‚Â­tÄ‚Â©s, kivÄ‚Ë‡lasztÄ‚Ë‡s,
-                beÄ‚Ä˝zemelÄ‚Â©si tanÄ‚Ë‡csadÄ‚Ë‡s.
+                  A mentor a teljes folyamatban segít: előkészítés, kiválasztás,
+                  beüzemelési tanácsadás.
               </p>
 
               <div className="mentor-grid">
@@ -359,14 +359,14 @@ const BookingFlow = () => {
                   className="btn-secondary"
                   onClick={() => navigate(`/termekek/${id}`)}
                 >
-                  Ă˘â€ Â Vissza a szerverhez
+                  Vissza a szerverhez
                 </button>
                 <button
                   type="button"
                   className="btn-primary"
                   onClick={handleMentorContinue}
                 >
-                  IdÄąâ€pont vÄ‚Ë‡lasztÄ‚Ë‡s Ă˘â€ â€™
+                  Időpont választás
                 </button>
               </div>
             </MotionSection>
@@ -380,16 +380,16 @@ const BookingFlow = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <h2>Mentor naptÄ‚Ë‡ra</h2>
+              <h2>Mentor naptár</h2>
               <p className="step-intro">
-                KivÄ‚Ë‡lasztott mentor:{" "}
-                <strong>{selectedMentor?.name || "nincs kivÄ‚Ë‡lasztva"}</strong>
+                Kiválasztott mentor:{" "}
+                <strong>{selectedMentor?.name || "nincs kiválasztva"}</strong>
               </p>
 
               {selectedMentorSlots.length === 0 ? (
                 <div className="empty-state">
-                  <p>Ehhez a mentorhoz jelenleg nincs szabad idÄąâ€pont.</p>
-                  <p>VÄ‚Ë‡lassz mÄ‚Ë‡sik mentort, vagy prÄ‚Ĺ‚bÄ‚Ë‡ld Ä‚Ĺźjra kÄ‚Â©sÄąâ€bb.</p>
+                  <p>Ehhez a mentorhoz jelenleg nincs szabad időpont.</p>
+                  <p>Válassz másik mentort, vagy próbáld újra később.</p>
                 </div>
               ) : (
                 <div className="slot-grid">
@@ -418,7 +418,7 @@ const BookingFlow = () => {
                   className="btn-secondary"
                   onClick={() => setStep(1)}
                 >
-                  Ă˘â€ Â Mentor mÄ‚Ĺ‚dosÄ‚Â­tÄ‚Ë‡sa
+                  Mentor módosítása
                 </button>
                 <button
                   type="button"
@@ -426,7 +426,7 @@ const BookingFlow = () => {
                   onClick={handleSlotContinue}
                   disabled={!selectedSlot}
                 >
-                  Adatok megadÄ‚Ë‡sa Ă˘â€ â€™
+                  Adatok megadása
                 </button>
               </div>
             </MotionSection>
@@ -440,10 +440,10 @@ const BookingFlow = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <h2>FoglalÄ‚Ë‡si adatok</h2>
+              <h2>Foglalási adatok</h2>
               <p className="step-intro">
-                Add meg a szÄ‚Ä˝ksÄ‚Â©ges adatokat, hogy vÄ‚Â©glegesÄ‚Â­thetÄąâ€ legyen a
-                foglalÄ‚Ë‡s.
+                Add meg a szükséges adatokat, hogy véglegesíthető legyen a
+                foglalás.
               </p>
 
               <form
@@ -455,31 +455,31 @@ const BookingFlow = () => {
                 }}
               >
                 <label>
-                  NÄ‚Â©v
+                  Név
                   <input
                     type="text"
                     name="contactName"
                     value={bookingData.contactName}
                     onChange={handleBookingDataChange}
-                    placeholder="Teljes nÄ‚Â©v"
+                    placeholder="Teljes név"
                     required
                   />
                 </label>
 
                 <label>
-                  SzÄ‚Ë‡mlÄ‚Ë‡zÄ‚Ë‡si nÄ‚Â©v
+                  Számlázási név
                   <input
                     type="text"
                     name="billingName"
                     value={bookingData.billingName}
                     onChange={handleBookingDataChange}
-                    placeholder="SzÄ‚Ë‡mlÄ‚Ë‡n szereplÄąâ€ nÄ‚Â©v"
+                    placeholder="Számlán szereplő név"
                     required
                   />
                 </label>
 
                 <label>
-                  Email cÄ‚Â­m
+                  Email cím
                   <input
                     type="email"
                     name="email"
@@ -491,7 +491,7 @@ const BookingFlow = () => {
                 </label>
 
                 <label>
-                  TelefonszÄ‚Ë‡m
+                  Telefonszám
                   <input
                     type="tel"
                     name="phone"
@@ -503,13 +503,13 @@ const BookingFlow = () => {
                 </label>
 
                 <label className="wide-field">
-                  MegjegyzÄ‚Â©s (opcionÄ‚Ë‡lis)
+                  Megjegyzés (opcionális)
                   <textarea
                     name="note"
                     value={bookingData.note}
                     onChange={handleBookingDataChange}
                     rows={4}
-                    placeholder="SpeciÄ‚Ë‡lis igÄ‚Â©nyek, kÄ‚Â©rdÄ‚Â©sek..."
+                    placeholder="Speciális igények, kérdések..."
                   />
                 </label>
 
@@ -519,10 +519,10 @@ const BookingFlow = () => {
                     className="btn-secondary"
                     onClick={() => setStep(2)}
                   >
-                    Ă˘â€ Â Vissza a naptÄ‚Ë‡rhoz
+                    Vissza a naptárhoz
                   </button>
                   <button type="submit" className="btn-primary">
-                    Ä‚â€“sszegzÄ‚Â©s Ă˘â€ â€™
+                    Összegzés 
                   </button>
                 </div>
               </form>
@@ -537,13 +537,13 @@ const BookingFlow = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <h2>FoglalÄ‚Ë‡s Ä‚Â¶sszesÄ‚Â­tÄ‚Â©se</h2>
+             <h2>Foglalás összesítése</h2>
 
               <div className="summary-grid">
                 <article className="summary-card">
                   <h3>Szerver</h3>
                   <p>
-                    <span>AzonosÄ‚Â­tÄ‚Ĺ‚:</span> <strong>#{server.id}</strong>
+                  <span>Azonosító:</span> <strong>#{server.id}</strong>
                   </p>
                   <p>
                     <span>CPU:</span> <strong>{server.cpu || "-"}</strong>
@@ -552,25 +552,25 @@ const BookingFlow = () => {
                     <span>RAM:</span> <strong>{server.ram || "-"}</strong>
                   </p>
                   <p>
-                    <span>TÄ‚Ë‡rhely:</span> <strong>{server.hdd || "-"}</strong>
+                    <span>Tárhely:</span> <strong>{server.hdd || "-"}</strong>
                   </p>
                 </article>
 
                 <article className="summary-card">
-                  <h3>Mentor Ä‚Â©s idÄąâ€pont</h3>
+                  <h3>Mentor és időpont</h3>
                   <p>
                     <span>Mentor:</span> <strong>{selectedMentor.name}</strong>
                   </p>
                   <p>
-                    <span>SzerepkÄ‚Â¶r:</span>{" "}
+                    <span>Szerepkör:</span>{" "}
                     <strong>{selectedMentor.title}</strong>
                   </p>
                   <p>
-                    <span>DÄ‚Ë‡tum:</span>{" "}
+                    <span>Dátum:</span>{" "}
                     <strong>{formatDate(selectedSlot.atvetel_datum)}</strong>
                   </p>
                   <p>
-                    <span>IdÄąâ€pont:</span>{" "}
+                    <span>Időpont:</span>{" "}
                     <strong>{formatTime(selectedSlot.atvetel_idopont)}</strong>
                   </p>
                 </article>
@@ -578,21 +578,21 @@ const BookingFlow = () => {
                 <article className="summary-card">
                   <h3>Megadott adatok</h3>
                   <p>
-                    <span>NÄ‚Â©v:</span> <strong>{bookingData.contactName}</strong>
+                    <span>Név:</span> <strong>{bookingData.contactName}</strong>
                   </p>
                   <p>
-                    <span>SzÄ‚Ë‡mlÄ‚Ë‡zÄ‚Ë‡si nÄ‚Â©v:</span>{" "}
+                    <span>Számlázási név:</span>{" "}
                     <strong>{bookingData.billingName}</strong>
                   </p>
                   <p>
                     <span>Email:</span> <strong>{bookingData.email}</strong>
                   </p>
                   <p>
-                    <span>TelefonszÄ‚Ë‡m:</span>{" "}
+                    <span>Telefoinszám:</span>{" "}
                     <strong>{bookingData.phone}</strong>
                   </p>
                   <p>
-                    <span>MegjegyzÄ‚Â©s:</span>{" "}
+                    <span>Megjegyzés:</span>{" "}
                     <strong>{bookingData.note || "Nincs megadva"}</strong>
                   </p>
                 </article>
@@ -605,7 +605,7 @@ const BookingFlow = () => {
                   onChange={(event) => setTermsAccepted(event.target.checked)}
                 />
                 <span>
-                  Elolvastam Ä‚Â©s elfogadom az Ä‚ÂltalÄ‚Ë‡nos SzerzÄąâ€dÄ‚Â©si FeltÄ‚Â©teleket.
+                  Elolvastam és elfogadom az Általános Szerződési Feltételeket.
                 </span>
               </label>
 
@@ -618,7 +618,7 @@ const BookingFlow = () => {
                     setStep(3);
                   }}
                 >
-                  Ă˘â€ Â Adatok mÄ‚Ĺ‚dosÄ‚Â­tÄ‚Ë‡sa
+                  Adatok módosítása
                 </button>
                 <button
                   type="button"
@@ -626,7 +626,7 @@ const BookingFlow = () => {
                   disabled={!termsAccepted || loading}
                   onClick={handleConfirm}
                 >
-                  {loading ? "VÄ‚Â©glegesÄ‚Â­tÄ‚Â©s..." : "FoglalÄ‚Ë‡s vÄ‚Â©glegesÄ‚Â­tÄ‚Â©se"}
+                  {loading ? "Véglegesítés..." : "Foglalás véglegesítése"}
                 </button>
               </div>
             </MotionSection>
@@ -639,11 +639,11 @@ const BookingFlow = () => {
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
             >
-              <div className="success-check">Ă˘Ĺ›â€ś</div>
-              <h2>Sikeres foglalÄ‚Ë‡s</h2>
+              <div className="success-check">✓</div>
+              <h2>Sikeres foglalás</h2>
               <p>
-                A foglalÄ‚Ë‡s rÄ‚Â¶gzÄ‚Â­tve lett. A Ă˘â‚¬ĹľFoglalÄ‚Ë‡saimĂ˘â‚¬ĹĄ oldalon meg tudod
-                nÄ‚Â©zni a rÄ‚Â©szleteket.
+                A foglalás rögzítve lett. A „Foglalásaim” oldalon meg tudod
+                megnézni a részleteket.
               </p>
 
               <div className="step-actions">
@@ -652,14 +652,14 @@ const BookingFlow = () => {
                   className="btn-primary"
                   onClick={() => navigate("/ugyfelportal/dashboard")}
                 >
-                  IrÄ‚Ë‡ny a foglalÄ‚Ë‡saim oldalra
+                  Irány a foglalásaim oldalra
                 </button>
                 <button
                   type="button"
                   className="btn-secondary"
                   onClick={() => navigate("/termekek")}
                 >
-                  TovÄ‚Ë‡bbi szerverek
+                  További szerverek
                 </button>
               </div>
             </MotionSection>

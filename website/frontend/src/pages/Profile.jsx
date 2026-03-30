@@ -48,12 +48,12 @@ const Profile = () => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      setError("Csak képfájl választhat profilkpnek.");
+      setError("Csak képfájl választható profilképnek.");
       return;
     }
 
     if (file.size > MAX_IMAGE_BYTES) {
-      setError("A profilkp tl nagy. Maximum 20 MB lehet.");
+      setError("A profilkép túl nagy. Maximum 20 MB lehet.");
       return;
     }
 
@@ -90,7 +90,7 @@ const Profile = () => {
 
     if (!isValidUsername(nev)) {
       setError(
-        "A felhasználónevedrvnytelen. 3-30 karakter, betk (kezetes is), szm, szkz, pont, ktjels alhzs engedett.",
+       "A felhasználóneved érvénytelen. 3-30 karakter, betűk (kis- és nagybetű), szám, szóköz, pont, kötőjel és aláhúzás engedett.",
       );
       return;
     }
@@ -103,7 +103,7 @@ const Profile = () => {
     if (formData.newPassword) {
       if (!isValidPassword(formData.newPassword)) {
         setError(
-          "Az új jelszó legalbb 6 karakter legyen, tartalmazzon betts szmot.",
+          "Az új jelszó legalább 6 karakter legyen, tartalmazzon betűt és számot.",
         );
         return;
       }

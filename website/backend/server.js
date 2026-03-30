@@ -72,8 +72,8 @@ app.get("/api/debug/users", async (req, res) => {
     );
     res.json(rows);
   } catch (error) {
-    console.error("Hiba a debug users lekĂ©rĂ©sekor:", error);
-    res.status(500).json({ message: "Szerver hiba tĂ¶rtĂ©nt." });
+    console.error("Hiba a debug users lekérésekor:", error);
+    res.status(500).json({ message: "Szerver hiba történt." });
   }
 });
 
@@ -125,11 +125,11 @@ app.get("/", async (req, res) => {
         </head>
         <body>
           <h1>CyberNest Database</h1>
-          <div class="count">Ă–sszesen: ${felhasznalok.length} felhasznĂˇlĂł, ${uzemeltetok.length} ĂĽzemeltetĹ‘, ${eszkozok.length} eszkĂ¶z, ${idopontok.length} idĹ‘pont, ${foglalasok.length} foglalĂˇs</div>
+          <div class="count">Összesen: ${felhasznalok.length} felhasználó, ${uzemeltetok.length} üzemeltető, ${eszkozok.length} eszköz, ${idopontok.length} időpont, ${foglalasok.length} foglalás</div>
 
-          <h2>ĂśzemeltetĹ‘k</h2>
+          <h2>üzemeltetők</h2>
           <table>
-            <tr><th>ID</th><th>NĂ©v</th><th>LeĂ­rĂˇs</th></tr>
+            <tr><th>ID</th><th>Név</th><th>Leírás</th></tr>
             ${uzemeltetok
               .map(
                 (u) =>
@@ -138,9 +138,9 @@ app.get("/", async (req, res) => {
               .join("")}
           </table>
 
-          <h2>EszkĂ¶zĂ¶k</h2>
+          <h2>Eszközök</h2>
           <table>
-            <tr><th>ID</th><th>LeĂ­rĂˇs</th><th>CPU</th><th>RAM</th><th>HDD</th><th>ĂśzemeltetĹ‘</th></tr>
+            <tr><th>ID</th><th>Leírás</th><th>CPU</th><th>RAM</th><th>HDD</th><th>Üzemeltető</th></tr>
             ${eszkozok
               .map(
                 (e) =>
@@ -149,9 +149,9 @@ app.get("/", async (req, res) => {
               .join("")}
           </table>
 
-          <h2>IdĹ‘pontok</h2>
+          <h2>Időpontok</h2>
           <table>
-            <tr><th>ID</th><th>EszkĂ¶z ID</th><th>DĂˇtum</th><th>IdĹ‘pont</th><th>StĂˇtusz</th></tr>
+            <tr><th>ID</th><th>Eszköz ID</th><th>Dátum</th><th>Időpont</th><th>Státusz</th></tr>
             ${idopontok
               .map(
                 (i) =>
@@ -162,7 +162,7 @@ app.get("/", async (req, res) => {
 
           <h2>FoglalĂˇsok</h2>
           <table>
-            <tr><th>ID</th><th>FelhasznĂˇlĂł ID</th><th>EszkĂ¶z ID</th><th>IdĹ‘pont ID</th><th>Kezdete</th><th>VĂ©ge</th><th>DĂˇtum</th><th>StĂˇtusz</th></tr>
+            <tr><th>ID</th><th>Felhasználó ID</th><th>Eszköz ID</th><th>Időpont ID</th><th>Kezdete</th><th>Vége</th><th>Dátum</th><th>Státusz</th></tr>
             ${foglalasok
               .map(
                 (f) =>
@@ -171,9 +171,9 @@ app.get("/", async (req, res) => {
               .join("")}
           </table>
 
-          <h2>FelhasznĂˇlĂłk</h2>
+          <h2>Felhasználók</h2>
           <table>
-            <tr><th>ID</th><th>NĂ©v</th><th>ElĂ©rhetĹ‘sĂ©g</th><th>SzerepkĂ¶r</th><th>Ăllapot</th></tr>
+            <tr><th>ID</th><th>Név</th><th>Elérhetőség</th><th>Szerepkör</th><th>Állapot</th></tr>
             ${felhasznalok
               .map(
                 (f) =>
@@ -188,8 +188,8 @@ app.get("/", async (req, res) => {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.send(html);
   } catch (error) {
-    console.error("Hiba a fĹ‘oldal betĂ¶ltĂ©sekor:", error);
-    res.status(500).send("Szerver hiba tĂ¶rtĂ©nt.");
+    console.error("Hiba a főoldal betöltésekor:", error);
+    res.status(500).send("Szerver hiba történt.");
   }
 });
 
@@ -200,7 +200,7 @@ app.get("/api/health", (req, res) => {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: "Endpoint nem talĂˇlhatĂł" });
+  res.status(404).json({ message: "Endpoint nem található" });
 });
 
 // Error handler

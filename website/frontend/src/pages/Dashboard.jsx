@@ -205,7 +205,7 @@ const Dashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1>Udv, {user?.nev}!</h1>
+        <h1>Üdv, {user?.nev}!</h1>
         <p className="user-role">
           Role: {user?.role === "admin" ? "Adminisztrator" : "Felhasznalo"}
         </p>
@@ -234,7 +234,7 @@ const Dashboard = () => {
           {loading ? (
             <p>Betoltes...</p>
           ) : reservations.length === 0 ? (
-            <p className="no-data">Meg nincs aktiv foglalasod</p>
+            <p className="no-data">Még nincs aktív foglalásod</p>
           ) : (
             <div className="reservations-list">
               {reservations.map((reservation) => (
@@ -258,13 +258,13 @@ const Dashboard = () => {
                       </p>
                       {reservation.eszkoz_leiras && (
                         <p>
-                          <strong>Leiras:</strong> {reservation.eszkoz_leiras}
+                          <strong>Leírás:</strong> {reservation.eszkoz_leiras}
                         </p>
                       )}
 
                       {reservation.berlesi_kezdete && reservation.berlesi_vege && (
                         <div className="rental-period-display">
-                          <p className="rental-label">Berlesi idoszak:</p>
+                          <p className="rental-label">Bérlési időszak:</p>
                           <p className="rental-dates">
                             {new Date(reservation.berlesi_kezdete).toLocaleDateString("hu-HU")}
                             {" -> "}
@@ -275,7 +275,7 @@ const Dashboard = () => {
 
                       {reservation.atvetel_datum && (
                         <div className="pickup-display">
-                          <p className="pickup-label">Atvetel:</p>
+                          <p className="pickup-label">Átvátel:</p>
                           <p className="pickup-datetime">
                             {new Date(reservation.atvetel_datum).toLocaleDateString("hu-HU")}
                             {reservation.atvetel_idopont &&
@@ -292,7 +292,7 @@ const Dashboard = () => {
                       )}
 
                       <p className="reservation-date">
-                        <strong>Foglalas letrehozva:</strong>{" "}
+                        <strong>Foglalás létrehozva:</strong>{" "}
                         {new Date(reservation.foglalas_datuma).toLocaleString("hu-HU")}
                       </p>
                     </div>
@@ -318,12 +318,12 @@ const Dashboard = () => {
           animate="visible"
           transition={{ delay: 0.3 }}
         >
-          <h2>Mentor ertekelesek</h2>
+          <h2>Mentor értékelések</h2>
 
           {loading ? (
-            <p>Betoltes...</p>
+            <p>Betöltés...</p>
           ) : reservationsWithMentor.length === 0 ? (
-            <p className="no-data">Meg nincs mentoros foglalasod ertekeleshez.</p>
+            <p className="no-data">Még nincs mentoros foglalásod értékeléshez.</p>
           ) : (
             <div className="mentor-rating-list">
               {reservationsWithMentor.map((reservation) => {
@@ -352,7 +352,7 @@ const Dashboard = () => {
                           Foglalas: #{reservation.id} - Szerver #{reservation.eszkoz_id}
                         </p>
                         <p className="mentor-rating-summary">
-                          Mentor atlag: <strong>{formatPontszam(mentorAtlag)}</strong>
+                          Mentor átlag: <strong>{formatPontszam(mentorAtlag)}</strong>
                           {mentorErtekelesDb > 0
                             ? ` (${mentorErtekelesDb} db)`
                             : " (meg nincs ertekeles)"}
@@ -363,7 +363,7 @@ const Dashboard = () => {
 
                     <div className="mentor-rating-input-row">
                       <p className="mentor-rating-label">
-                        Sajat pontszam: <strong>{formatPontszam(visualRating)}</strong>
+                        Saját pontszám: <strong>{formatPontszam(visualRating)}</strong>
                       </p>
                       <div
                         className="interactive-stars"
@@ -432,10 +432,10 @@ const Dashboard = () => {
             animate="visible"
             transition={{ delay: 0.4 }}
           >
-            <h2>Admin Funkciok</h2>
+            <h2>Admin Funkciók</h2>
             <p>
-              Admin funkciok kesobb bovithetok (pl. osszes foglalas megtekintese,
-              szerver kezeles, stb.)
+              Admin funkciók késöbb bővíthetők (pl. összes foglalás megtekintése,
+              szerver kezelés, stb.)
             </p>
           </MotionDiv>
         )}
