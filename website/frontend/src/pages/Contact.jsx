@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import "../styles/Contact.css";
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaHeadset, FaVoicemail, FaMailBulk } from "react-icons/fa";
+
 
 const Contact = () => {
   const fadeInUp = {
@@ -34,8 +36,8 @@ const Contact = () => {
           >
             <h2>Elérhetőségeink</h2>
             <div className="info-item">
-              <div className="info-icon">Icon1</div>
-              <div>
+            <div className="info-icon"><FaMailBulk /></div>
+            <div>
                 <h3>Email</h3>
                 <p>info@cybernest.hu</p>
                 <p>support@cybernest.hu</p>
@@ -43,8 +45,8 @@ const Contact = () => {
             </div>
 
             <div className="info-item">
-              <div className="info-icon">Icon2</div>
-              <div>
+            <div className="info-icon"><FaPhone /></div>
+            <div>
                 <h3>Telefon</h3>
                 <p>+36 1 234 5678</p>
                 <p className="info-note">Hétfő-Péntek: 9:00-17:00</p>
@@ -52,8 +54,8 @@ const Contact = () => {
             </div>
 
             <div className="info-item">
-              <div className="info-icon">Icon3</div>
-              <div>
+            <div className="info-icon"><FaMapMarkerAlt /></div>
+            <div>
                 <h3>Cím</h3>
                 <p>1234 Budapest</p>
                 <p>Példa utca 123.</p>
@@ -61,8 +63,8 @@ const Contact = () => {
             </div>
 
             <div className="info-item">
-              <div className="info-icon">Icon4</div>
-              <div>
+            <div className="info-icon"><FaHeadset /></div>
+            <div>
                 <h3>24/7 Támogatás</h3>
                 <p>Technikai segítség non-stop</p>
                 <p>support@cybernest.hu</p>
