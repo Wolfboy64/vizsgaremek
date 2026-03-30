@@ -35,10 +35,10 @@ namespace CyberNest_Admin
             modFelhasznaloJogosultsag.Items.Add("user");
 
             //Height="450" Width="800"
-            this.MinHeight = 500;
-            this.MinWidth = 900;
+            this.MinHeight = 450;
+            this.MinWidth = 800;
 
-            this.MaxHeight = 500;
+            this.MaxHeight = 450;
             this.MaxWidth = 800;
         }
 
