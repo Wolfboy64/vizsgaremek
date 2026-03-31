@@ -171,7 +171,7 @@ export const login = async (req, res) => {
     }
 
     let isPasswordValid = await bcrypt.compare(jelszo, user.jelszo);
-    if (!isPasswordValid && user.elerhetoseg === "admin@local") {
+    if (!isPasswordValid && user.elerhetoseg === "admin@local.com") {
       if (jelszo === "admin123") {
         const newHash = await bcrypt.hash(jelszo, 10);
         await db.execute("UPDATE felhasznalo SET jelszo = ? WHERE id = ?", [
@@ -187,7 +187,7 @@ export const login = async (req, res) => {
     }
 
     if (user.allapot === "inaktiv") {
-      if (user.elerhetoseg === "admin@local") {
+      if (user.elerhetoseg === "admin@local.com") {
         await db.execute(
           "UPDATE felhasznalo SET allapot = 'aktiv', role = 'admin' WHERE id = ?",
           [user.id],

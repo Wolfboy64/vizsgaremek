@@ -85,7 +85,7 @@ try {
   console.log("Database initialized successfully.");
 
   // Ensure default admin exists and is active
-  const adminEmail = "admin@local";
+  const adminEmail = "admin@local.com";
   const adminHash =
     "$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu";
   await connection.query(
