@@ -118,7 +118,7 @@ export const register = async (req, res) => {
     if (!USERNAME_REGEX.test(nev)) {
       return res.status(400).json({
         message:
-          "A felhasználónév érvénytelen. 3-30 karakter, betûk (ékezetes is), szám, szóköz, pont, kötõjel és aláhúzás engedett.",
+          "A felhasznÃ¡lÃ³nÃ©v Ã©rvÃ©nytelen. 3-30 karakter, betÅ±k (Ã©kezetes is), szÃ¡m, szÃ³kÃ¶z, pont, kÃ¶tÅ‘jel Ã©s alÃ¡hÃºzÃ¡s engedett.",
       });
     }
 
@@ -357,7 +357,7 @@ export const startGitHubOAuth = async (req, res) => {
     if (missing.length > 0) {
       console.warn("[OAuth][GitHub] Missing env vars:", missing.join(", "));
       return res.status(500).json({
-        message: "GitHub OAuth nincs beállítva a szerveren.",
+        message: "GitHub OAuth nincs beÃ¡llÃ­tva a szerveren.",
         missing,
       });
     }
@@ -375,7 +375,7 @@ export const startGitHubOAuth = async (req, res) => {
     res.redirect(authUrl.toString());
   } catch (error) {
     console.error("GitHub OAuth start hiba:", error);
-    res.status(500).json({ message: "GitHub belépés indítása sikertelen." });
+    res.status(500).json({ message: "GitHub belÃ©pÃ©s indÃ­tÃ¡sa sikertelen." });
   }
 };
 
@@ -385,11 +385,11 @@ export const handleGitHubOAuthCallback = async (req, res) => {
     const { code, error } = req.query;
     if (error) {
       logOauth("GitHub", "provider returned error", String(error));
-      return res.redirect(buildOauthErrorRedirect("GitHub belépés megszakítva."));
+      return res.redirect(buildOauthErrorRedirect("GitHub belÃ©pÃ©s megszakÃ­tva."));
     }
     if (!code) {
       logOauth("GitHub", "missing auth code");
-      return res.redirect(buildOauthErrorRedirect("GitHub kód nem érkezett meg."));
+      return res.redirect(buildOauthErrorRedirect("GitHub kÃ³d nem Ã©rkezett meg."));
     }
 
     const missing = getMissingEnv([
@@ -401,7 +401,7 @@ export const handleGitHubOAuthCallback = async (req, res) => {
       console.warn("[OAuth][GitHub callback] Missing env vars:", missing.join(", "));
       return res.redirect(
         buildOauthErrorRedirect(
-          `GitHub OAuth nincs beállítva a szerveren. Hiányzik: ${missing.join(", ")}`,
+          `GitHub OAuth nincs beÃ¡llÃ­tva a szerveren. HiÃ¡nyzik: ${missing.join(", ")}`,
         ),
       );
     }
@@ -434,7 +434,7 @@ export const handleGitHubOAuthCallback = async (req, res) => {
 
     if (!accessToken) {
       logOauth("GitHub", "missing access token in token response");
-      return res.redirect(buildOauthErrorRedirect("GitHub token nem érkezett meg."));
+      return res.redirect(buildOauthErrorRedirect("GitHub token nem Ã©rkezett meg."));
     }
 
     const profileResponse = await fetch("https://api.github.com/user", {
@@ -447,7 +447,7 @@ export const handleGitHubOAuthCallback = async (req, res) => {
     if (!profileResponse.ok) {
       logOauth("GitHub", "userinfo fetch failed", String(profileResponse.status));
       return res.redirect(
-        buildOauthErrorRedirect("GitHub felhasználói adatok lekérése sikertelen."),
+        buildOauthErrorRedirect("GitHub felhasznÃ¡lÃ³i adatok lekÃ©rÃ©se sikertelen."),
       );
     }
 
@@ -478,7 +478,7 @@ export const handleGitHubOAuthCallback = async (req, res) => {
       logOauth("GitHub", "missing email");
       return res.redirect(
         buildOauthErrorRedirect(
-          "A GitHub fiók nem adott email címet. Tegyél nyilvánossá egy emailt, vagy engedélyezd az email hozzáférést.",
+          "A GitHub fiÃ³k nem adott email cÃ­met. TegyÃ©l nyilvÃ¡nossÃ¡ egy emailt, vagy engedÃ©lyezd az email hozzÃ¡fÃ©rÃ©st.",
         ),
       );
     }
@@ -511,7 +511,7 @@ export const handleGitHubOAuthCallback = async (req, res) => {
     res.redirect(buildOauthSuccessRedirect(payload));
   } catch (error) {
     console.error("GitHub callback hiba:", error);
-    res.redirect(buildOauthErrorRedirect("GitHub belépés sikertelen."));
+    res.redirect(buildOauthErrorRedirect("GitHub belÃ©pÃ©s sikertelen."));
   }
 };
 
@@ -524,18 +524,18 @@ export const updateOwnProfile = async (req, res) => {
     const newPassword = String(req.body?.newPassword || "");
 
     if (!nev || !elerhetoseg) {
-      return res.status(400).json({ message: "A név és email megadása kötelezõ." });
+      return res.status(400).json({ message: "A nÃ©v Ã©s email megadÃ¡sa kÃ¶telezÅ‘." });
     }
 
     if (!USERNAME_REGEX.test(nev)) {
       return res.status(400).json({
         message:
-          "A felhasználónév érvénytelen. 3-30 karakter, betûk (ékezetes is), szám, szóköz, pont, kötõjel és aláhúzás engedett.",
+          "A felhasznÃ¡lÃ³nÃ©v Ã©rvÃ©nytelen. 3-30 karakter hosszÃº lehet, Ã©s csak betÅ±ket (Ã©kezeteseket is), szÃ¡mokat, szÃ³kÃ¶zt, pontot, kÃ¶tÅ‘jelet Ã©s alÃ¡hÃºzÃ¡st tartalmazhat.",
       });
     }
 
     if (!EMAIL_REGEX.test(elerhetoseg)) {
-      return res.status(400).json({ message: "Érvényes email címet adj meg." });
+      return res.status(400).json({ message: "Ã‰rvÃ©nyes email cÃ­met adj meg." });
     }
 
     if (avatarUrl) {
@@ -545,7 +545,7 @@ export const updateOwnProfile = async (req, res) => {
             avatarUrl,
           );
         if (!isValidDataUrl) {
-          return res.status(400).json({ message: "A profilkép formátuma hibás." });
+          return res.status(400).json({ message: "A profilkÃ©p formÃ¡tuma hibÃ¡s." });
         }
 
         const base64Body = avatarUrl.split(",")[1] || "";
@@ -555,7 +555,7 @@ export const updateOwnProfile = async (req, res) => {
 
         if (approximateBytes > maxBytes) {
           return res.status(400).json({
-            message: "A profilkép túl nagy. Maximum 20 MB képet válassz.",
+            message: "A profilkÃ©p tÃºl nagy. Maximum 20 MB kÃ©pet vÃ¡lassz.",
           });
         }
       } else {
@@ -563,25 +563,25 @@ export const updateOwnProfile = async (req, res) => {
           const parsed = new URL(avatarUrl);
           if (!["http:", "https:"].includes(parsed.protocol)) {
             return res.status(400).json({
-              message: "A profilkép URL csak http/https lehet.",
+              message: "A profilkÃ©p URL csak http/https lehet.",
             });
           }
         } catch {
-          return res.status(400).json({ message: "A profilkép URL formátuma hibás." });
+          return res.status(400).json({ message: "A profilkÃ©p URL formÃ¡tuma hibÃ¡s." });
         }
       }
     }
 
     const existingEmailOwner = await FelhasznaloModel.findByElerhetoseg(elerhetoseg);
     if (existingEmailOwner && Number(existingEmailOwner.id) !== Number(userId)) {
-      return res.status(409).json({ message: "Ez az email cím már használatban van." });
+      return res.status(409).json({ message: "Ez az email cÃ­m mÃ¡r hasznÃ¡latban van." });
     }
 
     if (newPassword) {
       if (!PASSWORD_REGEX.test(newPassword)) {
         return res.status(400).json({
           message:
-            "Az új jelszó legyen legalább 6 karakter, tartalmazzon betût és számot, és ne legyen benne szóköz.",
+            "Az Ãºj jelszÃ³ legyen legalÃ¡bb 6 karakter hosszÃº, tartalmazzon betÅ±t Ã©s szÃ¡mot, Ã©s ne tartalmazzon szÃ³kÃ¶zt.",
         });
       }
 
@@ -599,19 +599,19 @@ export const updateOwnProfile = async (req, res) => {
 
     const updatedUser = await FelhasznaloModel.findById(userId);
     if (!updatedUser) {
-      return res.status(404).json({ message: "Felhasználó nem található." });
+      return res.status(404).json({ message: "FelhasznÃ¡lÃ³ nem talÃ¡lhatÃ³." });
     }
 
     const payload = createJwtAndUser(updatedUser);
 
     res.json({
-      message: "Profil sikeresen frissítve.",
+      message: "Profil sikeresen frissÃ­tve.",
       token: payload.token,
       user: payload.user,
     });
   } catch (error) {
-    console.error("Profil frissítési hiba:", error);
-    res.status(500).json({ message: "Hiba történt a profil frissítése során." });
+    console.error("Profil frissÃ­tÃ©si hiba:", error);
+    res.status(500).json({ message: "Hiba tÃ¶rtÃ©nt a profil frissÃ­tÃ©se sorÃ¡n." });
   }
 };
 
