@@ -86,7 +86,7 @@ namespace CyberNest_Admin
         public async Task Logout(User bejelentkezettfelhasznalo, string JWT)
         {
 
-            await UpdateStatusAsync(bejelentkezettfelhasznalo, JWT, "inaktív");
+            await UpdateStatusAsync(bejelentkezettfelhasznalo, JWT, "aktiv");
         }
         /* |----------------------|
          * | Felhasználók szakasz |
@@ -138,14 +138,6 @@ namespace CyberNest_Admin
             var response = await _httpClient.PostAsJsonAsync("felhasznalo", registerData);
             return response.IsSuccessStatusCode;
         }
-        /* 
-         *   {
-                "nev": "név",
-                "elerhetoseg": "fff@local",
-                "allapot": "aktiv",
-                "role": "user"
-              }
-         */
         public async Task<bool> UpdateFelhasznaloAsync(int id, string nev, string elerhetoseg, string jelszo, string szerepkor, string JWT)
         {
             try

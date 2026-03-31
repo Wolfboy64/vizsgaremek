@@ -81,7 +81,6 @@ namespace CyberNest_Admin
 
                 MessageBox.Show($"Hiba történt: {ex.Message}");
             }
-            
         }
         private void DateSetup(DateTime d, string nev, string role, string elerhetoseg)
         {
@@ -322,7 +321,7 @@ namespace CyberNest_Admin
             string role = ujFelhasznaloCheckBox.IsChecked == true ? "admin" : "user";
             var lista = api.AddFelhasznaloAsync(UjFelhasznaloNev.Text,
             UjFelhasznaloEmail.Text,
-            "jelszo",
+            ujFelhasznaloJelszo.Password,
             role,
             Token);
             ShowPanel(WelocmePage); //vissza a főoldalra

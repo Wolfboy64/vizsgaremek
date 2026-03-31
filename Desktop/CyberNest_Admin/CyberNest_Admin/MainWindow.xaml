@@ -168,6 +168,9 @@
                                FontSize="23" FontFamily="Cascadia Mono SemiBold"/>
 
                 </StackPanel>
+
+                <!-- Menüpontokhoz tartozó StackPanelek-->
+                <!-- FELHASZNÁLÓK SZAKASZ -->
                 <!-- Felhasznalok listázás -->
                 <StackPanel x:Name="FelhasznaloListPanel"
                             Background="#3F3F46"
@@ -176,10 +179,16 @@
                             Grid.RowSpan="4"
                             Grid.ColumnSpan="2"
                             Visibility="Hidden">
+
                     <Button x:Name="FelhasznalokListBackBtn" Content="Vissza" Width="84" Click="FelhasznalokListBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
-                    <ListView x:Name="FelhasznalokListView">
+                    <ListView x:Name="FelhasznalokListView"
+                                        Height="289"
+                                        Style="{StaticResource ModernListViewStyle}">
                         <ListView.View>
                             <GridView>
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <StaticResource ResourceKey="ModernHeaderStyle"/>
+                                </GridView.ColumnHeaderContainerStyle>
                                 <GridViewColumn Header="Név" DisplayMemberBinding="{Binding Nev}" Width="150"/>
                                 <GridViewColumn Header="E-mail" DisplayMemberBinding="{Binding Elerhetoseg}" Width="200"/>
                                 <GridViewColumn Header="Szerepkör" DisplayMemberBinding="{Binding Role}" Width="100"/>
@@ -190,11 +199,11 @@
                 <!-- Új felhasználó létrehozása -->
                 <StackPanel x:Name="UjFelhasznaloPanel"
                             Background="#3F3F46"
-                            Margin="0,82,0,10"
+                            Margin="0,82,0,3"
                             Grid.Column="1"
                             Grid.RowSpan="4"
                             Grid.ColumnSpan="2"
-                            Visibility="Visible">
+                            Visibility="Hidden">
                     <Grid Height="237">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -208,12 +217,14 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="UjFelhasznaloBackBtn" Content="Vissza" Width="84" Margin="25,10,24,10" Grid.Row="4" Click="UjFelhasznaloBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
-                        <TextBlock Text="Név:" Margin="10,10,10,10" Grid.Row="2"/>
-                        <TextBox x:Name="UjFelhasznaloNev" Margin="10,10,10,10" Grid.Column="1" Grid.Row="2"/>
-                        <TextBlock Text="E-mail:" Margin="10,10,10,10" Grid.Row="1"/>
-                        <TextBox x:Name="UjFelhasznaloEmail" Margin="10,10,10,10" Grid.Column="1" Grid.Row="1"/>
-                        <TextBlock Text="Admin:" Margin="10,10,10,10" Grid.Row="3"/>
+                        <Button x:Name="UjFelhasznaloBackBtn" Content="Vissza" Width="84" Margin="25,10,24,10" Grid.Row="4"  Style="{StaticResource ModernBottomBorderStyle}" Click="UjFelhasznaloBackBtn_Click"/>
+                        <TextBlock x:Name="ujFelhasznaloJelszoLbl" Text="Jelszó:" FontSize="17" Grid.Row="2" Margin="11,10,10,10" />
+                        <PasswordBox x:Name="ujFelhasznaloJelszo" Grid.Row="2" Grid.Column="1" Margin="11,10,10,10"/>
+                        <TextBlock Text="Név:" FontSize="17" Margin="11,9,9,10"/>
+                        <TextBox x:Name="UjFelhasznaloNev" Margin="11,10,10,10" Grid.Column="1"/>
+                        <TextBlock Text="E-mail:" FontSize="17" Margin="10,6,9,15" Grid.Row="1"/>
+                        <TextBox x:Name="UjFelhasznaloEmail" Margin="10,10,11,10" Grid.Column="1" Grid.Row="1"/>
+                        <TextBlock Text="Admin:" FontSize="17" Margin="10,10,10,10" Grid.Row="3"/>
                         <Button x:Name="UjFelhasznaloSaveBtn" Content="Mentés" Width="84" Margin="24,7,25,10" Click="UjFelhasznaloSaveBtn_Click" Grid.Column="2" Grid.Row="4"  Style="{StaticResource ModernBottomBorderStyle}"/>
                         <CheckBox x:Name="ujFelhasznaloCheckBox" Grid.Column="1" HorizontalAlignment="Left" Foreground="#007ACC" Margin="104,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="20" Height="19"/>
                     </Grid>
@@ -297,21 +308,27 @@
                         <TextBlock TextWrapping="Wrap" Text="Felhasználó:" Margin="3,5,81,6" Grid.Column="2"/>
                     </Grid>
                 </StackPanel>
+
+                <!-- ESZKÖZÖK SZAKASZ -->
                 <!-- Eszkozok list -->
                 <StackPanel x:Name="EszkozokListPanel"
                             Grid.Column="0"
-                            Grid.RowSpan="3"
-                            Grid.ColumnSpan="3"
+                            Grid.RowSpan="5"
+                            Grid.ColumnSpan="4"
                             HorizontalAlignment="Left"
                             Background="#3F3F46" 
-                            Margin="0,82,0,0" 
-                            Width="590"
+                            Margin="84,51,0,41" 
+                            Width="616"
                             Visibility="Hidden">
                     <Button x:Name="EszkozokListBackBtn" Content="Vissza" Width="84" Click="EszkozokListBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
                     <ListView x:Name="EszkozokListView" 
-                              Height="146" >
+                              Height="289"
+                              Style="{StaticResource ModernListViewStyle}">
                         <ListView.View>
                             <GridView>
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <StaticResource ResourceKey="ModernHeaderStyle"/>
+                                </GridView.ColumnHeaderContainerStyle>
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="20"/>
                                 <GridViewColumn Header="leírás" DisplayMemberBinding="{Binding Leiras}" Width="100"/>
                                 <GridViewColumn Header="CPU" DisplayMemberBinding="{Binding Cpu}" Width="100"/>
@@ -441,20 +458,29 @@
                         <TextBlock TextWrapping="Wrap" Text="Eszköz:" Margin="3,5,81,6" Grid.Column="2"/>
                     </Grid>
                 </StackPanel>
+
+                <!--ÜZEMELTEETŐK SZAKSZ-->
                 <!-- Üzemeltetok listázás-->
                 <StackPanel x:Name="UzemeltetoListPanel"
-                            Background="#3F3F46"
-                            Margin="0,66,0,10"
-                            Grid.Column="1"
-                            Grid.RowSpan="4"
-                            Grid.ColumnSpan="2"
+                            Grid.Column="0"
+                            Grid.RowSpan="5"
+                            Grid.ColumnSpan="4"
+                            HorizontalAlignment="Left"
+                            Background="#3F3F46" 
+                            Margin="92,23,0,69" 
+                            Width="616"
                             Visibility="Hidden">
                     <Button x:Name="UzemeltetokListBackBtn" Content="Vissza" Width="84" Click="UzemeltetokListBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
-                    <ListView x:Name="UzemeltetokListView" Width="402">
+                    <ListView x:Name="UzemeltetokListView" 
+                              Height="289"
+                              Style="{StaticResource ModernListViewStyle}">
                         <ListView.View>
                             <GridView>
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <StaticResource ResourceKey="ModernHeaderStyle"/>
+                                </GridView.ColumnHeaderContainerStyle>
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="25"/>
-                                <GridViewColumn Header="Név" DisplayMemberBinding="{Binding Nev}" Width="150"/>
+                                <GridViewColumn Header="Név" DisplayMemberBinding="{Binding Nev}" Width="400"/>
                                 <GridViewColumn Header="Leírás" DisplayMemberBinding="{Binding Leiras}" Width="280"/>
                             </GridView>
                         </ListView.View>
@@ -555,44 +581,30 @@
                                 Style="{StaticResource ModernBottomBorderStyle}" />
                     </Grid>
                 </StackPanel>
+
+                <!-- FOGLALÁS SZAKASZ -->
                 <!-- Foglalás Listázása -->
                 <StackPanel x:Name="FoglalasListPanel"
                             Background="#3F3F46"
-                            Margin="0,10,0,0"
+                            Margin="92,10,92,3"
                             Grid.Column="0"
-                            Grid.Row="1"
-                            Grid.RowSpan="3"
+                            Grid.RowSpan="4"
                             Grid.ColumnSpan="4"
+                            Width="616"
                             Visibility="Hidden">
-                    <Button x:Name="FoglalasListBackBtn" Content="Vissza" Width="84" Click="FoglalasListBackBtn_Click"/>
-                    <ListView x:Name="FoglalasListView">
+                    <Button x:Name="FoglalasListBackBtn" 
+                            Content="Vissza"
+                            Width="84"
+                            Click="FoglalasListBackBtn_Click"
+                            Style="{StaticResource ModernBottomBorderStyle}"/>
+                    <ListView x:Name="FoglalasListView"
+                              Height="289"
+                              Style="{StaticResource ModernListViewStyle}" Width="614">
                         <ListView.View>
                             <GridView>
-                                <!--
-                                  {
-                                    "id": 1,
-                                    "felhasznalo_id": 1,
-                                    "eszkoz_id": 1,
-                                    "idopont_id": 524,
-                                    "berlesi_kezdete": "2026-03-26T23:00:00.000Z",
-                                    "berlesi_vege": "2026-03-26T23:00:00.000Z",
-                                    "mentor_id": "mentor-toth-david",
-                                    "mentor_nev": "Tóth Dávid",
-                                    "ugyfel_nev": "admin",
-                                    "szamlazasi_nev": "jdhkashd",
-                                    "email": "admin@local",
-                                    "telefon": "45678",
-                                    "megjegyzes": "jweqkjeh",
-                                    "foglalas_datuma": "2026-03-17T07:15:55.000Z",
-                                    "felhasznalo_nev": "admin",
-                                    "elerhetoseg": "admin@local",
-                                    "cpu": "Intel Xeon E5-2680 v4 (4 cores)",
-                                    "ram": "8 GB DDR4",
-                                    "hdd": "120 GB SSD",
-                                    "eszkoz_leiras": "Alapszintű VPS szerver weboldal hostinghoz"
-                                  }
-                                
-                                -->
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <StaticResource ResourceKey="ModernHeaderStyle"/>
+                                </GridView.ColumnHeaderContainerStyle>
                                 <GridViewColumn Header="IdőpontID" DisplayMemberBinding="{Binding IdopontId}" Width="75"/>
                                 <GridViewColumn Header="Berles Kezdete" DisplayMemberBinding="{Binding BerlesiKezdete}" Width="100"/>
                                 <GridViewColumn Header="Berles Vege" DisplayMemberBinding="{Binding BerlesiVege}" Width="100"/>
