@@ -15,6 +15,7 @@
             - LoginPage: Ez a StackPanel tartalmazza a bejelentkezési űrlapot. Ez a panel kezdetben már látszik
             - SideBrand_loginPage: Ez a StackPanel tartalmazza a jobb oldali márkázási elemeket. 
             - MainContentPage: Ez a StackPanel tartalmazza a fő tartalmat, beleértve a menüt és egyéb adminisztrációs elemeket. Kezdetben rejtett, és csak akkor lesz látható, amikor a bejelentkezés sikeres volt.
+            - WelocmePage: Ez a StackPanel tartalmazza a fő tartalom üdvözlő szövegét, amely a bejelentkezés után jelenik meg. Kezdetben rejtett, és csak akkor lesz látható, amikor a bejelentkezés sikeres volt.
         2.Színpaletta:
             - #1E1E1E  // háttér
             - #2D2D30  // panel
@@ -89,7 +90,7 @@
 
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
-                  Height="31" 
+                  Height="32" 
                   Background="#2D2D30"
                   Foreground="#007ACC"
                   HorizontalAlignment="Stretch" FontSize="20">
@@ -170,6 +171,7 @@
                 </StackPanel>
 
                 <!-- Menüpontokhoz tartozó StackPanelek-->
+               
                 <!-- FELHASZNÁLÓK SZAKASZ -->
                 <!-- Felhasznalok listázás -->
                 <StackPanel x:Name="FelhasznaloListPanel"
@@ -317,7 +319,7 @@
                 <StackPanel x:Name="EszkozokListPanel"
                             Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="4"
                             HorizontalAlignment="Left" Background="#3F3F46" 
-                            Margin="84,51,0,41" Width="616" Visibility="Visible">
+                            Margin="84,51,0,41" Width="616" Visibility="Hidden">
 
                     <Grid Margin="10">
                         <Grid.ColumnDefinitions>
@@ -353,7 +355,6 @@
                         </ListView.View>
                     </ListView>
                 </StackPanel>
-
                 <!-- Új eszköz hozzáadása -->
                 <StackPanel x:Name="ujEszkozPanel"
                             Grid.Column="1"
@@ -485,19 +486,39 @@
                             Background="#3F3F46" 
                             Margin="92,23,0,69" 
                             Width="616"
-                            Visibility="Hidden">
-                    <Button x:Name="UzemeltetokListBackBtn" Content="Vissza" Width="84" Click="UzemeltetokListBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
+                            Visibility="Visible">
+                    <!-- 
+                        
+                    -->
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="UzemeltetokListBackBtn" 
+                                Content="Vissza" Width="84" 
+                                Click="EszkozokListBackBtn_Click"  
+                                Style="{StaticResource ModernBottomBorderStyle}"/>      
+
+                        <TextBox x:Name="TxtKeresoUzemelteto" 
+                                 Grid.Column="1" 
+                                 Margin="15,0,0,0" 
+                                 Height="30"
+                                 Style="{StaticResource ModernSearchTextBoxStyle}"
+                                 TextChanged="TxtKeresoUzemelteto_TextChanged"/>
+                    </Grid>
                     <ListView x:Name="UzemeltetokListView" 
-                              Height="289"
-                              Style="{StaticResource ModernListViewStyle}">
+                              Height="259"
+                              Style="{StaticResource ModernListViewStyle}" Width="584">
                         <ListView.View>
                             <GridView>
                                 <GridView.ColumnHeaderContainerStyle>
                                     <StaticResource ResourceKey="ModernHeaderStyle"/>
                                 </GridView.ColumnHeaderContainerStyle>
-                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="25"/>
-                                <GridViewColumn Header="Név" DisplayMemberBinding="{Binding Nev}" Width="400"/>
-                                <GridViewColumn Header="Leírás" DisplayMemberBinding="{Binding Leiras}" Width="280"/>
+                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="80"/>
+                                <GridViewColumn Header="Név" DisplayMemberBinding="{Binding Nev}" Width="300"/>
+                                <GridViewColumn Header="Leírás" DisplayMemberBinding="{Binding Leiras}" Width="400"/>
                             </GridView>
                         </ListView.View>
                     </ListView>

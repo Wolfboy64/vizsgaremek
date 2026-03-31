@@ -537,17 +537,55 @@ namespace CyberNest_Admin
 
         private async void UzemeltetokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-            ShowPanel(UzemeltetoListPanel);
-            UzemeltetokListView.Items.Clear();
-            ApiService api = new ApiService();
-            var lista = await api.GetUzemeltetokAsync();
-            Uzemelteto.uzemeltetokAll = lista;
-            foreach (var item in lista)
+            try
             {
-                UzemeltetokListView.Items.Add(item);
+                ShowPanel(UzemeltetoListPanel);
+                this.Cursor = Cursors.Wait;
+
+                ApiService api = new ApiService();
+                var lista = await api.GetUzemeltetokAsync();
+
+                // Statikus lista mentése a szűréshez
+                Uzemelteto.uzemeltetokAll = lista;
+
+                // UI FRISSÍTÉSE: Itt is az ItemsSource-ot használjuk!
+                UzemeltetokListView.ItemsSource = Uzemelteto.uzemeltetokAll;
+
+                // Keresőmező ürítése új betöltéskor
+                TxtKeresoUzemelteto.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba: {ex.Message}");
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
             }
         }
+        private void TxtKeresoUzemelteto_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+            if (Uzemelteto.uzemeltetokAll == null) return;
 
+            string keresettSzoveg = TxtKeresoUzemelteto.Text.ToLower().Trim();
+
+            // Ha üres, az összeset mutatjuk, egyébként szűrünk
+            if (keresettSzoveg == "" || keresettSzoveg == " " || string.IsNullOrEmpty(keresettSzoveg))
+            {
+                UzemeltetokListView.ItemsSource = Uzemelteto.uzemeltetokAll;
+            }
+            else
+            {
+                var szurt = Uzemelteto.uzemeltetokAll.Where(x =>
+                    (x.Nev?.ToLower().Contains(keresettSzoveg) ?? false) ||
+                    (x.Leiras?.ToLower().Contains(keresettSzoveg) ?? false)
+                    ).ToList();
+                UzemeltetokListView.ItemsSource = szurt;
+            }
+             
+             
+        }
         private async void UjUzemeltetoSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             ApiService api = new ApiService();
@@ -810,7 +848,9 @@ namespace CyberNest_Admin
         {
 
         }
-        
+
+
+
 
 
         /* 
