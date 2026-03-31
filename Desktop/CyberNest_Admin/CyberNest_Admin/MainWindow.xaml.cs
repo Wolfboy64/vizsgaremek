@@ -329,40 +329,66 @@ namespace CyberNest_Admin
 
 
         //eszközökList
+        // --- LISTA BETÖLTÉSE ---
         private async void EszkozokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 ShowPanel(EszkozokListPanel);
-
-                // Vizuális visszajelzés (opcionális, de jó, ha lassú az internet)
-                EszkozokListView.Cursor = Cursors.Wait;
+                this.Cursor = Cursors.Wait; // Várakozó kurzor az egész ablakra
 
                 ApiService api = new ApiService();
                 var lista = await api.GetEszkozokAsync();
 
-                // Frissítjük a statikus tárolót is
-                Eszkoz.Eszkozok = null;
+                // Statikus tároló frissítése
                 Eszkoz.Eszkozok = lista;
-                System.Diagnostics.Debug.WriteLine($"Letöltött eszközök száma: {lista.Count}");
 
-                // UI frissítése
-                EszkozokListView.ItemsSource = null;
                 if (lista != null && lista.Count > 0)
                 {
-                    EszkozokListView.ItemsSource = lista;
+                    // Kereső ürítése, hogy az összes friss adatot lássuk
+                    TxtKereso.Text = string.Empty;
+                    EszkozokListView.ItemsSource = Eszkoz.Eszkozok;
                 }
                 else
                 {
-                    MessageBox.Show($"Nincsenek megjeleníthető eszközök. {Eszkoz.Eszkozok.Count}");
+                    EszkozokListView.ItemsSource = null;
+                    MessageBox.Show("Nincsenek megjeleníthető eszközök.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Hiba történt a felület frissítésekor: {ex.Message}");
+                MessageBox.Show($"Hiba az adatok letöltésekor: {ex.Message}");
             }
-            
+            finally
+            {
+                this.Cursor = Cursors.Arrow; // Mindenképpen visszaállítjuk a kurzort
+            }
         }
+
+        // --- KERESÉS / SZŰRÉS ---
+        private void TxtKereso_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Eszkoz.Eszkozok == null) return;
+
+            string keresettSzoveg = TxtKereso.Text.ToLower().Trim();
+
+            // Ha üres, az összeset mutatjuk, egyébként szűrünk
+            if (keresettSzoveg == "" || keresettSzoveg == " ")
+            {
+                EszkozokListView.ItemsSource = Eszkoz.Eszkozok;
+            }
+            else
+            {
+                var szurt = Eszkoz.Eszkozok.Where(x =>
+                    (x.Leiras?.ToLower().Contains(keresettSzoveg) ?? false) ||
+                    (x.Cpu?.ToLower().Contains(keresettSzoveg) ?? false) ||
+                    x.Id.ToString().Contains(keresettSzoveg)
+                ).ToList();
+
+                EszkozokListView.ItemsSource = szurt;
+            }
+        }
+
         private async void UjEszkozMenu_Click(object sender, RoutedEventArgs e)
         {
             ShowPanel(ujEszkozPanel);
@@ -779,6 +805,12 @@ namespace CyberNest_Admin
                 WelocmePage.Visibility = Visibility.Visible;
             }
         }
+
+        private void eszkozListFrissites_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
 
 
         /* 

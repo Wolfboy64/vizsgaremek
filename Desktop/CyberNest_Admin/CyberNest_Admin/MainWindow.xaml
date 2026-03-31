@@ -173,17 +173,19 @@
                 <!-- FELHASZNÁLÓK SZAKASZ -->
                 <!-- Felhasznalok listázás -->
                 <StackPanel x:Name="FelhasznaloListPanel"
-                            Background="#3F3F46"
-                            Margin="0,66,0,10"
-                            Grid.Column="1"
-                            Grid.RowSpan="4"
-                            Grid.ColumnSpan="2"
+                            Grid.Column="0"
+                            Grid.RowSpan="5"
+                            Grid.ColumnSpan="4"
+                            HorizontalAlignment="Left"
+                            Background="#3F3F46" 
+                            Margin="84,51,0,41" 
+                            Width="616"
                             Visibility="Hidden">
 
                     <Button x:Name="FelhasznalokListBackBtn" Content="Vissza" Width="84" Click="FelhasznalokListBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
                     <ListView x:Name="FelhasznalokListView"
-                                        Height="289"
-                                        Style="{StaticResource ModernListViewStyle}">
+                              Height="289"
+                              Style="{StaticResource ModernListViewStyle}">
                         <ListView.View>
                             <GridView>
                                 <GridView.ColumnHeaderContainerStyle>
@@ -313,42 +315,115 @@
                 <!-- ESZKÖZÖK SZAKASZ -->
                 <!-- Eszkozok list -->
                 <StackPanel x:Name="EszkozokListPanel"
-                            Grid.Column="0"
-                            Grid.RowSpan="5"
-                            Grid.ColumnSpan="4"
-                            HorizontalAlignment="Left"
-                            Background="#3F3F46" 
-                            Margin="84,51,0,41" 
-                            Width="616"
-                            Visibility="Hidden">
-                    <Button x:Name="EszkozokListBackBtn" Content="Vissza" Width="84" Click="EszkozokListBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
+            Grid.Column="0"
+            Grid.RowSpan="5"
+            Grid.ColumnSpan="4"
+            HorizontalAlignment="Left"
+            Background="#3F3F46" 
+            Margin="84,51,0,41" 
+            Width="616"
+            Visibility="Visible">
+
+                    <Grid Margin="10,10,10,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="EszkozokListBackBtn" 
+                Content="Vissza" 
+                Width="84" 
+                Click="EszkozokListBackBtn_Click"  
+                Style="{StaticResource ModernBottomBorderStyle}"/>
+
+                        <Border Grid.Column="1" 
+                Background="#2D2D30" 
+                CornerRadius="4" 
+                Margin="15,0,0,0" 
+                Padding="5,2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="🔍" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="#808080"/>
+
+                                <TextBox x:Name="TxtKereso" 
+                                         Grid.Column="1"
+                                         Background="Transparent" 
+                                         Foreground="White" 
+                                         BorderThickness="0" 
+                                         VerticalContentAlignment="Center"
+                                         FontSize="13"
+                                         Padding="5,0"
+                                         TextChanged="TxtKereso_TextChanged"/>
+
+                                <TextBlock Grid.Column="1" 
+                                           Text="Keresés leírás vagy CPU alapján..." 
+                                           Foreground="#505050" 
+                                           IsHitTestVisible="False" 
+                                           VerticalAlignment="Center" 
+                                           Margin="10,0,0,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=TxtKereso}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
                     <ListView x:Name="EszkozokListView" 
-                              Height="289"
+                              Height="265"
+                              Margin="10,5,10,10"
                               Style="{StaticResource ModernListViewStyle}">
                         <ListView.View>
                             <GridView>
                                 <GridView.ColumnHeaderContainerStyle>
                                     <StaticResource ResourceKey="ModernHeaderStyle"/>
                                 </GridView.ColumnHeaderContainerStyle>
-                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="20"/>
-                                <GridViewColumn Header="leírás" DisplayMemberBinding="{Binding Leiras}" Width="100"/>
-                                <GridViewColumn Header="CPU" DisplayMemberBinding="{Binding Cpu}" Width="100"/>
-                                <GridViewColumn Header="RAM" DisplayMemberBinding="{Binding Ram}" Width="100"/>
-                                <GridViewColumn Header="HDD" DisplayMemberBinding="{Binding Hdd}" Width="100"/>
-                                <GridViewColumn Header="uzemelteto_nev" DisplayMemberBinding="{Binding UzemeltetoNev}" Width="180"/>
+                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="30"/>
+                                <GridViewColumn Header="Leírás" DisplayMemberBinding="{Binding Leiras}" Width="150"/>
+                                <GridViewColumn Header="CPU" DisplayMemberBinding="{Binding Cpu}" Width="110"/>
+                                <GridViewColumn Header="RAM" DisplayMemberBinding="{Binding Ram}" Width="70"/>
+                                <GridViewColumn Header="HDD" DisplayMemberBinding="{Binding Hdd}" Width="70"/>
+                                <GridViewColumn Header="Üzemeltető" DisplayMemberBinding="{Binding UzemeltetoNev}" Width="140"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
 
+                <!-- 
+                    <editors:SfTextBoxExt HorizontalAlignment="Center" 
+                      VerticalAlignment="Center" 
+                      Width="300"
+                      Height="40"
+                      SearchItemPath="Name"
+                      AutoCompleteMode="Suggest"
+                      HighlightedTextColor="Red"
+                      TextHighlightMode="FirstOccurrence"
+                      AutoCompleteSource="{Binding Employees}" />
+                     ================================================
+                    
+                    
+                    
+                    
+                    -->
                 </StackPanel>
                 <!-- Új eszköz hozzáadása -->
                 <StackPanel x:Name="ujEszkozPanel"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
                             Grid.RowSpan="4"
-                            Background="#3F3F46" Margin="0,82,0,82"
+                            Background="#3F3F46" Margin="0,82,0,11" 
                             Visibility="Hidden">
-                    <Grid Height="165">
+                    <Grid Height="234">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -363,11 +438,11 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="0" TextWrapping="Wrap" Text="Leírás" VerticalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="CPU" VerticalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="2" TextWrapping="Wrap" Text="RAM" VerticalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="3" TextWrapping="Wrap" Text="HDD" VerticalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="4" TextWrapping="Wrap" Text="Üzemeltető neve" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="0" FontSize="17" TextWrapping="Wrap" Text="Leírás" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="1" FontSize="17" TextWrapping="Wrap" Text="CPU" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="2" FontSize="17" TextWrapping="Wrap" Text="RAM" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="33,0,0,0" Grid.Row="3" FontSize="17" TextWrapping="Wrap" Text="HDD" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="6,0,0,0" Grid.Row="4" FontSize="17" TextWrapping="Wrap" Text="Üzemeltető neve" VerticalAlignment="Center"/>
 
 
                         <TextBox x:Name="ujEszkozRam" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="114" Grid.Row="2"/>
@@ -377,7 +452,7 @@
 
                         <ComboBox x:Name="ujEszkozUzemelteto" HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Width="114" Grid.Row="4"/>
 
-                        <Button x:Name="ujEszkozSaveBtn" Content="Mentés" Width="84" Margin="25,4,25,5" Grid.Row="5" Grid.Column="1" Click="ujEszkozSaveBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
+                        <Button x:Name="ujEszkozSaveBtn"  Content="Mentés" Width="84" Margin="24,4,25,5" Grid.Row="5" Grid.Column="2" Click="ujEszkozSaveBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
                         <Button x:Name="ujEszkozBackBtn" Content="Vissza" Width="84" Margin="17,4,32,5" Grid.Row="5" Grid.Column="0" Click="ujEszkozBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
                     </Grid>
 
