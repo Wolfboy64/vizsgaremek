@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Stilusok/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Stilusok/ListViewStyles.xaml"/>
+                <ResourceDictionary Source="/Stilusok/SearchTextBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -373,7 +373,7 @@ namespace CyberNest_Admin
             string keresettSzoveg = TxtKereso.Text.ToLower().Trim();
 
             // Ha üres, az összeset mutatjuk, egyébként szűrünk
-            if (keresettSzoveg == "" || keresettSzoveg == " ")
+            if (keresettSzoveg == "" || keresettSzoveg == " " || string.IsNullOrEmpty(keresettSzoveg))
             {
                 EszkozokListView.ItemsSource = Eszkoz.Eszkozok;
             }

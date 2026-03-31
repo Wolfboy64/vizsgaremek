@@ -315,80 +315,34 @@
                 <!-- ESZKÖZÖK SZAKASZ -->
                 <!-- Eszkozok list -->
                 <StackPanel x:Name="EszkozokListPanel"
-            Grid.Column="0"
-            Grid.RowSpan="5"
-            Grid.ColumnSpan="4"
-            HorizontalAlignment="Left"
-            Background="#3F3F46" 
-            Margin="84,51,0,41" 
-            Width="616"
-            Visibility="Visible">
+                            Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="4"
+                            HorizontalAlignment="Left" Background="#3F3F46" 
+                            Margin="84,51,0,41" Width="616" Visibility="Visible">
 
-                    <Grid Margin="10,10,10,5">
+                    <Grid Margin="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <Button x:Name="EszkozokListBackBtn" 
-                Content="Vissza" 
-                Width="84" 
-                Click="EszkozokListBackBtn_Click"  
-                Style="{StaticResource ModernBottomBorderStyle}"/>
+                                Content="Vissza" Width="84" 
+                                Click="EszkozokListBackBtn_Click"  
+                                Style="{StaticResource ModernBottomBorderStyle}"/>
 
-                        <Border Grid.Column="1" 
-                Background="#2D2D30" 
-                CornerRadius="4" 
-                Margin="15,0,0,0" 
-                Padding="5,2">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Text="🔍" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="#808080"/>
-
-                                <TextBox x:Name="TxtKereso" 
-                                         Grid.Column="1"
-                                         Background="Transparent" 
-                                         Foreground="White" 
-                                         BorderThickness="0" 
-                                         VerticalContentAlignment="Center"
-                                         FontSize="13"
-                                         Padding="5,0"
-                                         TextChanged="TxtKereso_TextChanged"/>
-
-                                <TextBlock Grid.Column="1" 
-                                           Text="Keresés leírás vagy CPU alapján..." 
-                                           Foreground="#505050" 
-                                           IsHitTestVisible="False" 
-                                           VerticalAlignment="Center" 
-                                           Margin="10,0,0,0">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=TxtKereso}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Grid>
-                        </Border>
+                        <TextBox x:Name="TxtKereso" 
+                                 Grid.Column="1" 
+                                 Margin="15,0,0,0" 
+                                 Height="30"
+                                 Style="{StaticResource ModernSearchTextBoxStyle}"
+                                 TextChanged="TxtKereso_TextChanged"/>
                     </Grid>
 
                     <ListView x:Name="EszkozokListView" 
-                              Height="265"
-                              Margin="10,5,10,10"
+                              Height="257" Margin="10,5,10,10"
                               Style="{StaticResource ModernListViewStyle}">
                         <ListView.View>
-                            <GridView>
-                                <GridView.ColumnHeaderContainerStyle>
-                                    <StaticResource ResourceKey="ModernHeaderStyle"/>
-                                </GridView.ColumnHeaderContainerStyle>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource ModernHeaderStyle}">
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="30"/>
                                 <GridViewColumn Header="Leírás" DisplayMemberBinding="{Binding Leiras}" Width="150"/>
                                 <GridViewColumn Header="CPU" DisplayMemberBinding="{Binding Cpu}" Width="110"/>
@@ -398,24 +352,8 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-
-                <!-- 
-                    <editors:SfTextBoxExt HorizontalAlignment="Center" 
-                      VerticalAlignment="Center" 
-                      Width="300"
-                      Height="40"
-                      SearchItemPath="Name"
-                      AutoCompleteMode="Suggest"
-                      HighlightedTextColor="Red"
-                      TextHighlightMode="FirstOccurrence"
-                      AutoCompleteSource="{Binding Employees}" />
-                     ================================================
-                    
-                    
-                    
-                    
-                    -->
                 </StackPanel>
+
                 <!-- Új eszköz hozzáadása -->
                 <StackPanel x:Name="ujEszkozPanel"
                             Grid.Column="1"
