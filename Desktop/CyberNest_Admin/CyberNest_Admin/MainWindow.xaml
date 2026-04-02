@@ -640,21 +640,39 @@
                 <!-- FOGLALÁS SZAKASZ -->
                 <!-- Foglalás Listázása -->
                 <StackPanel x:Name="FoglalasListPanel"
-                            Background="#3F3F46"
-                            Margin="92,10,92,3"
                             Grid.Column="0"
-                            Grid.RowSpan="4"
+                            Grid.RowSpan="5"
                             Grid.ColumnSpan="4"
+                            HorizontalAlignment="Left"
+                            Background="#3F3F46" 
+                            Margin="92,35,0,57" 
                             Width="616"
-                            Visibility="Hidden">
-                    <Button x:Name="FoglalasListBackBtn" 
-                            Content="Vissza"
-                            Width="84"
-                            Click="FoglalasListBackBtn_Click"
-                            Style="{StaticResource ModernBottomBorderStyle}"/>
+                            Visibility="Visible">
+
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="FoglalasListBackBtn" 
+                                    Content="Vissza" Width="84" 
+                                    Click="FoglalasListBackBtn_Click"  
+                                    Style="{StaticResource ModernBottomBorderStyle}"/>
+
+                        <TextBox x:Name="TxtKeresoFoglalas" 
+                                    Grid.Column="1" 
+                                    Margin="15,0,0,0" 
+                                    Height="30"
+                                    Style="{StaticResource ModernSearchTextBoxStyle}"
+                                    TextChanged="TxtKeresoFoglalas_TextChanged"/>
+                    </Grid>
+
+
+
                     <ListView x:Name="FoglalasListView"
-                              Height="289"
-                              Style="{StaticResource ModernListViewStyle}" Width="614">
+                              Height="253"
+                              Style="{StaticResource ModernListViewStyle}" Width="602">
                         <ListView.View>
                             <GridView>
                                 <GridView.ColumnHeaderContainerStyle>

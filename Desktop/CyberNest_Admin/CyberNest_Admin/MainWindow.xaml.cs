@@ -725,14 +725,63 @@ namespace CyberNest_Admin
          */
         private async void FoglalasListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-            ShowPanel(FoglalasListPanel);
-            FoglalasListView.Items.Clear();
-            ApiService api = new ApiService();
-            var lista = await api.GetFoglalasokAsync(Token);
-            Foglalas.FoglalasAll = lista;
-            foreach (var item in lista)
+            try
             {
-                FoglalasListView.Items.Add(item);
+                ShowPanel(FoglalasListPanel);
+                this.Cursor = Cursors.Wait;
+
+                ApiService api = new ApiService();
+                var lista = await api.GetFoglalasokAsync(Token);
+
+                // Statikus lista mentése a szűréshez
+                Foglalas.FoglalasAll = lista;
+
+                // UI FRISSÍTÉSE: Itt is az ItemsSource-ot használjuk!
+                FoglalasListView.ItemsSource = Foglalas.FoglalasAll;
+
+                // Keresőmező ürítése új betöltéskor
+                TxtKeresoFoglalas.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba: {ex.Message}");
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
+        }
+        private void TxtKeresoFoglalas_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // 1. Biztonsági ellenőrzés
+            if (Foglalas.FoglalasAll == null) return;
+
+            string keresettSzoveg = TxtKeresoFoglalas.Text.ToLower().Trim();
+
+            // 2. Alaphelyzet: ha üres a kereső, az összeset mutatjuk
+            if (string.IsNullOrWhiteSpace(keresettSzoveg))
+            {
+                FoglalasListView.ItemsSource = Foglalas.FoglalasAll;
+            }
+            else
+            {
+                // 3. Szűrés több mezőre (Dátum, Ügyfél, Mentor)
+                var szurt = Foglalas.FoglalasAll.Where(x =>
+                    // Ügyfél név keresése
+                    (x.UgyfelNev?.ToLower().Contains(keresettSzoveg) ?? false) ||
+
+                    // Mentor név keresése
+                    (x.MentorNev?.ToLower().Contains(keresettSzoveg) ?? false) ||
+                    (x.MentorId?.ToLower().Contains(keresettSzoveg) ?? false) ||
+                    // Dátum keresése (szövegként formázva)
+                    x.BerlesiKezdete.ToString("yyyy-MM-dd").Contains(keresettSzoveg) ||
+
+                    // Ha van leírás mező a Foglalas osztályban:
+                    (x.Megjegyzes?.ToLower().Contains(keresettSzoveg) ?? false)
+                ).ToList();
+
+                // 4. JAVÍTVA: A megfelelő ListView-t frissítjük!
+                FoglalasListView.ItemsSource = szurt;
             }
         }
         private async void FoglalasTorleseMenu_Click(object sender, RoutedEventArgs e)
@@ -884,6 +933,8 @@ namespace CyberNest_Admin
         {
 
         }
+
+        
 
         /* 
          * Hiba panel bezárása gomb
