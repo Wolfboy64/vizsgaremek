@@ -782,7 +782,7 @@
                              Margin="0,12,0,13" 
                              Grid.Row="1"
                              HorizontalAlignment="Center"
-                             FontSize="17"/>
+                             FontSize="17" Style="{StaticResource ModernPasswordBoxStyle}"/>
             </Grid>
 
         </StackPanel>

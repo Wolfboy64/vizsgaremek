@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="/Stilusok/ListViewStyles.xaml"/>
                 <ResourceDictionary Source="/Stilusok/SearchTextBox.xaml"/>
                 <ResourceDictionary Source="/Stilusok/LoginTextBox.xaml"/>
+                <ResourceDictionary Source="/Stilusok/ModernPasswordBoxStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
