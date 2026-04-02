@@ -51,7 +51,7 @@
         <StackPanel x:Name="SideBrand_loginPage" 
                     Grid.Column="3"
                     Grid.RowSpan="5"
-                    Visibility="Hidden">
+                    Visibility="Visible">
             <StackPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF4E4E4E"/>
@@ -86,7 +86,7 @@
         <StackPanel x:Name="MainContentPage"
                     Grid.ColumnSpan="5"
                     Grid.RowSpan="5"
-                    Visibility="Visible">
+                    Visibility="Hidden">
 
             <!--Ez csak akkor lesz látható ha a bejelentkezés sikeres volt.-->
             <Menu x:Name="TopMainMenu"
@@ -647,7 +647,7 @@
                             Background="#3F3F46" 
                             Margin="92,35,0,57" 
                             Width="616"
-                            Visibility="Visible">
+                            Visibility="Hidden">
 
                     <Grid Margin="10">
                         <Grid.ColumnDefinitions>
@@ -736,7 +736,7 @@
                     Width="393"
                     HorizontalAlignment="Left"
                     Grid.Row="1"
-                    Visibility="Hidden"
+                    Visibility="Visible"
                     Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="125,62,0,43">
 
             <Grid Height="153">
@@ -759,7 +759,8 @@
                             HorizontalAlignment="Center" 
                             Width="229"
                             Margin="0,12,0,13" 
-                            Grid.Column="1"/>
+                            Grid.Column="1"
+                         Style="{StaticResource modernLoginTextBox}"/>
                 <Button x:Name="Bejelentkezes"
                             Content="Bejelentkezés" 
                             Grid.Column="1" 
