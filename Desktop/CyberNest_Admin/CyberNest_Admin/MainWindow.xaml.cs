@@ -182,22 +182,58 @@ namespace CyberNest_Admin
         }
         private async void FelhasznalokListajaMenu_Click(object sender, RoutedEventArgs e)
         {
-            ShowPanel(FelhasznaloListPanel);
-
-            var api = new ApiService();
-            var lista = await api.GetUsersAsync();
-
-            // Nézzük meg a Visual Studio "Output" ablakában, hány elem jött le
-            System.Diagnostics.Debug.WriteLine($"Letöltött felhasználók száma: {lista.Count}");
-
-            if (lista.Count > 0)
+            try
             {
-                FelhasznalokListView.ItemsSource = null; // Kényszerített frissítés
-                FelhasznalokListView.ItemsSource = lista;
+                ShowPanel(FelhasznaloListPanel);
+                this.Cursor = Cursors.Wait; // Várakozó kurzor az egész ablakra
+
+                ApiService api = new ApiService();
+                var lista = await api.GetUsersAsync();
+
+                // Statikus tároló frissítése
+                Felhasznalo.Felhasznalok = lista;
+
+                if (lista != null && lista.Count > 0)
+                {
+                    // Kereső ürítése, hogy az összes friss adatot lássuk
+                    TxtKeresoFelhasznalo.Text = string.Empty;
+                    FelhasznalokListView.ItemsSource = Felhasznalo.Felhasznalok;
+                }
+                else
+                {
+                    EszkozokListView.ItemsSource = null;
+                    MessageBox.Show("Nincsenek megjeleníthető eszközök.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba az adatok letöltésekor: {ex.Message}");
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow; // Mindenképpen visszaállítjuk a kurzort
+            }
+        }
+        private void TxtKeresoFelhasznalo_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Felhasznalo.Felhasznalok == null) return;
+
+            string keresettSzoveg = TxtKeresoFelhasznalo.Text.ToLower().Trim();
+
+            // Ha üres, az összeset mutatjuk, egyébként szűrünk
+            if (keresettSzoveg == "" || keresettSzoveg == " " || string.IsNullOrEmpty(keresettSzoveg))
+            {
+                FelhasznalokListView.ItemsSource = Felhasznalo.Felhasznalok;
             }
             else
             {
-                MessageBox.Show("A lista üres, vagy hiba történt a letöltéskor.");
+                var szurt = Felhasznalo.Felhasznalok.Where(x =>
+                    (x.Nev?.ToLower().Contains(keresettSzoveg) ?? false) ||
+                    (x.Role?.ToString().Contains(keresettSzoveg) ?? false) ||
+                    x.Elerhetoseg.ToString().Contains(keresettSzoveg)
+                ).ToList();
+
+                FelhasznalokListView.ItemsSource = szurt;
             }
         }
         private async void FelhasznaloModositasMenu_Click(object sender, RoutedEventArgs e)
@@ -848,10 +884,6 @@ namespace CyberNest_Admin
         {
 
         }
-
-
-
-
 
         /* 
          * Hiba panel bezárása gomb

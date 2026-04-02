@@ -183,11 +183,31 @@
                             Margin="84,51,0,41" 
                             Width="616"
                             Visibility="Hidden">
+                    
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                    <Button x:Name="FelhasznalokListBackBtn" Content="Vissza" Width="84" Click="FelhasznalokListBackBtn_Click"  Style="{StaticResource ModernBottomBorderStyle}"/>
+                            <Button x:Name="FelhasznalokListBackBtn" 
+                                    Content="Vissza" Width="84" 
+                                    Click="FelhasznalokListBackBtn_Click"  
+                                    Style="{StaticResource ModernBottomBorderStyle}"/>
+
+                            <TextBox x:Name="TxtKeresoFelhasznalo" 
+                                     Grid.Column="1" 
+                                     Margin="15,0,0,0" 
+                                     Height="30"
+                                     Style="{StaticResource ModernSearchTextBoxStyle}"
+                                     TextChanged="TxtKeresoFelhasznalo_TextChanged"/>
+                        </Grid>
+                    
+                    
+                    
                     <ListView x:Name="FelhasznalokListView"
-                              Height="289"
-                              Style="{StaticResource ModernListViewStyle}">
+                              Height="261"
+                              Style="{StaticResource ModernListViewStyle}" Width="590">
                         <ListView.View>
                             <GridView>
                                 <GridView.ColumnHeaderContainerStyle>
@@ -486,10 +506,7 @@
                             Background="#3F3F46" 
                             Margin="92,23,0,69" 
                             Width="616"
-                            Visibility="Visible">
-                    <!-- 
-                        
-                    -->
+                            Visibility="Hidden">
                     <Grid Margin="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
