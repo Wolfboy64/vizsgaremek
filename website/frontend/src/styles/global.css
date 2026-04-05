@@ -35,6 +35,43 @@ body {
   flex-direction: column;
 }
 
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  position: relative;
+  flex: 1;
+}
+
+.app-content::before,
+.app-content::after {
+  content: "";
+  position: absolute;
+  left: clamp(16px, 4vw, 72px);
+  right: clamp(16px, 4vw, 72px);
+  height: 1px;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 255, 0),
+    rgba(0, 212, 255, 0.56),
+    rgba(108, 99, 255, 0.56),
+    rgba(108, 99, 255, 0)
+  );
+}
+
+.app-content::before {
+  top: 0;
+}
+
+.app-content::after {
+  bottom: 0;
+}
+
 .container {
   max-width: var(--container-width);
   margin: 0 auto;

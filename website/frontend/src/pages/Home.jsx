@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/Home.css";
@@ -17,12 +17,20 @@ const getInitials = (name) => {
   return parts.map((part) => part[0]?.toUpperCase() || "").join("") || "U";
 };
 
-const CARDS_PER_VIEW = 3;
-const CARD_GAP = 18;
+const CARDS_PER_VIEW = 2;
+const CARD_GAP = 14;
 const REPEAT_BLOCKS = 120;
+const REVIEW_BADGES = [
+  "Ellenőrzött vásárlás",
+  "Top értékelő",
+  "2+ éve ügyfél",
+  "Visszatérő ügyfél",
+  "Ajánlott partner",
+];
 
 const normalizeLoopIndex = (index, length) => {
   if (length <= 0) return 0;
+
   const blockSize = length * REPEAT_BLOCKS;
   const anchorBlock = Math.floor(REPEAT_BLOCKS / 2);
   const min = length;
@@ -37,6 +45,9 @@ const normalizeLoopIndex = (index, length) => {
   return next;
 };
 
+const getReviewBadge = (review, index) =>
+  String(review?.badge || REVIEW_BADGES[index % REVIEW_BADGES.length]);
+
 const Home = () => {
   const navigate = useNavigate();
   const [typedTitle, setTypedTitle] = useState("");
@@ -45,6 +56,7 @@ const Home = () => {
   const [stepPx, setStepPx] = useState(0);
   const [isSnapping, setIsSnapping] = useState(false);
   const viewportRef = useRef(null);
+  const trackRef = useRef(null);
 
   useEffect(() => {
     let index = 0;
@@ -116,15 +128,19 @@ const Home = () => {
 
   useEffect(() => {
     const recalculateStep = () => {
-      const viewportWidth = viewportRef.current?.clientWidth || 0;
-      if (viewportWidth <= 0) return;
-      const cardWidth =
-        (viewportWidth - CARD_GAP * (CARDS_PER_VIEW - 1)) / CARDS_PER_VIEW;
-      setStepPx(cardWidth + CARD_GAP);
+      const track = trackRef.current;
+      const firstCard = track?.querySelector(".review-polished-card");
+      if (!track || !firstCard) return;
+
+      const computed = window.getComputedStyle(track);
+      const gap = Number.parseFloat(computed.columnGap || computed.gap || "0");
+      const cardWidth = firstCard.getBoundingClientRect().width;
+      setStepPx(cardWidth + (Number.isFinite(gap) ? gap : CARD_GAP));
     };
 
     const rafId = window.requestAnimationFrame(recalculateStep);
     window.addEventListener("resize", recalculateStep);
+
     return () => {
       window.cancelAnimationFrame(rafId);
       window.removeEventListener("resize", recalculateStep);
@@ -133,10 +149,12 @@ const Home = () => {
 
   const sliderReviews = useMemo(() => {
     if (fakeReviews.length === 0) return [];
+
     const total = fakeReviews.length * REPEAT_BLOCKS;
-    return Array.from({ length: total }, (_, index) => {
-      return fakeReviews[index % fakeReviews.length];
-    });
+    return Array.from(
+      { length: total },
+      (_, index) => fakeReviews[index % fakeReviews.length],
+    );
   }, [fakeReviews]);
 
   const handleNext = () => {
@@ -148,6 +166,18 @@ const Home = () => {
     if (fakeReviews.length <= CARDS_PER_VIEW) return;
     setActiveIndex((prev) => normalizeLoopIndex(prev, fakeReviews.length) - 1);
   };
+
+  useEffect(() => {
+    if (fakeReviews.length <= CARDS_PER_VIEW) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      setActiveIndex(
+        (prev) => normalizeLoopIndex(prev, fakeReviews.length) + 1,
+      );
+    }, 5000);
+
+    return () => window.clearInterval(intervalId);
+  }, [fakeReviews.length]);
 
   const handleTrackTransitionEnd = () => {
     if (fakeReviews.length <= CARDS_PER_VIEW) return;
@@ -221,7 +251,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="reviews-showcase" aria-label="Ugyfelvelemenyek">
+      <section className="reviews-showcase" aria-label="Ügyfélvélemények">
         <div className="reviews-showcase-head">
           <span className="reviews-eyebrow">
             {"\u00dcgyf\u00e9lv\u00e9lem\u00e9nyek"}
@@ -232,6 +262,7 @@ const Home = () => {
             rólunk
           </h2>
           <div className="reviews-title-divider" aria-hidden="true"></div>
+
           <div className="reviews-rating-row">
             <span className="reviews-rating-value">{roundedRating}</span>
             <span className="reviews-rating-stars-dynamic" aria-hidden="true">
@@ -244,6 +275,7 @@ const Home = () => {
               </span>
             </span>
           </div>
+
           <p className="reviews-rating-caption">
             {fakeReviews.length} ellenőrzött értékelés alapján
           </p>
@@ -265,6 +297,7 @@ const Home = () => {
 
             <div className="reviews-viewport" ref={viewportRef}>
               <div
+                ref={trackRef}
                 className={`reviews-track ${isSnapping ? "no-transition" : ""}`}
                 onTransitionEnd={handleTrackTransitionEnd}
                 style={{
@@ -281,13 +314,14 @@ const Home = () => {
                         <img
                           className="fake-review-avatar"
                           src={review.avatarUrl}
-                          alt={`${review.userName} profilkep`}
+                          alt={`${review.userName} profilkép`}
                         />
                       ) : (
                         <div className="fake-review-avatar fake-review-avatar-fallback">
                           {getInitials(review.userName)}
                         </div>
                       )}
+
                       <div>
                         <strong>{review.userName}</strong>
                         <div className="review-polished-stars">
@@ -296,6 +330,9 @@ const Home = () => {
                       </div>
                     </div>
                     <p>{review.review}</p>
+                    <span className="review-meta-badge">
+                      {getReviewBadge(review, index)}
+                    </span>
                   </article>
                 ))}
               </div>

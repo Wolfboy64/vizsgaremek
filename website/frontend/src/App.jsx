@@ -19,47 +19,43 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            minHeight: "100vh",
-          }}
-        >
+        <div className="app-shell">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/termekek" element={<Products />} />
-            <Route path="/termekek/:id" element={<ServerDetails />} />
-            <Route
-              path="/termekek/:id/foglalas"
-              element={
-                <ProtectedRoute>
-                  <BookingFlow />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/kapcsolat" element={<Contact />} />
-            <Route path="/ugyfelportal/login" element={<Login />} />
-            <Route path="/ugyfelportal/register" element={<Register />} />
-            <Route path="/ugyfelportal/oauth/callback" element={<OAuthCallback />} />
-            <Route
-              path="/ugyfelportal/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/ugyfelportal/profil"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
+          <main className="app-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/termekek" element={<Products />} />
+              <Route path="/termekek/:id" element={<ServerDetails />} />
+              <Route
+                path="/termekek/:id/foglalas"
+                element={
+                  <ProtectedRoute>
+                    <BookingFlow />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/kapcsolat" element={<Contact />} />
+              <Route path="/ugyfelportal/login" element={<Login />} />
+              <Route path="/ugyfelportal/register" element={<Register />} />
+              <Route path="/ugyfelportal/oauth/callback" element={<OAuthCallback />} />
+              <Route
+                path="/ugyfelportal/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/ugyfelportal/profil"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </main>
           <Footer />
         </div>
       </Router>
