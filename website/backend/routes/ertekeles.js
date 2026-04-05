@@ -6,6 +6,7 @@ import { verifyToken, isAdmin } from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/", verifyToken, isAdmin, ertekelesController.getAll);
+router.get("/public/fake", mentorErtekelesController.getPublicFakeReviews);
 router.get(
   "/mentor/:mentor_id/atlag",
   verifyToken,

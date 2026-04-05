@@ -32,6 +32,7 @@ for (const port of uniquePorts) {
       user: dbUser,
       password: dbPassword,
       port: port,
+      charset: "utf8mb4",
     });
 
     await testConnection.end();
@@ -41,6 +42,7 @@ for (const port of uniquePorts) {
       user: dbUser,
       password: dbPassword,
       port: port,
+      charset: "utf8mb4",
     };
 
     connectedPort = port;
@@ -70,6 +72,7 @@ try {
 const db = mysql.createPool({
   ...baseConfig,
   database: dbName,
+  charset: "utf8mb4",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,

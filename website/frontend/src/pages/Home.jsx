@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "../styles/Home.css";
 
 const MAIN_TITLE = "CyberNest, ahol nemcsak tanulhatsz";
@@ -8,9 +9,42 @@ const DELETE_SPEED = 30;
 const HOLD_AFTER_TYPED = 5000;
 const HOLD_AFTER_DELETED = 300;
 
+const getInitials = (name) => {
+  const trimmed = String(name || "").trim();
+  if (!trimmed) return "U";
+
+  const parts = trimmed.split(/\s+/).slice(0, 2);
+  return parts.map((part) => part[0]?.toUpperCase() || "").join("") || "U";
+};
+
+const CARDS_PER_VIEW = 3;
+const CARD_GAP = 18;
+const REPEAT_BLOCKS = 120;
+
+const normalizeLoopIndex = (index, length) => {
+  if (length <= 0) return 0;
+  const blockSize = length * REPEAT_BLOCKS;
+  const anchorBlock = Math.floor(REPEAT_BLOCKS / 2);
+  const min = length;
+  const maxExclusive = blockSize - length;
+  let next = index;
+
+  if (next < min || next >= maxExclusive) {
+    const modulo = ((next % length) + length) % length;
+    next = anchorBlock * length + modulo;
+  }
+
+  return next;
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [typedTitle, setTypedTitle] = useState("");
+  const [fakeReviews, setFakeReviews] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [stepPx, setStepPx] = useState(0);
+  const [isSnapping, setIsSnapping] = useState(false);
+  const viewportRef = useRef(null);
 
   useEffect(() => {
     let index = 0;
@@ -48,6 +82,100 @@ const Home = () => {
       clearTimeout(timeoutId);
     };
   }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadFakeReviews = async () => {
+      try {
+        const response = await api.get("/ertekeles/public/fake");
+
+        if (!mounted) return;
+
+        const reviews = Array.isArray(response.data?.reviews)
+          ? response.data.reviews
+          : [];
+
+        setFakeReviews(reviews);
+        setActiveIndex(
+          Math.floor(REPEAT_BLOCKS / 2) * Math.max(reviews.length, 1),
+        );
+      } catch {
+        if (!mounted) return;
+        setFakeReviews([]);
+        setActiveIndex(0);
+      }
+    };
+
+    loadFakeReviews();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const recalculateStep = () => {
+      const viewportWidth = viewportRef.current?.clientWidth || 0;
+      if (viewportWidth <= 0) return;
+      const cardWidth =
+        (viewportWidth - CARD_GAP * (CARDS_PER_VIEW - 1)) / CARDS_PER_VIEW;
+      setStepPx(cardWidth + CARD_GAP);
+    };
+
+    const rafId = window.requestAnimationFrame(recalculateStep);
+    window.addEventListener("resize", recalculateStep);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", recalculateStep);
+    };
+  }, [fakeReviews.length]);
+
+  const sliderReviews = useMemo(() => {
+    if (fakeReviews.length === 0) return [];
+    const total = fakeReviews.length * REPEAT_BLOCKS;
+    return Array.from({ length: total }, (_, index) => {
+      return fakeReviews[index % fakeReviews.length];
+    });
+  }, [fakeReviews]);
+
+  const handleNext = () => {
+    if (fakeReviews.length <= CARDS_PER_VIEW) return;
+    setActiveIndex((prev) => normalizeLoopIndex(prev, fakeReviews.length) + 1);
+  };
+
+  const handlePrev = () => {
+    if (fakeReviews.length <= CARDS_PER_VIEW) return;
+    setActiveIndex((prev) => normalizeLoopIndex(prev, fakeReviews.length) - 1);
+  };
+
+  const handleTrackTransitionEnd = () => {
+    if (fakeReviews.length <= CARDS_PER_VIEW) return;
+
+    const normalized = normalizeLoopIndex(activeIndex, fakeReviews.length);
+    if (normalized !== activeIndex) {
+      setIsSnapping(true);
+      setActiveIndex(normalized);
+    }
+  };
+
+  useEffect(() => {
+    if (!isSnapping) return;
+    const rafId = window.requestAnimationFrame(() => setIsSnapping(false));
+    return () => window.cancelAnimationFrame(rafId);
+  }, [isSnapping]);
+
+  const averageRating = useMemo(() => {
+    if (fakeReviews.length === 0) return 0;
+    const sum = fakeReviews.reduce(
+      (acc, review) => acc + Number(review.stars || 0),
+      0,
+    );
+    return sum / fakeReviews.length;
+  }, [fakeReviews]);
+
+  const roundedRating = averageRating.toFixed(1);
+  const starFillPercent = Math.max(0, Math.min(100, (averageRating / 5) * 100));
 
   return (
     <div className="home-container">
@@ -91,6 +219,105 @@ const Home = () => {
           <h3>Moduláris felépítés</h3>
           <p>Rendszerünk veled együtt fejlődik, igényeidre szabva.</p>
         </div>
+      </section>
+
+      <section className="reviews-showcase" aria-label="Ugyfelvelemenyek">
+        <div className="reviews-showcase-head">
+          <span className="reviews-eyebrow">
+            {"\u00dcgyf\u00e9lv\u00e9lem\u00e9nyek"}
+          </span>
+          <h2>
+            Amit{" "}
+            <span className="reviews-head-accent">{"\u0151k"} mondanak</span>{" "}
+            rólunk
+          </h2>
+          <div className="reviews-title-divider" aria-hidden="true"></div>
+          <div className="reviews-rating-row">
+            <span className="reviews-rating-value">{roundedRating}</span>
+            <span className="reviews-rating-stars-dynamic" aria-hidden="true">
+              <span className="stars-empty">{"\u2605".repeat(5)}</span>
+              <span
+                className="stars-fill"
+                style={{ width: `${starFillPercent}%` }}
+              >
+                {"\u2605".repeat(5)}
+              </span>
+            </span>
+          </div>
+          <p className="reviews-rating-caption">
+            {fakeReviews.length} ellenőrzött értékelés alapján
+          </p>
+        </div>
+
+        {fakeReviews.length > 0 ? (
+          <div className="reviews-carousel-shell">
+            <button
+              type="button"
+              className="reviews-nav reviews-nav-left"
+              onClick={handlePrev}
+              aria-label="Előző vélemények"
+            >
+              <span
+                className="reviews-nav-chevron reviews-nav-chevron-left"
+                aria-hidden="true"
+              ></span>
+            </button>
+
+            <div className="reviews-viewport" ref={viewportRef}>
+              <div
+                className={`reviews-track ${isSnapping ? "no-transition" : ""}`}
+                onTransitionEnd={handleTrackTransitionEnd}
+                style={{
+                  transform: `translate3d(-${activeIndex * stepPx}px, 0, 0)`,
+                }}
+              >
+                {sliderReviews.map((review, index) => (
+                  <article
+                    className="review-polished-card"
+                    key={`${review.id}-${index}`}
+                  >
+                    <div className="review-polished-header">
+                      {review.avatarUrl ? (
+                        <img
+                          className="fake-review-avatar"
+                          src={review.avatarUrl}
+                          alt={`${review.userName} profilkep`}
+                        />
+                      ) : (
+                        <div className="fake-review-avatar fake-review-avatar-fallback">
+                          {getInitials(review.userName)}
+                        </div>
+                      )}
+                      <div>
+                        <strong>{review.userName}</strong>
+                        <div className="review-polished-stars">
+                          {"\u2605".repeat(5)}
+                        </div>
+                      </div>
+                    </div>
+                    <p>{review.review}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="reviews-nav reviews-nav-right"
+              onClick={handleNext}
+              aria-label="Következő vélemények"
+            >
+              <span
+                className="reviews-nav-chevron reviews-nav-chevron-right"
+                aria-hidden="true"
+              ></span>
+            </button>
+          </div>
+        ) : (
+          <p className="fake-reviews-empty">
+            Még nincs megjeleníthető fake review.
+          </p>
+        )}
       </section>
     </div>
   );

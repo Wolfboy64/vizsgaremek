@@ -116,3 +116,30 @@ export const getMentorAtlag = async (req, res) => {
     res.status(500).json({ message: "Szerver hiba a mentor atlag lekeresekor." });
   }
 };
+
+export const getPublicFakeReviews = async (req, res) => {
+  try {
+    const reviews = await MentorErtekelesModel.getPublicFakeReviews();
+    const summary = await MentorErtekelesModel.getPublicFakeReviewsSummary();
+
+    res.json({
+      reviews: reviews.map((review) => ({
+        id: review.id,
+        userName: review.user_name,
+        avatarUrl: review.avatar_url,
+        review: review.review,
+        stars: Number(review.stars || 5),
+        updatedAt: review.updated_at,
+      })),
+      summary: {
+        averageRating: summary?.average_rating != null ? Number(summary.average_rating) : 4.9,
+        totalReviews: Number(summary?.total_reviews || 0),
+      },
+    });
+  } catch (error) {
+    console.error("Hiba a publikus fake review-k lekeresekor:", error);
+    res.status(500).json({
+      message: "Szerver hiba a publikus fake review-k lekeresese soran.",
+    });
+  }
+};

@@ -45,6 +45,35 @@ class MentorErtekelesModel {
 
     return rows[0];
   }
+
+  static async getPublicFakeReviews() {
+    const [rows] = await db.execute(
+      `SELECT
+         id,
+         user_name,
+         avatar_url,
+         review,
+         stars,
+         updated_at
+       FROM fake_review
+       WHERE is_active = 1
+       ORDER BY id ASC`,
+    );
+
+    return rows;
+  }
+
+  static async getPublicFakeReviewsSummary() {
+    const [rows] = await db.execute(
+      `SELECT
+         ROUND(AVG(stars), 1) AS average_rating,
+         COUNT(*) AS total_reviews
+       FROM fake_review
+       WHERE is_active = 1`,
+    );
+
+    return rows[0] || { average_rating: null, total_reviews: 0 };
+  }
 }
 
 export default MentorErtekelesModel;

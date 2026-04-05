@@ -1,6 +1,6 @@
--- CyberNest táblák automatikus létrehozása
+-- CyberNest tĂˇblĂˇk automatikus lĂ©trehozĂˇsa
 
--- Üzemeltető tábla
+-- ĂśzemeltetĹ‘ tĂˇbla
 CREATE TABLE IF NOT EXISTS `uzemelteto` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nev` varchar(100) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `uzemelteto` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Eszköz tábla
+-- EszkĂ¶z tĂˇbla
 CREATE TABLE IF NOT EXISTS `eszkoz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `leiras` text DEFAULT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `eszkoz` (
   CONSTRAINT `eszkoz_ibfk_1` FOREIGN KEY (`uzemelteto_id`) REFERENCES `uzemelteto` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Felhasználó tábla
+-- FelhasznĂˇlĂł tĂˇbla
 CREATE TABLE IF NOT EXISTS `felhasznalo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nev` varchar(100) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `felhasznalo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Időpont tábla
+-- IdĹ‘pont tĂˇbla
 CREATE TABLE IF NOT EXISTS `idopont` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `eszkoz_id` int(11) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `idopont` (
   CONSTRAINT `idopont_ibfk_1` FOREIGN KEY (`eszkoz_id`) REFERENCES `eszkoz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Foglalás tábla
+-- FoglalĂˇs tĂˇbla
 CREATE TABLE IF NOT EXISTS `foglalas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `felhasznalo_id` int(11) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `foglalas` (
   CONSTRAINT `foglalas_ibfk_3` FOREIGN KEY (`idopont_id`) REFERENCES `idopont` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Értékelés tábla
+-- Ă‰rtĂ©kelĂ©s tĂˇbla
 CREATE TABLE IF NOT EXISTS `ertekeles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `foglalas_id` int(11) NOT NULL,
@@ -103,7 +103,19 @@ CREATE TABLE IF NOT EXISTS `mentor_ertekeles` (
   CONSTRAINT `mentor_ertekeles_ibfk_2` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Log tábla
+-- Fake review tabla (csak fooldali bemutatohoz)
+CREATE TABLE IF NOT EXISTS `fake_review` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(120) NOT NULL,
+  `avatar_url` longtext NULL,
+  `review` text NOT NULL,
+  `stars` decimal(2,1) NOT NULL DEFAULT 5.0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Log tĂˇbla
 CREATE TABLE IF NOT EXISTS `log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `foglalas_id` int(11) NOT NULL,
@@ -114,18 +126,18 @@ CREATE TABLE IF NOT EXISTS `log` (
   CONSTRAINT `log_ibfk_1` FOREIGN KEY (`foglalas_id`) REFERENCES `foglalas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Demo adatok beszúrása (csak ha még nincsenek)
+-- Demo adatok beszĂşrĂˇsa (csak ha mĂ©g nincsenek)
 INSERT IGNORE INTO `uzemelteto` (`id`, `nev`, `leiras`) VALUES
-(1, 'DataCenter Europe', 'Európai szintű adatközpontok hálózata'),
-(2, 'CloudHost Pro', 'Professzionális cloud szolgáltató'),
-(3, 'ServerFarm Inc', 'Megbízható szerver infrastruktúra');
+(1, 'DataCenter Europe', 'EurĂłpai szintĹ± adatkĂ¶zpontok hĂˇlĂłzata'),
+(2, 'CloudHost Pro', 'ProfesszionĂˇlis cloud szolgĂˇltatĂł'),
+(3, 'ServerFarm Inc', 'MegbĂ­zhatĂł szerver infrastruktĂşra');
 
 INSERT IGNORE INTO `eszkoz` (`id`, `leiras`, `cpu`, `ram`, `hdd`, `uzemelteto_id`) VALUES
-(1, 'Alapszintű VPS szerver weboldal hostinghoz', 'Intel Xeon E5-2680 v4 (4 cores)', '8 GB DDR4', '120 GB SSD', 1),
-(2, 'Közepes teljesítményű dedikált szerver', 'Intel Xeon Gold 6248R (8 cores)', '32 GB DDR4', '500 GB NVMe SSD', 1),
-(3, 'Nagy teljesítményű szerver adatbázisokhoz', 'AMD EPYC 7542 (16 cores)', '128 GB DDR4', '2 TB NVMe SSD RAID', 2),
-(4, 'Enterprise szintű szerver', 'Intel Xeon Platinum 8280 (28 cores)', '256 GB DDR4', '4 TB NVMe SSD RAID 10', 2),
-(5, 'Kezdő csomag teszteléshez', 'Intel Core i7-9700K (4 cores)', '16 GB DDR4', '240 GB SSD', 3),
+(1, 'AlapszintĹ± VPS szerver weboldal hostinghoz', 'Intel Xeon E5-2680 v4 (4 cores)', '8 GB DDR4', '120 GB SSD', 1),
+(2, 'KĂ¶zepes teljesĂ­tmĂ©nyĹ± dedikĂˇlt szerver', 'Intel Xeon Gold 6248R (8 cores)', '32 GB DDR4', '500 GB NVMe SSD', 1),
+(3, 'Nagy teljesĂ­tmĂ©nyĹ± szerver adatbĂˇzisokhoz', 'AMD EPYC 7542 (16 cores)', '128 GB DDR4', '2 TB NVMe SSD RAID', 2),
+(4, 'Enterprise szintĹ± szerver', 'Intel Xeon Platinum 8280 (28 cores)', '256 GB DDR4', '4 TB NVMe SSD RAID 10', 2),
+(5, 'KezdĹ‘ csomag tesztelĂ©shez', 'Intel Core i7-9700K (4 cores)', '16 GB DDR4', '240 GB SSD', 3),
 (6, 'GPU-val felszerelt szerver AI projektekhez', 'AMD Ryzen 9 5950X + NVIDIA RTX 3090', '64 GB DDR4', '1 TB NVMe SSD', 3);
 
 -- Jovo ideju, foglalhato idopontok feltoltese (duplikacio nelkul)
@@ -153,10 +165,19 @@ LEFT JOIN `idopont` i
   AND i.atvetel_idopont = t.atvetel_idopont
 WHERE i.id IS NULL;
 
--- Alap admin felhasználó (admin123)
+-- Alap admin felhasznĂˇlĂł (admin123)
 INSERT INTO `felhasznalo` (`nev`, `elerhetoseg`, `allapot`, `jelszo`, `role`)
 SELECT 'admin', 'admin@local.com', 'aktiv', '$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu', 'admin'
 WHERE NOT EXISTS (
   SELECT 1 FROM `felhasznalo` WHERE `elerhetoseg` = 'admin@local.com'
 );
 
+
+
+-- Alap fake review adatok
+INSERT IGNORE INTO `fake_review` (`id`, `user_name`, `avatar_url`, `review`, `stars`, `is_active`) VALUES
+(1, 'Bence K.', NULL, 'Nagyon profi volt az egesz folyamat, gyorsan kaptam segitseget es minden ertheto volt.', 5.0, 1),
+(2, 'Lili M.', NULL, 'A mentor nagyon segitokesz volt, biztosan jovok meg. A weboldal kezelese is egyszeru.', 5.0, 1),
+(3, 'Patrik V.', NULL, 'Rugalmas idopontok, korrekt kommunikacio, abszolut pozitiv tapasztalat.', 5.0, 1),
+(4, 'Zsombi R.', NULL, 'A berles es a tamogatas is flottul ment, en ezt csak ajanlani tudom.', 5.0, 1),
+(5, 'Anna T.', NULL, 'Minden pontosan ugy tortent, ahogy vartam. Gyors, atlathato, megbizhato.', 5.0, 1);
