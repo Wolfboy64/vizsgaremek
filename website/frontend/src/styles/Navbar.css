@@ -59,6 +59,16 @@
   color: var(--primary-color);
 }
 
+.nav-left a.nav-active,
+.nav-right > a.nav-active {
+  color: var(--primary-color);
+}
+
+.nav-left a.nav-active::after,
+.nav-right > a.nav-active::after {
+  width: 100%;
+}
+
 .nav-right > a.nav-login-btn {
   background: linear-gradient(
     135deg,

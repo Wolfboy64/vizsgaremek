@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
 
@@ -18,7 +18,12 @@ const Navbar = () => {
   const [avatarLoadFailed, setAvatarLoadFailed] = useState(false);
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const profileMenuRef = useRef(null);
+
+  const isHome = location.pathname === "/";
+  const isProducts = location.pathname.startsWith("/termekek");
+  const isContact = location.pathname === "/kapcsolat";
 
   const userInitials = useMemo(() => getInitials(user?.nev), [user?.nev]);
   const avatarUrl = useMemo(() => {
@@ -34,15 +39,12 @@ const Navbar = () => {
   }, [user?.nev]);
 
   useEffect(() => {
-    setAvatarLoadFailed(false);
-  }, [avatarUrl]);
-
-  useEffect(() => {
     const handleOutsideClick = (event) => {
       if (!profileMenuRef.current?.contains(event.target)) {
         setIsProfileMenuOpen(false);
       }
     };
+
     const handleEscape = (event) => {
       if (event.key === "Escape") {
         setIsProfileMenuOpen(false);
@@ -71,10 +73,14 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <div className="nav-left">
-          <Link to="/" onClick={closeMenu}>
+          <Link to="/" onClick={closeMenu} className={isHome ? "nav-active" : ""}>
             Főoldal
           </Link>
-          <Link to="/termekek" onClick={closeMenu}>
+          <Link
+            to="/termekek"
+            onClick={closeMenu}
+            className={isProducts ? "nav-active" : ""}
+          >
             Termékek
           </Link>
         </div>
@@ -85,7 +91,11 @@ const Navbar = () => {
         </Link>
 
         <div className="nav-right">
-          <Link to="/kapcsolat" onClick={closeMenu}>
+          <Link
+            to="/kapcsolat"
+            onClick={closeMenu}
+            className={isContact ? "nav-active" : ""}
+          >
             Kapcsolat
           </Link>
 
@@ -168,20 +178,13 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <Link
-              to="/ugyfelportal/login"
-              className="nav-login-btn"
-              onClick={closeMenu}
-            >
+            <Link to="/ugyfelportal/login" className="nav-login-btn" onClick={closeMenu}>
               Bejelentkezés
             </Link>
           )}
         </div>
 
-        <div
-          className={`hamburger ${isOpen ? "active" : ""}`}
-          onClick={() => setIsOpen((prev) => !prev)}
-        >
+        <div className={`hamburger ${isOpen ? "active" : ""}`} onClick={() => setIsOpen((prev) => !prev)}>
           <span></span>
           <span></span>
           <span></span>
@@ -189,13 +192,13 @@ const Navbar = () => {
       </div>
 
       <div className={`mobile-menu ${isOpen ? "active" : ""}`}>
-        <Link to="/" onClick={closeMenu}>
+        <Link to="/" onClick={closeMenu} className={isHome ? "nav-active" : ""}>
           Főoldal
         </Link>
-        <Link to="/termekek" onClick={closeMenu}>
+        <Link to="/termekek" onClick={closeMenu} className={isProducts ? "nav-active" : ""}>
           Termékek
         </Link>
-        <Link to="/kapcsolat" onClick={closeMenu}>
+        <Link to="/kapcsolat" onClick={closeMenu} className={isContact ? "nav-active" : ""}>
           Kapcsolat
         </Link>
 

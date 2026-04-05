@@ -3,10 +3,17 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/Home.css";
 
-const MAIN_TITLE = "CyberNest, ahol nemcsak tanulhatsz";
+const MAIN_TITLE_PREFIX = "CyberNest, ahol nemcsak";
+const MAIN_TITLE_WORDS = [
+  "tanulhatsz",
+  "növekedhetsz",
+  "fejlődhetsz",
+  "építkezhetsz",
+  "szintet léphetsz",
+];
 const TYPE_SPEED = 55;
 const DELETE_SPEED = 30;
-const HOLD_AFTER_TYPED = 5000;
+const HOLD_AFTER_TYPED = 2400;
 const HOLD_AFTER_DELETED = 300;
 
 const getInitials = (name) => {
@@ -50,7 +57,7 @@ const getReviewBadge = (review, index) =>
 
 const Home = () => {
   const navigate = useNavigate();
-  const [typedTitle, setTypedTitle] = useState("");
+  const [typedWord, setTypedWord] = useState("");
   const [fakeReviews, setFakeReviews] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [stepPx, setStepPx] = useState(0);
@@ -60,18 +67,21 @@ const Home = () => {
 
   useEffect(() => {
     let index = 0;
+    let wordIndex = 0;
     let deleting = false;
     let timeoutId;
 
     const runTypingCycle = () => {
-      if (!deleting && index < MAIN_TITLE.length) {
+      const currentWord = MAIN_TITLE_WORDS[wordIndex];
+
+      if (!deleting && index < currentWord.length) {
         index += 1;
-        setTypedTitle(MAIN_TITLE.slice(0, index));
+        setTypedWord(currentWord.slice(0, index));
         timeoutId = setTimeout(runTypingCycle, TYPE_SPEED);
         return;
       }
 
-      if (!deleting && index === MAIN_TITLE.length) {
+      if (!deleting && index === currentWord.length) {
         deleting = true;
         timeoutId = setTimeout(runTypingCycle, HOLD_AFTER_TYPED);
         return;
@@ -79,12 +89,13 @@ const Home = () => {
 
       if (deleting && index > 0) {
         index -= 1;
-        setTypedTitle(MAIN_TITLE.slice(0, index));
+        setTypedWord(currentWord.slice(0, index));
         timeoutId = setTimeout(runTypingCycle, DELETE_SPEED);
         return;
       }
 
       deleting = false;
+      wordIndex = (wordIndex + 1) % MAIN_TITLE_WORDS.length;
       timeoutId = setTimeout(runTypingCycle, HOLD_AFTER_DELETED);
     };
 
@@ -212,8 +223,18 @@ const Home = () => {
       <header className="hero-section">
         <div className="hero-grid">
           <div className="hero-title-wrap">
-            <h1 className="typing-title" aria-label={MAIN_TITLE}>
-              {typedTitle}
+            <h1
+              className="typing-title"
+              aria-label={`${MAIN_TITLE_PREFIX} ${typedWord}`}
+            >
+              <span className="hero-title-main">
+                <span>
+                  Cyber<span className="hero-title-brand">Nest</span>,
+                </span>
+                <br />
+                <span>ahol nemcsak </span>
+              </span>
+              <span className="hero-title-dynamic">{typedWord}</span>
               <span className="typing-caret" aria-hidden="true"></span>
             </h1>
           </div>
@@ -236,18 +257,47 @@ const Home = () => {
         </div>
       </header>
 
-      <section className="features-grid">
-        <div className="feature-card">
+      <section className="cn-features">
+        <div className="cn-feat">
+          <div className="cn-feat-num">01</div>
+          <div className="cn-feat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M13 2 5 13h6l-1 9 9-12h-6l0-8Z" />
+            </svg>
+          </div>
           <h3>Gyors kiválasztás</h3>
-          <p>Találd meg a számodra ideális konfigurációt percek alatt.</p>
+          <p>
+            Találd meg a számodra ideális konfigurációt percek alatt — szűrők,
+            összehasonlítás, azonnali foglalás.
+          </p>
         </div>
-        <div className="feature-card">
+        <div className="cn-feat">
+          <div className="cn-feat-num">02</div>
+          <div className="cn-feat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <rect x="5" y="10" width="14" height="10" rx="2" />
+              <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+            </svg>
+          </div>
           <h3>Biztonság</h3>
-          <p>Adatvédelem és megbízható hardveres háttér minden bérléshez.</p>
+          <p>
+            Adatvédelem és megbízható hardveres háttér minden bérléshez. DDoS
+            védelem, titkosított kapcsolat.
+          </p>
         </div>
-        <div className="feature-card">
+        <div className="cn-feat">
+          <div className="cn-feat-num">03</div>
+          <div className="cn-feat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M3 10h18M9 10v9M15 10v9" />
+            </svg>
+          </div>
           <h3>Moduláris felépítés</h3>
-          <p>Rendszerünk veled együtt fejlődik, igényeidre szabva.</p>
+          <p>
+            Rendszerünk veled együtt fejlődik, igényedre szabva — skálázz
+            bármikor, percek alatt.
+          </p>
         </div>
       </section>
 
