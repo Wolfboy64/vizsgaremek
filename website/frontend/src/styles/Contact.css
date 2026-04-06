@@ -5,6 +5,11 @@
   padding: 36px 20px 60px;
 }
 
+.contact-page.contact-page-embedded {
+  margin-top: 0;
+  min-height: auto;
+}
+
 .contact-header {
   padding: clamp(28px, 5vw, 46px);
   border-radius: 22px;

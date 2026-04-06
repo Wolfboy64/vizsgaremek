@@ -21,7 +21,7 @@ const parseRamValue = (ramText) => {
   return Number.isFinite(numeric) ? numeric : -1;
 };
 
-const Products = () => {
+const Products = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -105,8 +105,8 @@ const Products = () => {
   }, [products, searchTerm, selectedOperator, sortBy]);
 
   return (
-    <main className="products-page">
-      <section className="products-hero">
+    <main className={`products-page ${embedded ? "products-page-embedded" : ""}`}>
+      <section className="products-hero reveal-on-scroll" style={{ "--reveal-delay": "60ms" }}>
         <h1>Elérhető szervereink</h1>
         <p>
           Az alábbi lista közvetlenül az adatbázisban tárolt eszközöket jeleníti
@@ -114,8 +114,8 @@ const Products = () => {
         </p>
       </section>
 
-      <section className="products-toolbar">
-        <label className="toolbar-field">
+      <section className="products-toolbar reveal-on-scroll" style={{ "--reveal-delay": "140ms" }}>
+        <label className="toolbar-field reveal-on-scroll" style={{ "--reveal-delay": "60ms" }}>
           <span>Keresés</span>
           <input
             type="text"
@@ -125,7 +125,7 @@ const Products = () => {
           />
         </label>
 
-        <label className="toolbar-field">
+        <label className="toolbar-field reveal-on-scroll" style={{ "--reveal-delay": "120ms" }}>
           <span>Üzemeltető</span>
           <select
             value={selectedOperator}
@@ -140,7 +140,7 @@ const Products = () => {
           </select>
         </label>
 
-        <label className="toolbar-field">
+        <label className="toolbar-field reveal-on-scroll" style={{ "--reveal-delay": "180ms" }}>
           <span>Rendezés</span>
           <select
             value={sortBy}
@@ -154,25 +154,25 @@ const Products = () => {
         </label>
       </section>
 
-      <section className="products-summary" aria-live="polite">
-        <div className="summary-item">
+      <section className="products-summary reveal-on-scroll" style={{ "--reveal-delay": "180ms" }} aria-live="polite">
+        <div className="summary-item reveal-on-scroll" style={{ "--reveal-delay": "80ms" }}>
           <span className="summary-label">Összes termék</span>
           <strong>{products.length}</strong>
         </div>
-        <div className="summary-item">
+        <div className="summary-item reveal-on-scroll" style={{ "--reveal-delay": "140ms" }}>
           <span className="summary-label">Találatok</span>
           <strong>{filteredProducts.length}</strong>
         </div>
-        <div className="summary-item">
+        <div className="summary-item reveal-on-scroll" style={{ "--reveal-delay": "200ms" }}>
           <span className="summary-label">Üzemeltetők</span>
           <strong>{operatorOptions.length}</strong>
         </div>
       </section>
 
-      {loading && <p className="loading-text">Termékek betöltése folyamatban...</p>}
+      {loading && <p className="loading-text reveal-on-scroll is-visible">Termékek betöltése folyamatban...</p>}
 
       {!loading && error && (
-        <div className="products-error">
+        <div className="products-error reveal-on-scroll is-visible">
           <p className="error-text">{error}</p>
           <button type="button" onClick={fetchProducts} className="retry-button">
             Újrapróbálás
@@ -181,15 +181,19 @@ const Products = () => {
       )}
 
       {!loading && !error && filteredProducts.length === 0 && (
-        <p className="no-data">
+        <p className="no-data reveal-on-scroll is-visible">
           A jelenlegi szűrési feltételek mellett nincs megjeleníthető termék.
         </p>
       )}
 
       {!loading && !error && filteredProducts.length > 0 && (
         <section className="products-grid">
-          {filteredProducts.map((product) => (
-            <article key={product.id} className="product-card">
+          {filteredProducts.map((product, index) => (
+            <article
+              key={product.id}
+              className="product-card reveal-on-scroll"
+              style={{ "--reveal-delay": `${Math.min(index, 7) * 70}ms` }}
+            >
               <header className="product-card-header">
                 <span className="product-id">#{product.id}</span>
                 <h2>{product.cpu || "Nincs CPU adat"}</h2>

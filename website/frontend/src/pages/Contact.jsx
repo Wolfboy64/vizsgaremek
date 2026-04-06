@@ -3,7 +3,7 @@ import "../styles/Contact.css";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaHeadset, FaVoicemail, FaMailBulk } from "react-icons/fa";
 
 
-const Contact = () => {
+const Contact = ({ embedded = false }) => {
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -14,12 +14,13 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-page">
+    <div className={`contact-page ${embedded ? "contact-page-embedded" : ""}`}>
       <motion.div
-        className="contact-header"
+        className="contact-header reveal-on-scroll"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
+        style={{ "--reveal-delay": "60ms" }}
       >
         <h1>Lépj kapcsolatba velünk</h1>
         <p>Kérdésed van? Szívesen segítünk!</p>
@@ -28,14 +29,15 @@ const Contact = () => {
       <div className="container">
         <div className="contact-content">
           <motion.div
-            className="contact-info"
+            className="contact-info reveal-on-scroll"
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
+            style={{ "--reveal-delay": "120ms" }}
           >
             <h2>Elérhetőségeink</h2>
-            <div className="info-item">
+            <div className="info-item reveal-on-scroll" style={{ "--reveal-delay": "80ms" }}>
             <div className="info-icon"><FaMailBulk /></div>
             <div>
                 <h3>Email</h3>
@@ -44,7 +46,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="info-item">
+            <div className="info-item reveal-on-scroll" style={{ "--reveal-delay": "130ms" }}>
             <div className="info-icon"><FaPhone /></div>
             <div>
                 <h3>Telefon</h3>
@@ -53,7 +55,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="info-item">
+            <div className="info-item reveal-on-scroll" style={{ "--reveal-delay": "180ms" }}>
             <div className="info-icon"><FaMapMarkerAlt /></div>
             <div>
                 <h3>Cím</h3>
@@ -62,7 +64,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="info-item">
+            <div className="info-item reveal-on-scroll" style={{ "--reveal-delay": "230ms" }}>
             <div className="info-icon"><FaHeadset /></div>
             <div>
                 <h3>24/7 Támogatás</h3>
@@ -73,15 +75,16 @@ const Contact = () => {
           </motion.div>
 
           <motion.div
-            className="contact-form-container"
+            className="contact-form-container reveal-on-scroll"
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
+            style={{ "--reveal-delay": "180ms" }}
           >
             <h2>Üzenet küldése</h2>
             <form className="contact-form">
-              <div className="form-group">
+              <div className="form-group reveal-on-scroll" style={{ "--reveal-delay": "80ms" }}>
                 <label htmlFor="name">Név</label>
                 <input
                   type="text"
@@ -92,7 +95,7 @@ const Contact = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="form-group reveal-on-scroll" style={{ "--reveal-delay": "120ms" }}>
                 <label htmlFor="email">Email</label>
                 <input
                   type="email"
@@ -103,7 +106,7 @@ const Contact = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="form-group reveal-on-scroll" style={{ "--reveal-delay": "160ms" }}>
                 <label htmlFor="subject">Tárgy</label>
                 <input
                   type="text"
@@ -114,7 +117,7 @@ const Contact = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="form-group reveal-on-scroll" style={{ "--reveal-delay": "200ms" }}>
                 <label htmlFor="message">Üzenet</label>
                 <textarea
                   id="message"
@@ -127,9 +130,10 @@ const Contact = () => {
 
               <motion.button
                 type="button"
-                className="submit-btn"
+                className="submit-btn reveal-on-scroll"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                style={{ "--reveal-delay": "260ms" }}
                 onClick={(e) => {
                   e.preventDefault();
                   alert(

@@ -4,6 +4,10 @@
   padding: 36px 20px 90px;
 }
 
+.products-page.products-page-embedded {
+  margin-top: 0;
+}
+
 .products-hero {
   padding: clamp(28px, 5vw, 46px);
   border-radius: 22px;

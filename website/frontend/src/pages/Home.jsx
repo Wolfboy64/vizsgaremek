@@ -1,6 +1,7 @@
-﻿import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+﻿import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import api from "../services/api";
+import Products from "./Products";
+import Contact from "./Contact";
 import "../styles/Home.css";
 
 const MAIN_TITLE_PREFIX = "CyberNest, ahol nemcsak";
@@ -15,6 +16,7 @@ const TYPE_SPEED = 55;
 const DELETE_SPEED = 30;
 const HOLD_AFTER_TYPED = 2400;
 const HOLD_AFTER_DELETED = 300;
+const NAV_SCROLL_OFFSET = 88;
 
 const getInitials = (name) => {
   const trimmed = String(name || "").trim();
@@ -56,14 +58,23 @@ const getReviewBadge = (review, index) =>
   String(review?.badge || REVIEW_BADGES[index % REVIEW_BADGES.length]);
 
 const Home = () => {
-  const navigate = useNavigate();
   const [typedWord, setTypedWord] = useState("");
   const [fakeReviews, setFakeReviews] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [stepPx, setStepPx] = useState(0);
   const [isSnapping, setIsSnapping] = useState(false);
-  const viewportRef = useRef(null);
   const trackRef = useRef(null);
+
+  const scrollToSection = useCallback((sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    const top = target.getBoundingClientRect().top + window.scrollY - NAV_SCROLL_OFFSET;
+    window.scrollTo({
+      top: Math.max(top, 0),
+      behavior: "smooth",
+    });
+  }, []);
 
   useEffect(() => {
     let index = 0;
@@ -104,7 +115,7 @@ const Home = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [fakeReviews.length]);
 
   useEffect(() => {
     let mounted = true;
@@ -136,6 +147,72 @@ const Home = () => {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      document
+        .querySelectorAll(".reveal-on-scroll")
+        .forEach((element) => element.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.14,
+        rootMargin: "0px 0px -6% 0px",
+      },
+    );
+
+    const registerReveals = (root) => {
+      const targets = root.matches?.(".reveal-on-scroll")
+        ? [root]
+        : Array.from(root.querySelectorAll?.(".reveal-on-scroll") || []);
+
+      targets.forEach((element) => observer.observe(element));
+    };
+
+    registerReveals(document);
+
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType !== Node.ELEMENT_NODE) return;
+          registerReveals(node);
+        });
+      });
+    });
+
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      mutationObserver.disconnect();
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const scrollFromHash = () => {
+      const hash = window.location.hash.replace("#", "").trim();
+      if (!hash) return;
+
+      window.requestAnimationFrame(() => {
+        scrollToSection(hash);
+      });
+    };
+
+    scrollFromHash();
+    window.addEventListener("hashchange", scrollFromHash);
+    return () => window.removeEventListener("hashchange", scrollFromHash);
+  }, [scrollToSection]);
 
   useEffect(() => {
     const recalculateStep = () => {
@@ -220,9 +297,12 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <header className="hero-section">
+      <header id="fooldal" className="hero-section onepage-section">
         <div className="hero-grid">
-          <div className="hero-title-wrap">
+          <div
+            className="hero-title-wrap reveal-on-scroll"
+            style={{ "--reveal-delay": "120ms" }}
+          >
             <h1
               className="typing-title"
               aria-label={`${MAIN_TITLE_PREFIX} ${typedWord}`}
@@ -239,7 +319,10 @@ const Home = () => {
             </h1>
           </div>
 
-          <div className="hero-copy-wrap">
+          <div
+            className="hero-copy-wrap reveal-on-scroll"
+            style={{ "--reveal-delay": "260ms" }}
+          >
             <p className="hero-description">
               Mentoraink közül több területre specializált támogatást
               választhatsz, és számos tanulási lehetőséget biztosítunk, hogy a
@@ -249,16 +332,19 @@ const Home = () => {
             </p>
             <button
               className="cta-button"
-              onClick={() => navigate("/termekek")}
+              onClick={() => scrollToSection("termekek")}
             >
-              Bérlés indítása
+              Felfedezés
             </button>
           </div>
         </div>
       </header>
 
-      <section className="cn-features">
-        <div className="cn-feat">
+      <section id="elonyok" className="cn-features onepage-section">
+        <div
+          className="cn-feat reveal-on-scroll"
+          style={{ "--reveal-delay": "40ms" }}
+        >
           <div className="cn-feat-num">01</div>
           <div className="cn-feat-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
@@ -267,11 +353,14 @@ const Home = () => {
           </div>
           <h3>Gyors kiválasztás</h3>
           <p>
-            Találd meg a számodra ideális konfigurációt percek alatt — szűrők,
+            Találd meg a számodra ideális konfigurációt percek alatt - szűrők,
             összehasonlítás, azonnali foglalás.
           </p>
         </div>
-        <div className="cn-feat">
+        <div
+          className="cn-feat reveal-on-scroll"
+          style={{ "--reveal-delay": "140ms" }}
+        >
           <div className="cn-feat-num">02</div>
           <div className="cn-feat-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
@@ -285,7 +374,10 @@ const Home = () => {
             védelem, titkosított kapcsolat.
           </p>
         </div>
-        <div className="cn-feat">
+        <div
+          className="cn-feat reveal-on-scroll"
+          style={{ "--reveal-delay": "240ms" }}
+        >
           <div className="cn-feat-num">03</div>
           <div className="cn-feat-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
@@ -295,21 +387,24 @@ const Home = () => {
           </div>
           <h3>Moduláris felépítés</h3>
           <p>
-            Rendszerünk veled együtt fejlődik, igényedre szabva — skálázz
+            Rendszerünk veled együtt fejlődik, igényedre szabva - skálázz
             bármikor, percek alatt.
           </p>
         </div>
       </section>
 
-      <section className="reviews-showcase" aria-label="Ügyfélvélemények">
-        <div className="reviews-showcase-head">
-          <span className="reviews-eyebrow">
-            {"\u00dcgyf\u00e9lv\u00e9lem\u00e9nyek"}
-          </span>
+      <section
+        id="velemenyek"
+        className="reviews-showcase onepage-section"
+        aria-label="Ügyfélvélemények"
+      >
+        <div
+          className="reviews-showcase-head reveal-on-scroll"
+          style={{ "--reveal-delay": "60ms" }}
+        >
+          <span className="reviews-eyebrow">{"\u00dcgyf\u00e9lv\u00e9lem\u00e9nyek"}</span>
           <h2>
-            Amit{" "}
-            <span className="reviews-head-accent">{"\u0151k"} mondanak</span>{" "}
-            rólunk
+            Amit <span className="reviews-head-accent">{"\u0151k"} mondanak</span> rólunk
           </h2>
           <div className="reviews-title-divider" aria-hidden="true"></div>
 
@@ -332,7 +427,10 @@ const Home = () => {
         </div>
 
         {fakeReviews.length > 0 ? (
-          <div className="reviews-carousel-shell">
+          <div
+            className="reviews-carousel-shell reveal-on-scroll"
+            style={{ "--reveal-delay": "180ms" }}
+          >
             <button
               type="button"
               className="reviews-nav reviews-nav-left"
@@ -345,7 +443,7 @@ const Home = () => {
               ></span>
             </button>
 
-            <div className="reviews-viewport" ref={viewportRef}>
+            <div className="reviews-viewport">
               <div
                 ref={trackRef}
                 className={`reviews-track ${isSnapping ? "no-transition" : ""}`}
@@ -406,8 +504,24 @@ const Home = () => {
           </p>
         )}
       </section>
+
+      <section id="termekek" className="onepage-section">
+        <Products embedded />
+      </section>
+
+      <section id="kapcsolat" className="onepage-section">
+        <Contact embedded />
+      </section>
     </div>
   );
 };
 
 export default Home;
+
+
+
+
+
+
+
+

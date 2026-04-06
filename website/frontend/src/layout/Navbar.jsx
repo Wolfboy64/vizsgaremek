@@ -3,6 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
 
+const NAV_SCROLL_OFFSET = 88;
+const SECTION_IDS = ["fooldal", "elonyok", "velemenyek", "termekek", "kapcsolat"];
+
 const getInitials = (name) => {
   const normalized = String(name || "").trim();
   if (!normalized) return "U";
@@ -16,14 +19,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [avatarLoadFailed, setAvatarLoadFailed] = useState(false);
+  const [activeSection, setActiveSection] = useState("fooldal");
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const profileMenuRef = useRef(null);
-
-  const isHome = location.pathname === "/";
-  const isProducts = location.pathname.startsWith("/termekek");
-  const isContact = location.pathname === "/kapcsolat";
 
   const userInitials = useMemo(() => getInitials(user?.nev), [user?.nev]);
   const avatarUrl = useMemo(() => {
@@ -60,7 +60,71 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (location.pathname !== "/") return undefined;
+
+    const resolveActiveSection = () => {
+      const offsetPosition = window.scrollY + NAV_SCROLL_OFFSET + 24;
+      let currentSection = SECTION_IDS[0];
+
+      SECTION_IDS.forEach((sectionId) => {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+        if (offsetPosition >= section.offsetTop) {
+          currentSection = sectionId;
+        }
+      });
+
+      setActiveSection(currentSection);
+    };
+
+    resolveActiveSection();
+    window.addEventListener("scroll", resolveActiveSection, { passive: true });
+    window.addEventListener("resize", resolveActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", resolveActiveSection);
+      window.removeEventListener("resize", resolveActiveSection);
+    };
+  }, [location.pathname]);
+
   const closeMenu = () => setIsOpen(false);
+
+  const smoothScrollToSection = (sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    const top = target.getBoundingClientRect().top + window.scrollY - NAV_SCROLL_OFFSET;
+    window.scrollTo({
+      top: Math.max(top, 0),
+      behavior: "smooth",
+    });
+  };
+
+  const handleSectionClick = (event, sectionId) => {
+    event.preventDefault();
+    setIsProfileMenuOpen(false);
+    closeMenu();
+
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+      return;
+    }
+
+    window.history.replaceState(null, "", `#${sectionId}`);
+    setActiveSection(sectionId);
+    smoothScrollToSection(sectionId);
+  };
+
+  const handleLogoClick = (event) => {
+    if (location.pathname !== "/") return;
+    event.preventDefault();
+    setIsProfileMenuOpen(false);
+    closeMenu();
+    window.history.replaceState(null, "", "#fooldal");
+    setActiveSection("fooldal");
+    smoothScrollToSection("fooldal");
+  };
 
   const handleLogout = () => {
     logout();
@@ -69,35 +133,47 @@ const Navbar = () => {
     setIsProfileMenuOpen(false);
   };
 
+  const activeNavSection =
+    activeSection === "elonyok" || activeSection === "velemenyek"
+      ? "termekek"
+      : activeSection;
+
+  const navClass = (sectionId) =>
+    location.pathname === "/" && activeNavSection === sectionId ? "nav-active" : "";
+
   return (
     <nav className="navbar">
       <div className="nav-container">
         <div className="nav-left">
-          <Link to="/" onClick={closeMenu} className={isHome ? "nav-active" : ""}>
+          <a
+            href="#fooldal"
+            onClick={(event) => handleSectionClick(event, "fooldal")}
+            className={navClass("fooldal")}
+          >
             Főoldal
-          </Link>
-          <Link
-            to="/termekek"
-            onClick={closeMenu}
-            className={isProducts ? "nav-active" : ""}
+          </a>
+          <a
+            href="#termekek"
+            onClick={(event) => handleSectionClick(event, "termekek")}
+            className={navClass("termekek")}
           >
             Termékek
-          </Link>
+          </a>
         </div>
 
-        <Link to="/" className="nav-logo" onClick={closeMenu}>
+        <Link to="/" className="nav-logo" onClick={handleLogoClick}>
           <span className="logo-cyber">Cyber</span>
           <span className="logo-nest">Nest</span>
         </Link>
 
         <div className="nav-right">
-          <Link
-            to="/kapcsolat"
-            onClick={closeMenu}
-            className={isContact ? "nav-active" : ""}
+          <a
+            href="#kapcsolat"
+            onClick={(event) => handleSectionClick(event, "kapcsolat")}
+            className={navClass("kapcsolat")}
           >
             Kapcsolat
-          </Link>
+          </a>
 
           {isAuthenticated() ? (
             <div className="profile-menu-wrap" ref={profileMenuRef}>
@@ -192,15 +268,27 @@ const Navbar = () => {
       </div>
 
       <div className={`mobile-menu ${isOpen ? "active" : ""}`}>
-        <Link to="/" onClick={closeMenu} className={isHome ? "nav-active" : ""}>
+        <a
+          href="#fooldal"
+          onClick={(event) => handleSectionClick(event, "fooldal")}
+          className={navClass("fooldal")}
+        >
           Főoldal
-        </Link>
-        <Link to="/termekek" onClick={closeMenu} className={isProducts ? "nav-active" : ""}>
+        </a>
+        <a
+          href="#termekek"
+          onClick={(event) => handleSectionClick(event, "termekek")}
+          className={navClass("termekek")}
+        >
           Termékek
-        </Link>
-        <Link to="/kapcsolat" onClick={closeMenu} className={isContact ? "nav-active" : ""}>
+        </a>
+        <a
+          href="#kapcsolat"
+          onClick={(event) => handleSectionClick(event, "kapcsolat")}
+          className={navClass("kapcsolat")}
+        >
           Kapcsolat
-        </Link>
+        </a>
 
         {isAuthenticated() ? (
           <>
@@ -229,3 +317,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
