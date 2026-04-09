@@ -36,7 +36,9 @@ const Products = ({ embedded = false }) => {
       setError("");
 
       const response = await api.get("/eszkoz");
-      const receivedProducts = Array.isArray(response.data) ? response.data : [];
+      const receivedProducts = Array.isArray(response.data)
+        ? response.data
+        : [];
       setProducts(receivedProducts);
     } catch (err) {
       setError(
@@ -66,7 +68,8 @@ const Products = ({ embedded = false }) => {
 
     const filtered = products.filter((product) => {
       const byOperator =
-        selectedOperator === "all" || product.uzemelteto_nev === selectedOperator;
+        selectedOperator === "all" ||
+        product.uzemelteto_nev === selectedOperator;
 
       const searchableText = [
         product.id,
@@ -82,7 +85,8 @@ const Products = ({ embedded = false }) => {
         .toLowerCase();
 
       const bySearch =
-        normalizedSearch.length === 0 || searchableText.includes(normalizedSearch);
+        normalizedSearch.length === 0 ||
+        searchableText.includes(normalizedSearch);
 
       return byOperator && bySearch;
     });
@@ -105,17 +109,30 @@ const Products = ({ embedded = false }) => {
   }, [products, searchTerm, selectedOperator, sortBy]);
 
   return (
-    <main className={`products-page ${embedded ? "products-page-embedded" : ""}`}>
-      <section className="products-hero reveal-on-scroll" style={{ "--reveal-delay": "60ms" }}>
+    <main
+      className={`products-page ${embedded ? "products-page-embedded" : ""}`}
+    >
+      <section
+        className="products-hero reveal-on-scroll"
+        style={{ "--reveal-delay": "60ms" }}
+      >
+        <span className="products-eyebrow">Termékek</span>
         <h1>Elérhető szervereink</h1>
+        <div className="products-title-divider" aria-hidden="true"></div>
         <p>
           Az alábbi lista közvetlenül az adatbázisban tárolt eszközöket jeleníti
           meg.
         </p>
       </section>
 
-      <section className="products-toolbar reveal-on-scroll" style={{ "--reveal-delay": "140ms" }}>
-        <label className="toolbar-field reveal-on-scroll" style={{ "--reveal-delay": "60ms" }}>
+      <section
+        className="products-toolbar reveal-on-scroll"
+        style={{ "--reveal-delay": "140ms" }}
+      >
+        <label
+          className="toolbar-field reveal-on-scroll"
+          style={{ "--reveal-delay": "60ms" }}
+        >
           <span>Keresés</span>
           <input
             type="text"
@@ -125,7 +142,10 @@ const Products = ({ embedded = false }) => {
           />
         </label>
 
-        <label className="toolbar-field reveal-on-scroll" style={{ "--reveal-delay": "120ms" }}>
+        <label
+          className="toolbar-field reveal-on-scroll"
+          style={{ "--reveal-delay": "120ms" }}
+        >
           <span>Üzemeltető</span>
           <select
             value={selectedOperator}
@@ -140,7 +160,10 @@ const Products = ({ embedded = false }) => {
           </select>
         </label>
 
-        <label className="toolbar-field reveal-on-scroll" style={{ "--reveal-delay": "180ms" }}>
+        <label
+          className="toolbar-field reveal-on-scroll"
+          style={{ "--reveal-delay": "180ms" }}
+        >
           <span>Rendezés</span>
           <select
             value={sortBy}
@@ -154,27 +177,48 @@ const Products = ({ embedded = false }) => {
         </label>
       </section>
 
-      <section className="products-summary reveal-on-scroll" style={{ "--reveal-delay": "180ms" }} aria-live="polite">
-        <div className="summary-item reveal-on-scroll" style={{ "--reveal-delay": "80ms" }}>
+      <section
+        className="products-summary reveal-on-scroll"
+        style={{ "--reveal-delay": "180ms" }}
+        aria-live="polite"
+      >
+        <div
+          className="summary-item reveal-on-scroll"
+          style={{ "--reveal-delay": "80ms" }}
+        >
           <span className="summary-label">Összes termék</span>
           <strong>{products.length}</strong>
         </div>
-        <div className="summary-item reveal-on-scroll" style={{ "--reveal-delay": "140ms" }}>
+        <div
+          className="summary-item reveal-on-scroll"
+          style={{ "--reveal-delay": "140ms" }}
+        >
           <span className="summary-label">Találatok</span>
           <strong>{filteredProducts.length}</strong>
         </div>
-        <div className="summary-item reveal-on-scroll" style={{ "--reveal-delay": "200ms" }}>
+        <div
+          className="summary-item reveal-on-scroll"
+          style={{ "--reveal-delay": "200ms" }}
+        >
           <span className="summary-label">Üzemeltetők</span>
           <strong>{operatorOptions.length}</strong>
         </div>
       </section>
 
-      {loading && <p className="loading-text reveal-on-scroll is-visible">Termékek betöltése folyamatban...</p>}
+      {loading && (
+        <p className="loading-text reveal-on-scroll is-visible">
+          Termékek betöltése folyamatban...
+        </p>
+      )}
 
       {!loading && error && (
         <div className="products-error reveal-on-scroll is-visible">
           <p className="error-text">{error}</p>
-          <button type="button" onClick={fetchProducts} className="retry-button">
+          <button
+            type="button"
+            onClick={fetchProducts}
+            className="retry-button"
+          >
             Újrapróbálás
           </button>
         </div>
@@ -219,7 +263,9 @@ const Products = ({ embedded = false }) => {
                   {product.uzemelteto_nev || "Nincs üzemeltető"}
                 </span>
                 {product.uzemelteto_leiras && (
-                  <p className="operator-description">{product.uzemelteto_leiras}</p>
+                  <p className="operator-description">
+                    {product.uzemelteto_leiras}
+                  </p>
                 )}
                 <button
                   type="button"

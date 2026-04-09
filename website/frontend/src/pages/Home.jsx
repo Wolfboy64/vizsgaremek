@@ -334,7 +334,7 @@ const Home = () => {
               className="cta-button"
               onClick={() => scrollToSection("termekek")}
             >
-              Felfedezés
+              Bérlés indítása
             </button>
           </div>
         </div>
@@ -390,6 +390,60 @@ const Home = () => {
             Rendszerünk veled együtt fejlődik, igényedre szabva - skálázz
             bármikor, percek alatt.
           </p>
+        </div>
+      </section>
+
+      <section id="rolunk" className="about-showcase onepage-section">
+        <div
+          className="about-content reveal-on-scroll"
+          style={{ "--reveal-delay": "90ms" }}
+        >
+          <span className="about-eyebrow">Rólunk</span>
+          <h2>
+            CyberNest: több mint egy tárhely, egy fejlődő{" "}
+            <span className="about-head-accent">közösség</span>
+          </h2>
+          <p>
+            A CyberNestet azért hoztuk létre, hogy mindenki megtalálja a saját
+            szintjéhez illő technikai hátteret és mentorálást. Nálunk nem csak
+            szervert bérelsz, hanem egy olyan környezethez csatlakozol, ahol
+            valódi figyelmet kapsz, gyors válaszokkal és átlátható támogatással.
+          </p>
+          <p>
+            Kezdőként is biztonságban érezheted magad, haladóként pedig
+            skálázható, stabil infrastruktúrát kapsz. A célunk egyszerű:
+            megbízható alapot adni a projektjeidhez, hogy te a fejlődésre
+            koncentrálhass.
+          </p>
+          <div className="about-actions">
+            <button
+              className="cta-button"
+              onClick={() => scrollToSection("termekek")}
+            >
+              Nézd meg a csomagokat
+            </button>
+            <button
+              className="ghost-button"
+              onClick={() => scrollToSection("kapcsolat")}
+            >
+              Beszéljünk róla
+            </button>
+          </div>
+        </div>
+
+        <div
+          className="about-visual reveal-on-scroll"
+          style={{ "--reveal-delay": "210ms" }}
+          aria-hidden="true"
+        >
+          <div className="about-visual-glow"></div>
+          <div className="about-visual-frame">
+            <img
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+              alt="Modern fejlesztői környezet laptopokkal és szerveres háttérrel"
+              loading="lazy"
+            />
+          </div>
         </div>
       </section>
 

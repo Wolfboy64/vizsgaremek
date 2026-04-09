@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import "../styles/Contact.css";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaHeadset, FaVoicemail, FaMailBulk } from "react-icons/fa";
+import { FaPhone, FaMapMarkerAlt, FaHeadset, FaMailBulk } from "react-icons/fa";
 
 
 const Contact = ({ embedded = false }) => {
@@ -22,11 +22,13 @@ const Contact = ({ embedded = false }) => {
         transition={{ duration: 0.6 }}
         style={{ "--reveal-delay": "60ms" }}
       >
+        <span className="contact-eyebrow">Kapcsolat</span>
         <h1>Lépj kapcsolatba velünk</h1>
+        <div className="contact-title-divider" aria-hidden="true"></div>
         <p>Kérdésed van? Szívesen segítünk!</p>
       </motion.div>
 
-      <div className="container">
+      <div className={`contact-shell ${embedded ? "contact-shell-embedded" : ""}`}>
         <div className="contact-content">
           <motion.div
             className="contact-info reveal-on-scroll"
@@ -83,6 +85,9 @@ const Contact = ({ embedded = false }) => {
             style={{ "--reveal-delay": "180ms" }}
           >
             <h2>Üzenet küldése</h2>
+            <p className="contact-form-intro">
+              Írd meg röviden, miben tudunk segíteni, és visszajelzünk.
+            </p>
             <form className="contact-form">
               <div className="form-group reveal-on-scroll" style={{ "--reveal-delay": "80ms" }}>
                 <label htmlFor="name">Név</label>

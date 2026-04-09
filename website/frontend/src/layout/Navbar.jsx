@@ -1,10 +1,18 @@
 ﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import cyberNestLogo from "../assets/icons/cybernest-logo.png";
 import "../styles/Navbar.css";
 
 const NAV_SCROLL_OFFSET = 88;
-const SECTION_IDS = ["fooldal", "elonyok", "velemenyek", "termekek", "kapcsolat"];
+const SECTION_IDS = [
+  "fooldal",
+  "elonyok",
+  "rolunk",
+  "velemenyek",
+  "termekek",
+  "kapcsolat",
+];
 
 const getInitials = (name) => {
   const normalized = String(name || "").trim();
@@ -135,7 +143,7 @@ const Navbar = () => {
 
   const activeNavSection =
     activeSection === "elonyok" || activeSection === "velemenyek"
-      ? "termekek"
+      ? "rolunk"
       : activeSection;
 
   const navClass = (sectionId) =>
@@ -153,6 +161,13 @@ const Navbar = () => {
             Főoldal
           </a>
           <a
+            href="#rolunk"
+            onClick={(event) => handleSectionClick(event, "rolunk")}
+            className={navClass("rolunk")}
+          >
+            Rólunk
+          </a>
+          <a
             href="#termekek"
             onClick={(event) => handleSectionClick(event, "termekek")}
             className={navClass("termekek")}
@@ -162,8 +177,15 @@ const Navbar = () => {
         </div>
 
         <Link to="/" className="nav-logo" onClick={handleLogoClick}>
-          <span className="logo-cyber">Cyber</span>
-          <span className="logo-nest">Nest</span>
+          <img
+            src={cyberNestLogo}
+            alt="CyberNest logó"
+            className="nav-logo-icon"
+          />
+          <span className="nav-logo-text">
+            <span className="logo-cyber">Cyber</span>
+            <span className="logo-nest">Nest</span>
+          </span>
         </Link>
 
         <div className="nav-right">
@@ -274,6 +296,13 @@ const Navbar = () => {
           className={navClass("fooldal")}
         >
           Főoldal
+        </a>
+        <a
+          href="#rolunk"
+          onClick={(event) => handleSectionClick(event, "rolunk")}
+          className={navClass("rolunk")}
+        >
+          Rólunk
         </a>
         <a
           href="#termekek"

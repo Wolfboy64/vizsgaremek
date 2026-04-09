@@ -6,25 +6,72 @@
 
 .products-page.products-page-embedded {
   margin-top: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 56px clamp(18px, 4vw, 48px) 82px;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(0, 212, 255, 0.1), transparent 34%),
+    radial-gradient(circle at 84% 24%, rgba(108, 99, 255, 0.06), transparent 32%),
+    linear-gradient(180deg, rgba(9, 13, 33, 0.9) 0%, rgba(8, 12, 28, 0.96) 100%);
+}
+
+.products-page.products-page-embedded .products-hero,
+.products-page.products-page-embedded .products-toolbar,
+.products-page.products-page-embedded .products-summary,
+.products-page.products-page-embedded .products-error,
+.products-page.products-page-embedded .loading-text,
+.products-page.products-page-embedded .no-data,
+.products-page.products-page-embedded .products-grid {
+  width: min(1360px, 100%);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .products-hero {
-  padding: clamp(28px, 5vw, 46px);
-  border-radius: 22px;
-  border: 1px solid rgba(0, 212, 255, 0.22);
-  background: linear-gradient(145deg, #0f1435 0%, #1a1e3f 58%, #141a39 100%);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  padding: 4px 0 2px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: center;
+}
+
+.products-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  color: #9fddff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .products-hero h1 {
-  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   line-height: 1.2;
 }
 
 .products-hero p {
-  margin-top: 10px;
+  margin: 12px auto 0;
   color: var(--text-gray);
-  max-width: 68ch;
+  max-width: 62ch;
+}
+
+.products-title-divider {
+  width: min(220px, 55vw);
+  height: 2px;
+  margin: 10px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 255, 0),
+    rgba(0, 212, 255, 0.9),
+    rgba(108, 99, 255, 0.9),
+    rgba(108, 99, 255, 0)
+  );
 }
 
 .products-toolbar {
