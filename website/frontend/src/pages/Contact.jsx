@@ -61,8 +61,8 @@ const Contact = ({ embedded = false }) => {
             <div className="info-icon"><FaMapMarkerAlt /></div>
             <div>
                 <h3>Cím</h3>
-                <p>1234 Budapest</p>
-                <p>Példa utca 123.</p>
+                <p>1087 Budapest</p>
+                <p>Szörény utca 2-4</p>
               </div>
             </div>
 

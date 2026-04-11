@@ -113,17 +113,17 @@ const Dashboard = () => {
   );
 
   const handleCancelReservation = async (id) => {
-    if (!window.confirm("Biztosan szeretned torolni a foglalast?")) {
+    if (!window.confirm("Biztosan szeretnéd törölni a foglalást?")) {
       return;
     }
 
     try {
       await api.delete(`/foglalas/${id}`);
-      setMessage("Foglalas sikeresen torolve");
+      setMessage("Foglalás sikeresen törölve");
       fetchReservations();
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      setMessage(err.response?.data?.message || "Hiba tortent a torles soran");
+      setMessage(err.response?.data?.message || "Hiba történt a törlés során");
       setTimeout(() => setMessage(""), 3000);
     }
   };
@@ -180,12 +180,12 @@ const Dashboard = () => {
         review: draft.review,
       });
 
-      setMessage("Mentor ertekeles sikeresen mentve");
+      setMessage("Mentor értékelés sikeresen mentve");
       await fetchReservations();
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       setMessage(
-        err.response?.data?.message || "Hiba tortent az ertekeles mentesekor",
+        err.response?.data?.message || "Hiba történt az értékelés mentésekor",
       );
       setTimeout(() => setMessage(""), 3500);
     } finally {
@@ -234,10 +234,10 @@ const Dashboard = () => {
           animate="visible"
           transition={{ delay: 0.2 }}
         >
-          <h2>Foglalasaim</h2>
+          <h2>Foglalásaim</h2>
 
           {loading ? (
-            <p>Betoltes...</p>
+            <p>Betöltés...</p>
           ) : reservations.length === 0 ? (
             <p className="no-data">Még nincs aktív foglalásod</p>
           ) : (
@@ -280,7 +280,7 @@ const Dashboard = () => {
 
                       {reservation.atvetel_datum && (
                         <div className="pickup-display">
-                          <p className="pickup-label">Átvátel:</p>
+                          <p className="pickup-label">Átvétel:</p>
                           <p className="pickup-datetime">
                             {new Date(reservation.atvetel_datum).toLocaleDateString("hu-HU")}
                             {reservation.atvetel_idopont &&
@@ -318,7 +318,7 @@ const Dashboard = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Torles
+                    Törlés
                   </MotionButton>
                 </MotionDiv>
               ))}
@@ -417,7 +417,7 @@ const Dashboard = () => {
                     <textarea
                       className="mentor-review-input"
                       rows="3"
-                      placeholder="Rovid review a mentorrol (opcionalis)"
+                      placeholder="Rövid értékelés a mentor munkájáról (opcionális)"
                       value={ratingDraft.review}
                       onChange={(event) =>
                         updateRatingDraft(reservation.id, "review", event.target.value)
@@ -431,7 +431,7 @@ const Dashboard = () => {
                       disabled={savingRatingFor === reservation.id}
                       onClick={() => handleSaveMentorRating(reservation)}
                     >
-                      {savingRatingFor === reservation.id ? "Mentes..." : "Ertekeles kuldese"}
+                      {savingRatingFor === reservation.id ? "Mentés..." : "Értékelés küldése"}
                     </MotionButton>
                   </div>
                 );
