@@ -5,12 +5,14 @@ import "../styles/Products.css";
 
 const SORT_OPTIONS = {
   idAsc: "idAsc",
-  idDesc: "idDesc",
+  hddAsc: "hddAsc",
+  hddDesc: "hddDesc",
   ramAsc: "ramAsc",
   ramDesc: "ramDesc",
 };
 
 const RAM_PATTERN = /(\d+(?:[.,]\d+)?)\s*GB/i;
+const STORAGE_PATTERN = /(\d+(?:[.,]\d+)?)\s*(TB|GB)/i;
 
 const parseRamValue = (ramText) => {
   if (!ramText) return -1;
@@ -19,6 +21,18 @@ const parseRamValue = (ramText) => {
 
   const numeric = Number(match[1].replace(",", "."));
   return Number.isFinite(numeric) ? numeric : -1;
+};
+
+const parseStorageToGb = (storageText) => {
+  if (!storageText) return -1;
+  const match = String(storageText).match(STORAGE_PATTERN);
+  if (!match) return -1;
+
+  const numeric = Number(match[1].replace(",", "."));
+  if (!Number.isFinite(numeric)) return -1;
+
+  const unit = String(match[2] || "").toUpperCase();
+  return unit === "TB" ? numeric * 1024 : numeric;
 };
 
 const Products = ({ embedded = false }) => {
@@ -93,15 +107,17 @@ const Products = ({ embedded = false }) => {
 
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
-        case SORT_OPTIONS.idDesc:
-          return b.id - a.id;
+        case SORT_OPTIONS.hddDesc:
+          return parseStorageToGb(b.hdd) - parseStorageToGb(a.hdd);
         case SORT_OPTIONS.ramAsc:
           return parseRamValue(a.ram) - parseRamValue(b.ram);
         case SORT_OPTIONS.ramDesc:
           return parseRamValue(b.ram) - parseRamValue(a.ram);
         case SORT_OPTIONS.idAsc:
-        default:
           return a.id - b.id;
+        case SORT_OPTIONS.hddAsc:
+        default:
+          return parseStorageToGb(a.hdd) - parseStorageToGb(b.hdd);
       }
     });
 
@@ -169,8 +185,8 @@ const Products = ({ embedded = false }) => {
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value)}
           >
-            <option value={SORT_OPTIONS.idAsc}>ID szerint (növekvő)</option>
-            <option value={SORT_OPTIONS.idDesc}>ID szerint (csökkenő)</option>
+            <option value={SORT_OPTIONS.hddAsc}>HDD szerint (növekvő)</option>
+            <option value={SORT_OPTIONS.hddDesc}>HDD szerint (csökkenő)</option>
             <option value={SORT_OPTIONS.ramAsc}>RAM szerint (növekvő)</option>
             <option value={SORT_OPTIONS.ramDesc}>RAM szerint (csökkenő)</option>
           </select>

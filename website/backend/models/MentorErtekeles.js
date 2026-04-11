@@ -55,7 +55,7 @@ class MentorErtekelesModel {
          review,
          stars,
          updated_at
-       FROM fake_review
+       FROM page_review
        WHERE is_active = 1
        ORDER BY id ASC`,
     );
@@ -68,7 +68,7 @@ class MentorErtekelesModel {
       `SELECT
          ROUND(AVG(stars), 1) AS average_rating,
          COUNT(*) AS total_reviews
-       FROM fake_review
+       FROM page_review
        WHERE is_active = 1`,
     );
 

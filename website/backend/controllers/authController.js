@@ -520,7 +520,6 @@ export const updateOwnProfile = async (req, res) => {
     const userId = req.user.id;
     const nev = normalizeText(req.body?.nev);
     const elerhetoseg = normalizeText(req.body?.elerhetoseg).toLowerCase();
-    const avatarUrl = normalizeText(req.body?.avatarUrl);
     const newPassword = String(req.body?.newPassword || "");
 
     if (!nev || !elerhetoseg) {
@@ -536,40 +535,6 @@ export const updateOwnProfile = async (req, res) => {
 
     if (!EMAIL_REGEX.test(elerhetoseg)) {
       return res.status(400).json({ message: "Érvényes email címet adj meg." });
-    }
-
-    if (avatarUrl) {
-      if (avatarUrl.startsWith("data:image/")) {
-        const isValidDataUrl =
-          /^data:image\/(png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=]+$/i.test(
-            avatarUrl,
-          );
-        if (!isValidDataUrl) {
-          return res.status(400).json({ message: "A profilkép formátuma hibás." });
-        }
-
-        const base64Body = avatarUrl.split(",")[1] || "";
-        const padding = (base64Body.match(/=+$/)?.[0]?.length || 0);
-        const approximateBytes = Math.floor((base64Body.length * 3) / 4) - padding;
-        const maxBytes = 20 * 1024 * 1024;
-
-        if (approximateBytes > maxBytes) {
-          return res.status(400).json({
-            message: "A profilkép túl nagy. Maximum 20 MB képet válassz.",
-          });
-        }
-      } else {
-        try {
-          const parsed = new URL(avatarUrl);
-          if (!["http:", "https:"].includes(parsed.protocol)) {
-            return res.status(400).json({
-              message: "A profilkép URL csak http/https lehet.",
-            });
-          }
-        } catch {
-          return res.status(400).json({ message: "A profilkép URL formátuma hibás." });
-        }
-      }
     }
 
     const existingEmailOwner = await FelhasznaloModel.findByElerhetoseg(elerhetoseg);
@@ -593,8 +558,8 @@ export const updateOwnProfile = async (req, res) => {
     }
 
     await db.execute(
-      "UPDATE felhasznalo SET nev = ?, elerhetoseg = ?, avatar_url = ? WHERE id = ?",
-      [nev, elerhetoseg, avatarUrl || null, userId],
+      "UPDATE felhasznalo SET nev = ?, elerhetoseg = ? WHERE id = ?",
+      [nev, elerhetoseg, userId],
     );
 
     const updatedUser = await FelhasznaloModel.findById(userId);

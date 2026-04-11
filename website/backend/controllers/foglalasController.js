@@ -56,12 +56,6 @@ export const create = async (req, res) => {
         .json({ message: "A mentor neve érvénytelen formátumú." });
     }
 
-    if (normalizedContactName && !NAME_REGEX.test(normalizedContactName)) {
-      return res
-        .status(400)
-        .json({ message: "Az ügyfél neve érvénytelen formátumú." });
-    }
-
     if (normalizedBillingName && !FULL_NAME_REGEX.test(normalizedBillingName)) {
       return res
         .status(400)
@@ -80,6 +74,7 @@ export const create = async (req, res) => {
 
     if (
       !validateOptionalTextField(mentor_id, 100) ||
+      !validateOptionalTextField(normalizedContactName, 100) ||
       !validateOptionalTextField(normalizedNote, 1000)
     ) {
       return res

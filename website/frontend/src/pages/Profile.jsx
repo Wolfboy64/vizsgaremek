@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -12,15 +12,11 @@ import {
 const MotionDiv = motion.div;
 const MotionButton = motion.button;
 
-const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
-
 const Profile = () => {
   const { user, login } = useAuth();
-  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     nev: user?.nev || "",
     elerhetoseg: user?.elerhetoseg || "",
-    avatarUrl: user?.avatarUrl || "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -29,54 +25,14 @@ const Profile = () => {
   const [success, setSuccess] = useState("");
 
   const previewAvatar = useMemo(() => {
-    const value = String(formData.avatarUrl || "").trim();
+    const value = String(user?.avatarUrl || "").trim();
     return value || null;
-  }, [formData.avatarUrl]);
+  }, [user?.avatarUrl]);
 
   const onChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError("");
     setSuccess("");
-  };
-
-  const openFilePicker = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileSelected = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      setError("Csak képfájl választható profilképnek.");
-      return;
-    }
-
-    if (file.size > MAX_IMAGE_BYTES) {
-      setError("A profilkép túl nagy. Maximum 20 MB lehet.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result || "");
-      setFormData((prev) => ({ ...prev, avatarUrl: result }));
-      setError("");
-      setSuccess("");
-    };
-    reader.onerror = () => {
-      setError("A kép beolvasása sikertelen volt.");
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const clearAvatar = () => {
-    setFormData((prev) => ({ ...prev, avatarUrl: "" }));
-    setError("");
-    setSuccess("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -86,7 +42,6 @@ const Profile = () => {
 
     const nev = formData.nev.trim();
     const elerhetoseg = formData.elerhetoseg.trim().toLowerCase();
-    const avatarUrl = formData.avatarUrl.trim();
 
     if (!isValidUsername(nev)) {
       setError(
@@ -119,7 +74,6 @@ const Profile = () => {
       const response = await api.put("/auth/me", {
         nev,
         elerhetoseg,
-        avatarUrl,
         newPassword: formData.newPassword,
       });
 
@@ -165,12 +119,7 @@ const Profile = () => {
         )}
 
         <div className="profile-avatar-preview-wrap">
-          <button
-            type="button"
-            className="profile-avatar-preview"
-            onClick={openFilePicker}
-            title="Profilkép kiválasztása"
-          >
+          <div className="profile-avatar-preview" aria-hidden="true">
             {previewAvatar ? (
               <img
                 src={previewAvatar}
@@ -180,34 +129,7 @@ const Profile = () => {
             ) : (
               <span>{(formData.nev || "U").slice(0, 2).toUpperCase()}</span>
             )}
-          </button>
-        </div>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          className="profile-file-input"
-          onChange={handleFileSelected}
-        />
-
-        <div className="profile-avatar-actions">
-          <button
-            type="button"
-            className="profile-ghost-btn"
-            onClick={openFilePicker}
-          >
-            Profilkép kiválasztása
-          </button>
-          {previewAvatar && (
-            <button
-              type="button"
-              className="profile-ghost-btn danger"
-              onClick={clearAvatar}
-            >
-              Profilkép törlése
-            </button>
-          )}
+          </div>
         </div>
 
         <form className="profile-form" onSubmit={handleSubmit} noValidate>

@@ -69,7 +69,8 @@ const Home = () => {
     const target = document.getElementById(sectionId);
     if (!target) return;
 
-    const top = target.getBoundingClientRect().top + window.scrollY - NAV_SCROLL_OFFSET;
+    const top =
+      target.getBoundingClientRect().top + window.scrollY - NAV_SCROLL_OFFSET;
     window.scrollTo({
       top: Math.max(top, 0),
       behavior: "smooth",
@@ -400,27 +401,38 @@ const Home = () => {
         >
           <span className="about-eyebrow">Rólunk</span>
           <h2>
-            CyberNest: több mint egy tárhely, egy fejlődő{" "}
+            CyberNest: több mint egy szerver, egy fejlődő{" "}
             <span className="about-head-accent">közösség</span>
           </h2>
           <p>
-            A CyberNestet azért hoztuk létre, hogy mindenki megtalálja a saját
-            szintjéhez illő technikai hátteret és mentorálást. Nálunk nem csak
-            szervert bérelsz, hanem egy olyan környezethez csatlakozol, ahol
-            valódi figyelmet kapsz, gyors válaszokkal és átlátható támogatással.
+            A CyberNest nem egy online tárhelyszolgáltatás. Ez egy helyszíni
+            mentorprogram, ahol személyesen, valós infrastruktúrán keresztül
+            ismerheted meg a hálózatok és szerverek világát.
           </p>
           <p>
-            Kezdőként is biztonságban érezheted magad, haladóként pedig
-            skálázható, stabil infrastruktúrát kapsz. A célunk egyszerű:
-            megbízható alapot adni a projektjeidhez, hogy te a fejlődésre
-            koncentrálhass.
+            Nálunk nem csak hozzáférést kapsz egy rendszerhez – hanem ott vagy
+            mellette, megérted, hogyan működik, és közben folyamatos támogatást
+            kapsz. A hangsúly a gyakorlati tanuláson és a fejlődésen van, nem az
+            önálló, online “kísérletezésen”.
           </p>
+          <p>
+            Kezdőként lépésről lépésre vezetünk végig az alapokon egy
+            biztonságos, támogató közegben. Haladóként pedig lehetőséged van
+            mélyebb szintre lépni, összetettebb rendszerekkel dolgozni, és
+            továbbfejlődni egy stabil, valós környezetben.
+          </p>
+          <div className="about-points">
+            <span>Gyakorlatorientált, valós infrastruktúra</span>
+            <span>Skálázható környezet tanuláshoz és projektekhez</span>
+            <span>Gyors támogatás mentor szemlélettel</span>
+            <span>Támogató közösség, folyamatos fejlődési fókusz</span>
+          </div>
           <div className="about-actions">
             <button
               className="cta-button"
               onClick={() => scrollToSection("termekek")}
             >
-              Nézd meg a csomagokat
+              Nézd meg a szervereket
             </button>
             <button
               className="ghost-button"
@@ -443,6 +455,10 @@ const Home = () => {
               alt="Modern fejlesztői környezet laptopokkal és szerveres háttérrel"
               loading="lazy"
             />
+            <div className="about-visual-overlay">
+              <strong>Valódi fejlődési környezet</strong>
+              <span>Stabil alapokkal, gyors szakmai támogatással.</span>
+            </div>
           </div>
         </div>
       </section>
@@ -456,9 +472,13 @@ const Home = () => {
           className="reviews-showcase-head reveal-on-scroll"
           style={{ "--reveal-delay": "60ms" }}
         >
-          <span className="reviews-eyebrow">{"\u00dcgyf\u00e9lv\u00e9lem\u00e9nyek"}</span>
+          <span className="reviews-eyebrow">
+            {"\u00dcgyf\u00e9lv\u00e9lem\u00e9nyek"}
+          </span>
           <h2>
-            Amit <span className="reviews-head-accent">{"\u0151k"} mondanak</span> rólunk
+            Amit{" "}
+            <span className="reviews-head-accent">{"\u0151k"} mondanak</span>{" "}
+            rólunk
           </h2>
           <div className="reviews-title-divider" aria-hidden="true"></div>
 
@@ -559,8 +579,130 @@ const Home = () => {
         )}
       </section>
 
+      <section id="cegeknek" className="company-focus onepage-section">
+        <div
+          className="company-focus-visual reveal-on-scroll"
+          style={{ "--reveal-delay": "220ms" }}
+          aria-hidden="true"
+        >
+          <div className="company-focus-visual-glow"></div>
+          <div className="company-focus-visual-frame">
+            <img
+              src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80"
+              alt="Céges csapat szakmai továbbképzésen"
+              loading="lazy"
+            />
+            <div className="company-focus-overlay">
+              <strong>Vállalati csomagok</strong>
+              <span>Egyedi igényekre, valós támogatással.</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="company-focus-content reveal-on-scroll"
+          style={{ "--reveal-delay": "80ms" }}
+        >
+          <span className="company-focus-eyebrow">Cégeknek</span>
+          <h2>
+            Szakmai fejlődéshez és csapatképzéshez is készen áll a{" "}
+            <span className="company-focus-accent">CyberNest</span>
+          </h2>
+          <p>
+            Ha szakmai továbbképzésre, belső gyakorló környezetre vagy stabil
+            szerveres háttérre van szükségetek, nálunk személyre szabott
+            megoldást kaptok. Összerakjuk nektek azt a technikai csomagot,
+            amellyel a csapatotok gyorsabban és biztonságosabban fejlődhet.
+          </p>
+
+          <div className="company-focus-points">
+            <span>Workshopbarát infrastruktúra</span>
+            <span>Skálázható környezet céges projektekhez</span>
+            <span>Gyors támogatás mentor szemlélettel</span>
+            <span>Kiemelt kapcsolattartó vállalati partnereknek</span>
+          </div>
+
+          <div className="company-focus-contact-card">
+            <p className="company-focus-contact-title">
+              Kérjen ajánlatot közvetlenül
+            </p>
+            <div className="company-focus-direct-row">
+              <a href="mailto:info@cybernest.hu">info@cybernest.hu</a>
+              <span className="company-focus-or">VAGY</span>
+              <button
+                className="ghost-button company-focus-inline-button"
+                onClick={() => scrollToSection("kapcsolat")}
+              >
+                Kapcsolatfelvétel
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="termekek" className="onepage-section">
         <Products embedded />
+      </section>
+
+      <section id="mentoroknak" className="mentor-join onepage-section">
+        <div
+          className="mentor-join-content reveal-on-scroll"
+          style={{ "--reveal-delay": "220ms" }}
+        >
+          <span className="mentor-join-eyebrow">Mentornak jelentkezés</span>
+          <h2>
+            Adj tudást, építs közösséget, és válj a{" "}
+            <span className="mentor-join-accent">CyberNest mentorává</span>
+          </h2>
+          <p>
+            Ha szívesen segítesz másoknak a fejlődésben, nálunk mentor szerepben
+            valódi hatást érhetsz el. Kezdőktől haladókig támogatjuk a
+            mentorainkat struktúrával, közösséggel és stabil technikai
+            háttérrel.
+          </p>
+
+          <div className="mentor-join-points">
+            <span>Rugalmas mentorálási időbeosztás</span>
+            <span>Támogató, szakmai közösség</span>
+            <span>Valós projektek, gyakorlati fejlődés</span>
+            <span>Látható szakmai érték a portfóliódban</span>
+          </div>
+
+          <div className="mentor-join-contact-card">
+            <p className="mentor-join-contact-title">
+              Érdeklődjön nálunk bármikor
+            </p>
+            <div className="mentor-join-direct-row">
+              <a href="mailto:info@cybernest.hu">info@cybernest.hu</a>
+              <span className="mentor-join-or">VAGY</span>
+              <button
+                className="ghost-button mentor-join-inline-button"
+                onClick={() => scrollToSection("kapcsolat")}
+              >
+                Kapcsolatfelvétel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="mentor-join-visual reveal-on-scroll"
+          style={{ "--reveal-delay": "90ms" }}
+          aria-hidden="true"
+        >
+          <div className="mentor-join-visual-orb"></div>
+          <div className="mentor-join-frame">
+            <img
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+              alt="Mentor és tanuló közös szakmai munkában"
+              loading="lazy"
+            />
+            <div className="mentor-join-overlay">
+              <strong>Mentor programok</strong>
+              <span>Egyedi fejlődési útra, valós támogatással.</span>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section id="kapcsolat" className="onepage-section">
@@ -571,11 +713,3 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-
-
-
-
-

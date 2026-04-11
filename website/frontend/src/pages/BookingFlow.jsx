@@ -7,7 +7,6 @@ import "../styles/BookingFlow.css";
 import {
   isValidEmail,
   isValidFullName,
-  isValidName,
   isValidPhone,
 } from "../utils/validation";
 import { MENTORS } from "../data/mentors";
@@ -149,11 +148,6 @@ const BookingFlow = () => {
     ) {
       setError("Kérlek, tölts ki minden kötelező mezőt.");
     return;
-    }
-
-    if (!isValidName(contactName)) {
-      setError("A név formátuma érvénytelen.");
-      return;
     }
 
     if (!isValidFullName(billingName)) {
@@ -649,17 +643,17 @@ const handleConfirm = async () => {
               <div className="step-actions">
                 <button
                   type="button"
+                  className="btn-secondary"
+                  onClick={() => navigate("/#termekek")}
+                >
+                  További szerverek
+                </button>
+                <button
+                  type="button"
                   className="btn-primary"
                   onClick={() => navigate("/ugyfelportal/dashboard")}
                 >
                   Irány a foglalásaim oldalra
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={() => navigate("/termekek")}
-                >
-                  További szerverek
                 </button>
               </div>
             </MotionSection>

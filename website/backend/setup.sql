@@ -103,8 +103,8 @@ CREATE TABLE IF NOT EXISTS `mentor_ertekeles` (
   CONSTRAINT `mentor_ertekeles_ibfk_2` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Fake review tabla (csak fooldali bemutatohoz)
-CREATE TABLE IF NOT EXISTS `fake_review` (
+-- Page review tabla (csak fooldali bemutatohoz)
+CREATE TABLE IF NOT EXISTS `page_review` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(120) NOT NULL,
   `avatar_url` longtext NULL,
@@ -174,8 +174,8 @@ WHERE NOT EXISTS (
 
 
 
--- Alap fake review adatok
-INSERT IGNORE INTO `fake_review` (`id`, `user_name`, `avatar_url`, `review`, `stars`, `is_active`) VALUES
+-- Alap page review adatok
+INSERT IGNORE INTO `page_review` (`id`, `user_name`, `avatar_url`, `review`, `stars`, `is_active`) VALUES
 (1, 'Bence K.', NULL, 'Nagyon profi volt az egesz folyamat, gyorsan kaptam segitseget es minden ertheto volt.', 5.0, 1),
 (2, 'Lili M.', NULL, 'A mentor nagyon segitokesz volt, biztosan jovok meg. A weboldal kezelese is egyszeru.', 5.0, 1),
 (3, 'Patrik V.', NULL, 'Rugalmas idopontok, korrekt kommunikacio, abszolut pozitiv tapasztalat.', 5.0, 1),

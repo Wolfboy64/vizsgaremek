@@ -137,9 +137,9 @@ export const getPublicFakeReviews = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Hiba a publikus fake review-k lekeresekor:", error);
+    console.error("Hiba a publikus page review-k lekeresekor:", error);
     res.status(500).json({
-      message: "Szerver hiba a publikus fake review-k lekeresese soran.",
+      message: "Szerver hiba a publikus page review-k lekeresese soran.",
     });
   }
 };

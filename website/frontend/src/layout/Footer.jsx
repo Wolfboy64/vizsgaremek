@@ -1,4 +1,5 @@
 import "../styles/Footer.css";
+import cyberNestLogo from "../assets/icons/cybernest-logo.png";
 import {
   FaDiscord,
   FaFacebookF,
@@ -13,25 +14,62 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-top">
           <div className="footer-brand-block">
-            <h3 className="footer-brand">CyberNest</h3>
+            <h3 className="footer-brand">
+              <span className="footer-brand-logo-wrap">
+                <img
+                  src={cyberNestLogo}
+                  alt="CyberNest logó"
+                  className="footer-brand-logo"
+                />
+                <span className="footer-brand-text">
+                  <span className="footer-logo-cyber">Cyber</span>
+                  <span className="footer-logo-nest">Nest</span>
+                </span>
+              </span>
+            </h3>
             <p>
               Stabil szervermegoldások, gyors ügyféltámogatás, skálázható
               infrastruktúra.
             </p>
             <div className="footer-socials" aria-label="Közösségi média linkek">
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+              >
                 <FaFacebookF />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+              >
                 <FaInstagram />
               </a>
-              <a href="https://discord.com" target="_blank" rel="noreferrer" aria-label="Discord">
+              <a
+                href="https://discord.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Discord"
+              >
                 <FaDiscord />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+              >
                 <FaLinkedinIn />
               </a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <a
+                href="https://github.com/Wolfboy64/vizsgaremek"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+              >
                 <FaGithub />
               </a>
             </div>
@@ -62,11 +100,9 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} CyberNest. Minden jog fenntartva.</p>
-          <div className="footer-bottom-links">
-            <a href="#impresszum">Impresszum</a>
-            <a href="#adatkezeles">Adatkezelés</a>
-          </div>
+          <p>
+            &copy; {new Date().getFullYear()} CyberNest. Minden jog fenntartva.
+          </p>
         </div>
       </div>
     </footer>

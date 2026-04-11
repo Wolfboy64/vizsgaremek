@@ -65,12 +65,6 @@
   font-weight: 800;
   font-size: 1.1rem;
   overflow: hidden;
-  cursor: pointer;
-}
-
-.profile-avatar-preview:hover {
-  border-color: rgba(0, 212, 255, 0.6);
-  box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.16);
 }
 
 .profile-avatar-preview img {
@@ -78,32 +72,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.profile-file-input {
-  display: none;
-}
-
-.profile-avatar-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.profile-ghost-btn {
-  border-radius: 9px;
-  border: 1px solid rgba(0, 212, 255, 0.32);
-  background: rgba(0, 212, 255, 0.1);
-  color: #ddf9ff;
-  padding: 8px 12px;
-  font-size: 0.9rem;
-}
-
-.profile-ghost-btn.danger {
-  border-color: rgba(255, 71, 87, 0.42);
-  background: rgba(255, 71, 87, 0.12);
-  color: #ffc3ca;
 }
 
 .profile-form {

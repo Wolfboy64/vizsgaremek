@@ -136,6 +136,17 @@ try {
       CONSTRAINT mentor_ertekeles_ibfk_1 FOREIGN KEY (foglalas_id) REFERENCES foglalas (id) ON DELETE CASCADE ON UPDATE CASCADE,
       CONSTRAINT mentor_ertekeles_ibfk_2 FOREIGN KEY (felhasznalo_id) REFERENCES felhasznalo (id) ON DELETE CASCADE ON UPDATE CASCADE
     )`,
+    `CREATE TABLE IF NOT EXISTS page_review (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      user_name varchar(120) NOT NULL,
+      avatar_url longtext NULL,
+      review text NOT NULL,
+      stars decimal(2,1) NOT NULL DEFAULT 5.0,
+      is_active tinyint(1) NOT NULL DEFAULT 1,
+      created_at datetime DEFAULT current_timestamp(),
+      updated_at datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+      PRIMARY KEY (id)
+    )`,
   ];
 
   for (const sql of migrations) {
@@ -153,6 +164,25 @@ try {
         throw error;
       }
     }
+  }
+
+  // Migrate legacy fake_review table to page_review if needed.
+  const [legacyReviewTable] = await connection.query(
+    "SHOW TABLES LIKE 'fake_review'",
+  );
+  const [pageReviewTable] = await connection.query(
+    "SHOW TABLES LIKE 'page_review'",
+  );
+
+  if (legacyReviewTable.length > 0 && pageReviewTable.length === 0) {
+    await connection.query("RENAME TABLE fake_review TO page_review");
+  } else if (legacyReviewTable.length > 0 && pageReviewTable.length > 0) {
+    await connection.query(
+      `INSERT IGNORE INTO page_review
+       (id, user_name, avatar_url, review, stars, is_active, created_at, updated_at)
+       SELECT id, user_name, avatar_url, review, stars, is_active, created_at, updated_at
+       FROM fake_review`,
+    );
   }
 
   connection.release();
