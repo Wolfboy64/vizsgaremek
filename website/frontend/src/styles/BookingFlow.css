@@ -134,9 +134,15 @@
 
 .mentor-card img {
   width: 100%;
-  border-radius: 10px;
-  height: 120px;
-  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  max-height: 240px;
+  object-fit: contain;
+  object-position: center;
+  background: rgba(4, 8, 22, 0.95);
+  padding: 8px;
 }
 
 .mentor-card h3 {

@@ -41,6 +41,11 @@ const buildFallbackAvatar = (name) => {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 };
 
+const getMentorImage = (mentorId, mentorName) => {
+  const mentorMeta = mentorId ? MENTOR_BY_ID[mentorId] : null;
+  return mentorMeta?.image || buildFallbackAvatar(mentorName || "Mentor");
+};
+
 const renderStaticStars = (value) => {
   const numeric = Number(value) || 0;
   return Array.from({ length: 5 }, (_, index) => {
@@ -286,8 +291,18 @@ const Dashboard = () => {
 
                       {reservation.mentor_nev && (
                         <div className="mentor-display">
-                          <p className="mentor-label">Mentor:</p>
-                          <p className="mentor-value">{reservation.mentor_nev}</p>
+                          <img
+                            src={getMentorImage(
+                              reservation.mentor_id,
+                              reservation.mentor_nev,
+                            )}
+                            alt={`${reservation.mentor_nev} profilkep`}
+                            className="mentor-rating-avatar"
+                          />
+                          <div>
+                            <p className="mentor-label">Mentor:</p>
+                            <p className="mentor-value">{reservation.mentor_nev}</p>
+                          </div>
                         </div>
                       )}
 
@@ -329,9 +344,10 @@ const Dashboard = () => {
               {reservationsWithMentor.map((reservation) => {
                 const ratingDraft = ratingDrafts[reservation.id] || emptyDraft;
                 const visualRating = getVisualRating(reservation.id);
-                const mentorMeta = MENTOR_BY_ID[reservation.mentor_id] || null;
-                const mentorImage =
-                  mentorMeta?.image || buildFallbackAvatar(reservation.mentor_nev || "Mentor");
+                const mentorImage = getMentorImage(
+                  reservation.mentor_id,
+                  reservation.mentor_nev,
+                );
                 const mentorAtlag =
                   reservation.mentor_atlag_pontszam != null
                     ? Number(reservation.mentor_atlag_pontszam)
