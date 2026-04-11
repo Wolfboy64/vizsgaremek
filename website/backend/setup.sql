@@ -176,8 +176,19 @@ WHERE NOT EXISTS (
 
 -- Alap page review adatok
 INSERT IGNORE INTO `page_review` (`id`, `user_name`, `avatar_url`, `review`, `stars`, `is_active`) VALUES
-(1, 'Bence K.', NULL, 'Nagyon profi volt az egesz folyamat, gyorsan kaptam segitseget es minden ertheto volt.', 5.0, 1),
-(2, 'Lili M.', NULL, 'A mentor nagyon segitokesz volt, biztosan jovok meg. A weboldal kezelese is egyszeru.', 5.0, 1),
-(3, 'Patrik V.', NULL, 'Rugalmas idopontok, korrekt kommunikacio, abszolut pozitiv tapasztalat.', 5.0, 1),
-(4, 'Zsombi R.', NULL, 'A berles es a tamogatas is flottul ment, en ezt csak ajanlani tudom.', 5.0, 1),
-(5, 'Anna T.', NULL, 'Minden pontosan ugy tortent, ahogy vartam. Gyors, atlathato, megbizhato.', 5.0, 1);
+(1, 'Bence K.', 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-bence-k', 'Nagyon profi volt az egesz folyamat, gyorsan kaptam segitseget es minden ertheto volt.', 5.0, 1),
+(2, 'Lili M.', 'https://xsgames.co/randomusers/avatar.php?g=female&seed=review-lili-m', 'A mentor nagyon segitokesz volt, biztosan jovok meg. A weboldal kezelese is egyszeru.', 5.0, 1),
+(3, 'Patrik V.', 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-patrik-v', 'Rugalmas idopontok, korrekt kommunikacio, abszolut pozitiv tapasztalat.', 5.0, 1),
+(4, 'Zsombi R.', 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-zsombi-r', 'A berles es a tamogatas is flottul ment, en ezt csak ajanlani tudom.', 5.0, 1),
+(5, 'Anna T.', 'https://xsgames.co/randomusers/avatar.php?g=female&seed=review-anna-t', 'Minden pontosan ugy tortent, ahogy vartam. Gyors, atlathato, megbizhato.', 5.0, 1);
+
+UPDATE `page_review`
+SET `avatar_url` = CASE
+  WHEN `id` = 1 THEN 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-bence-k'
+  WHEN `id` = 2 THEN 'https://xsgames.co/randomusers/avatar.php?g=female&seed=review-lili-m'
+  WHEN `id` = 3 THEN 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-patrik-v'
+  WHEN `id` = 4 THEN 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-zsombi-r'
+  WHEN `id` = 5 THEN 'https://xsgames.co/randomusers/avatar.php?g=female&seed=review-anna-t'
+  ELSE `avatar_url`
+END
+WHERE `id` IN (1, 2, 3, 4, 5);

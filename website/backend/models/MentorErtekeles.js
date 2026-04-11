@@ -51,7 +51,20 @@ class MentorErtekelesModel {
       `SELECT
          id,
          user_name,
-         avatar_url,
+         COALESCE(
+           NULLIF(TRIM(avatar_url), ''),
+           CASE
+             WHEN id = 1 THEN 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-bence-k'
+             WHEN id = 2 THEN 'https://xsgames.co/randomusers/avatar.php?g=female&seed=review-lili-m'
+             WHEN id = 3 THEN 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-patrik-v'
+             WHEN id = 4 THEN 'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-zsombi-r'
+             WHEN id = 5 THEN 'https://xsgames.co/randomusers/avatar.php?g=female&seed=review-anna-t'
+             ELSE CONCAT(
+               'https://xsgames.co/randomusers/avatar.php?g=male&seed=review-',
+               id
+             )
+           END
+         ) AS avatar_url,
          review,
          stars,
          updated_at

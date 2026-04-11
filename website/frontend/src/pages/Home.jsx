@@ -36,6 +36,13 @@ const REVIEW_BADGES = [
   "Visszatérő ügyfél",
   "Ajánlott partner",
 ];
+const REVIEW_AVATAR_BY_ID = {
+  1: "https://xsgames.co/randomusers/avatar.php?g=male&seed=review-bence-k",
+  2: "https://xsgames.co/randomusers/avatar.php?g=female&seed=review-lili-m",
+  3: "https://xsgames.co/randomusers/avatar.php?g=male&seed=review-patrik-v",
+  4: "https://xsgames.co/randomusers/avatar.php?g=male&seed=review-zsombi-r",
+  5: "https://xsgames.co/randomusers/avatar.php?g=female&seed=review-anna-t",
+};
 
 const normalizeLoopIndex = (index, length) => {
   if (length <= 0) return 0;
@@ -56,6 +63,50 @@ const normalizeLoopIndex = (index, length) => {
 
 const getReviewBadge = (review, index) =>
   String(review?.badge || REVIEW_BADGES[index % REVIEW_BADGES.length]);
+
+const getDefaultReviewAvatar = (review) => {
+  const numericId = Number(review?.id);
+  return (
+    REVIEW_AVATAR_BY_ID[numericId] ||
+    `https://xsgames.co/randomusers/avatar.php?g=male&seed=review-${numericId || "fallback"}`
+  );
+};
+
+const ReviewAvatar = ({ review }) => {
+  const fallbackAvatar = getDefaultReviewAvatar(review);
+  const [avatarSrc, setAvatarSrc] = useState(review?.avatarUrl || fallbackAvatar);
+  const [showInitialsFallback, setShowInitialsFallback] = useState(false);
+
+  useEffect(() => {
+    setAvatarSrc(review?.avatarUrl || fallbackAvatar);
+    setShowInitialsFallback(false);
+  }, [fallbackAvatar, review?.avatarUrl]);
+
+  if (showInitialsFallback) {
+    return (
+      <div className="fake-review-avatar fake-review-avatar-fallback">
+        {getInitials(review?.userName)}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      className="fake-review-avatar"
+      src={avatarSrc}
+      alt={`${review?.userName || "Ismeretlen"} profilkép`}
+      loading="lazy"
+      onError={() => {
+        if (avatarSrc !== fallbackAvatar) {
+          setAvatarSrc(fallbackAvatar);
+          return;
+        }
+
+        setShowInitialsFallback(true);
+      }}
+    />
+  );
+};
 
 const Home = () => {
   const [typedWord, setTypedWord] = useState("");
@@ -532,17 +583,7 @@ const Home = () => {
                     key={`${review.id}-${index}`}
                   >
                     <div className="review-polished-header">
-                      {review.avatarUrl ? (
-                        <img
-                          className="fake-review-avatar"
-                          src={review.avatarUrl}
-                          alt={`${review.userName} profilkép`}
-                        />
-                      ) : (
-                        <div className="fake-review-avatar fake-review-avatar-fallback">
-                          {getInitials(review.userName)}
-                        </div>
-                      )}
+                      <ReviewAvatar review={review} />
 
                       <div>
                         <strong>{review.userName}</strong>
