@@ -26,6 +26,8 @@ namespace CyberNest_Admin
         public MainWindow()
         {
             InitializeComponent();
+            TryApplyWindowIcon();
+            TryApplyMenuIcons();
             LoginPage.Visibility = Visibility.Visible;
             SideBrand_loginPage.Visibility = Visibility.Visible;
             MainContentPage.Visibility = Visibility.Hidden;
@@ -40,6 +42,52 @@ namespace CyberNest_Admin
 
             this.MaxHeight = 450;
             this.MaxWidth = 800;
+        }
+
+        private void TryApplyWindowIcon()
+        {
+            string[] candidatePaths =
+            {
+                System.IO.Path.Combine(AppContext.BaseDirectory, "app.ico"),
+                System.IO.Path.Combine(AppContext.BaseDirectory, "ikonok", "app.ico")
+            };
+
+            foreach (string candidatePath in candidatePaths)
+            {
+                if (!File.Exists(candidatePath))
+                {
+                    continue;
+                }
+
+                Icon = new BitmapImage(new Uri(candidatePath, UriKind.Absolute));
+                return;
+            }
+        }
+
+        private void TryApplyMenuIcons()
+        {
+            SetMenuIcon(FelhasznalokListajaMenu, "member-search.png");
+            SetMenuIcon(UjFelhasznaloMenu, "user-add.png");
+            SetMenuIcon(FelhasznaloTorleseMenu, "delete-user.png");
+            SetMenuIcon(FelhasznaloModositasMenu, "user-pen.png");
+            SetMenuIcon(UjUzemeltetoMenu, "user-headset.png");
+            SetMenuIcon(kijelentkezesMenu, "user-logout.png");
+        }
+
+        private void SetMenuIcon(MenuItem menuItem, string fileName)
+        {
+            string iconPath = System.IO.Path.Combine(AppContext.BaseDirectory, "ikonok", fileName);
+            if (!File.Exists(iconPath))
+            {
+                return;
+            }
+
+            menuItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri(iconPath, UriKind.Absolute)),
+                Width = 16,
+                Height = 16
+            };
         }
 
 
