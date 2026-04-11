@@ -83,7 +83,9 @@ try {
   const connection = await db.getConnection();
   console.log("Connected to the database.");
 
-  const setupSQL = fs.readFileSync(join(__dirname, "../setup.sql"), "utf8");
+  const setupSQL = fs
+    .readFileSync(join(__dirname, "../setup.sql"), "utf8")
+    .replace(/^\uFEFF/, "");
   await connection.query(setupSQL);
   console.log("Database initialized successfully.");
 

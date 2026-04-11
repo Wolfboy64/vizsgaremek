@@ -35,6 +35,44 @@ const parseStorageToGb = (storageText) => {
   return unit === "TB" ? numeric * 1024 : numeric;
 };
 
+const buildProductDescription = (product) => {
+  const baseDescription =
+    product.leiras || "Ehhez az eszközhöz nincs leírás megadva.";
+  const ramGb = parseRamValue(product.ram);
+  const storageGb = parseStorageToGb(product.hdd);
+  const extras = [];
+
+  if (ramGb >= 64) {
+    extras.push(
+      "Erősebb terheléshez, párhuzamos folyamatokhoz és nagyobb projektekhez is magabiztos választás.",
+    );
+  } else if (ramGb >= 16) {
+    extras.push(
+      "Mindennapi fejlesztési, tesztelési és gyakorló környezethez is jól használható, kiegyensúlyozott konfiguráció.",
+    );
+  } else if (ramGb > 0) {
+    extras.push(
+      "Kezdéshez, könnyebb feladatokhoz és kisebb webes projektekhez is kényelmes belépő megoldás.",
+    );
+  }
+
+  if (storageGb >= 1024) {
+    extras.push(
+      "A nagyobb tárhely előnyt jelenthet adatintenzív feladatoknál, mentéseknél vagy hosszabb távú használatnál.",
+    );
+  } else if (storageGb >= 240) {
+    extras.push(
+      "A rendelkezésre álló tárhely bőven elegendő lehet webalkalmazásokhoz, gyakorló rendszerekhez és kisebb adatbázisokhoz.",
+    );
+  }
+
+  return [baseDescription, ...extras].join(" ");
+};
+
+const buildOperatorDescription = (product) =>
+  product.uzemelteto_leiras ||
+  "Az üzemeltető stabil háttérrel és megbízható támogatással biztosítja a szolgáltatást.";
+
 const Products = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -50,9 +88,7 @@ const Products = ({ embedded = false }) => {
       setError("");
 
       const response = await api.get("/eszkoz");
-      const receivedProducts = Array.isArray(response.data)
-        ? response.data
-        : [];
+      const receivedProducts = Array.isArray(response.data) ? response.data : [];
       setProducts(receivedProducts);
     } catch (err) {
       setError(
@@ -105,7 +141,7 @@ const Products = ({ embedded = false }) => {
       return byOperator && bySearch;
     });
 
-    const sorted = [...filtered].sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       switch (sortBy) {
         case SORT_OPTIONS.hddDesc:
           return parseStorageToGb(b.hdd) - parseStorageToGb(a.hdd);
@@ -120,8 +156,6 @@ const Products = ({ embedded = false }) => {
           return parseStorageToGb(a.hdd) - parseStorageToGb(b.hdd);
       }
     });
-
-    return sorted;
   }, [products, searchTerm, selectedOperator, sortBy]);
 
   return (
@@ -271,16 +305,16 @@ const Products = ({ embedded = false }) => {
               </div>
 
               <p className="product-description">
-                {product.leiras || "Ehhez az eszközhöz nincs leírás megadva."}
+                {buildProductDescription(product)}
               </p>
 
               <footer className="product-footer">
                 <span className="operator-name">
                   {product.uzemelteto_nev || "Nincs üzemeltető"}
                 </span>
-                {product.uzemelteto_leiras && (
+                {(product.uzemelteto_leiras || product.uzemelteto_nev) && (
                   <p className="operator-description">
-                    {product.uzemelteto_leiras}
+                    {buildOperatorDescription(product)}
                   </p>
                 )}
                 <button

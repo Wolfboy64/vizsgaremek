@@ -36,9 +36,25 @@ class IdopontModel {
     return result.affectedRows;
   }
 
+  static async reserveWithConnection(connection, id) {
+    const [result] = await connection.execute(
+      "UPDATE idopont SET statusz = ? WHERE id = ? AND statusz = ?",
+      ["reserved", id, "available"],
+    );
+    return result.affectedRows;
+  }
+
   // Időpont felszabadítása (foglalás törlése)
   static async release(id) {
     const [result] = await db.execute(
+      "UPDATE idopont SET statusz = ? WHERE id = ?",
+      ["available", id],
+    );
+    return result.affectedRows;
+  }
+
+  static async releaseWithConnection(connection, id) {
+    const [result] = await connection.execute(
       "UPDATE idopont SET statusz = ? WHERE id = ?",
       ["available", id],
     );

@@ -1,6 +1,6 @@
--- CyberNest tĂˇblĂˇk automatikus lĂ©trehozĂˇsa
+﻿-- CyberNest táblák létrehozása és adatok beszúrása
 
--- ĂśzemeltetĹ‘ tĂˇbla
+-- Üzemeltető tábla
 CREATE TABLE IF NOT EXISTS `uzemelteto` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nev` varchar(100) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `uzemelteto` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- EszkĂ¶z tĂˇbla
+-- Eszköz tábla
 CREATE TABLE IF NOT EXISTS `eszkoz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `leiras` text DEFAULT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `eszkoz` (
   CONSTRAINT `eszkoz_ibfk_1` FOREIGN KEY (`uzemelteto_id`) REFERENCES `uzemelteto` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- FelhasznĂˇlĂł tĂˇbla
+-- Felhasználó tábla
 CREATE TABLE IF NOT EXISTS `felhasznalo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nev` varchar(100) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `felhasznalo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- IdĹ‘pont tĂˇbla
+-- Időpont tábla
 CREATE TABLE IF NOT EXISTS `idopont` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `eszkoz_id` int(11) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `idopont` (
   CONSTRAINT `idopont_ibfk_1` FOREIGN KEY (`eszkoz_id`) REFERENCES `eszkoz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- FoglalĂˇs tĂˇbla
+-- Foglalás tábla
 CREATE TABLE IF NOT EXISTS `foglalas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `felhasznalo_id` int(11) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `foglalas` (
   CONSTRAINT `foglalas_ibfk_3` FOREIGN KEY (`idopont_id`) REFERENCES `idopont` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Ă‰rtĂ©kelĂ©s tĂˇbla
+-- Értékelés tábla
 CREATE TABLE IF NOT EXISTS `ertekeles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `foglalas_id` int(11) NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `page_review` (
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
--- Log tĂˇbla
+-- Log tÄ‚Ë‡bla
 CREATE TABLE IF NOT EXISTS `log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `foglalas_id` int(11) NOT NULL,
@@ -126,19 +126,41 @@ CREATE TABLE IF NOT EXISTS `log` (
   CONSTRAINT `log_ibfk_1` FOREIGN KEY (`foglalas_id`) REFERENCES `foglalas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Demo adatok beszĂşrĂˇsa (csak ha mĂ©g nincsenek)
+-- Demo adatok beszúrása (duplikáció nélkül)
 INSERT IGNORE INTO `uzemelteto` (`id`, `nev`, `leiras`) VALUES
-(1, 'DataCenter Europe', 'EurĂłpai szintĹ± adatkĂ¶zpontok hĂˇlĂłzata'),
-(2, 'CloudHost Pro', 'ProfesszionĂˇlis cloud szolgĂˇltatĂł'),
-(3, 'ServerFarm Inc', 'MegbĂ­zhatĂł szerver infrastruktĂşra');
+(1, 'DataCenter Europe', 'Európai szintű adatközponti háttér, stabil rendelkezésre állással és megbízható infrastruktúrával.'),
+(2, 'CloudHost Pro', 'Professzionális cloud szolgáltató modern, nagy teljesítményű környezetekhez és skálázható projektekhez.'),
+(3, 'ServerFarm Inc', 'Megbízható szerverinfrastruktúra rugalmas erőforrásokkal, fejlesztési és tesztelési igényekre optimalizálva.');
 
 INSERT IGNORE INTO `eszkoz` (`id`, `leiras`, `cpu`, `ram`, `hdd`, `uzemelteto_id`) VALUES
-(1, 'AlapszintĹ± VPS szerver weboldal hostinghoz', 'Intel Xeon E5-2680 v4 (4 cores)', '8 GB DDR4', '120 GB SSD', 1),
-(2, 'KĂ¶zepes teljesĂ­tmĂ©nyĹ± dedikĂˇlt szerver', 'Intel Xeon Gold 6248R (8 cores)', '32 GB DDR4', '500 GB NVMe SSD', 1),
-(3, 'Nagy teljesĂ­tmĂ©nyĹ± szerver adatbĂˇzisokhoz', 'AMD EPYC 7542 (16 cores)', '128 GB DDR4', '2 TB NVMe SSD RAID', 2),
-(4, 'Enterprise szintĹ± szerver', 'Intel Xeon Platinum 8280 (28 cores)', '256 GB DDR4', '4 TB NVMe SSD RAID 10', 2),
-(5, 'KezdĹ‘ csomag tesztelĂ©shez', 'Intel Core i7-9700K (4 cores)', '16 GB DDR4', '240 GB SSD', 3),
-(6, 'GPU-val felszerelt szerver AI projektekhez', 'AMD Ryzen 9 5950X + NVIDIA RTX 3090', '64 GB DDR4', '1 TB NVMe SSD', 3);
+(1, 'Alapszintű VPS szerver weboldalak, kisebb alkalmazások és gyakorló projektek futtatásához, gyors indulással.', 'Intel Xeon E5-2680 v4 (4 cores)', '8 GB DDR4', '120 GB SSD', 1),
+(2, 'Közepes teljesítményű dedikált szerver stabil napi használatra, fejlesztői környezethez és több szolgáltatás egyidejű futtatásához.', 'Intel Xeon Gold 6248R (8 cores)', '32 GB DDR4', '500 GB NVMe SSD', 1),
+(3, 'Nagy teljesítményű szerver adatbázisokhoz, összetettebb backend feladatokhoz és erőforrásigényes munkafolyamatokhoz.', 'AMD EPYC 7542 (16 cores)', '128 GB DDR4', '2 TB NVMe SSD RAID', 2),
+(4, 'Enterprise szintű konfiguráció kiemelt terheléshez, vállalati környezethez és hosszabb távú, üzembiztos működéshez.', 'Intel Xeon Platinum 8280 (28 cores)', '256 GB DDR4', '4 TB NVMe SSD RAID 10', 2),
+(5, 'Kezdő csomag teszteléshez, tanuláshoz és kisebb fejlesztési feladatokhoz, egyszerűen átlátható erőforrásokkal.', 'Intel Core i7-9700K (4 cores)', '16 GB DDR4', '240 GB SSD', 3),
+(6, 'GPU-val felszerelt szerver AI projektekhez, modellezéshez, kísérletezéshez és nagyobb számítási igényű feladatokhoz.', 'AMD Ryzen 9 5950X + NVIDIA RTX 3090', '64 GB DDR4', '1 TB NVMe SSD', 3);
+
+UPDATE `uzemelteto`
+SET `leiras` = CASE
+  WHEN id = 1 THEN 'Európai szintű adatközponti háttér, stabil rendelkezésre állással és megbízható infrastruktúrával.'
+  WHEN id = 2 THEN 'Professzionális cloud szolgáltató modern, nagy teljesítményű környezetekhez és skálázható projektekhez.'
+  WHEN id = 3 THEN 'Megbízható szerverinfrastruktúra rugalmas erőforrásokkal, fejlesztési és tesztelési igényekre optimalizálva.'
+  ELSE `leiras`
+END
+WHERE `id` IN (1, 2, 3);
+
+UPDATE `eszkoz`
+SET `leiras` = CASE
+  WHEN id = 1 THEN 'Alapszintű VPS szerver weboldalak, kisebb alkalmazások és gyakorló projektek futtatásához, gyors indulással.'
+  WHEN id = 2 THEN 'Közepes teljesítményű dedikált szerver stabil napi használatra, fejlesztői környezethez és több szolgáltatás egyidejű futtatásához.'
+  WHEN id = 3 THEN 'Nagy teljesítményű szerver adatbázisokhoz, összetettebb backend feladatokhoz és erőforrásigényes munkafolyamatokhoz.'
+  WHEN id = 4 THEN 'Enterprise szintű konfiguráció kiemelt terheléshez, vállalati környezethez és hosszabb távú, üzembiztos működéshez.'
+  WHEN id = 5 THEN 'Kezdő csomag teszteléshez, tanuláshoz és kisebb fejlesztési feladatokhoz, egyszerűen átlátható erőforrásokkal.'
+  WHEN id = 6 THEN 'GPU-val felszerelt szerver AI projektekhez, modellezéshez, kísérletezéshez és nagyobb számítási igényű feladatokhoz.'
+  ELSE `leiras`
+END
+WHERE `id` IN (1, 2, 3, 4, 5, 6);
+
 
 -- Jovo ideju, foglalhato idopontok feltoltese (duplikacio nelkul)
 INSERT INTO `idopont` (`eszkoz_id`, `atvetel_datum`, `atvetel_idopont`, `statusz`)
@@ -165,7 +187,7 @@ LEFT JOIN `idopont` i
   AND i.atvetel_idopont = t.atvetel_idopont
 WHERE i.id IS NULL;
 
--- Alap admin felhasznĂˇlĂł (admin123)
+-- Alap admin felhasználó létrehozása (duplikáció nélkül)
 INSERT INTO `felhasznalo` (`nev`, `elerhetoseg`, `allapot`, `jelszo`, `role`)
 SELECT 'admin', 'admin@local.com', 'aktiv', '$2b$10$mBnIrX2PjXXfLVEk5/o7iOGVPhNJcYxbVXUq9nWAHdKDizRzXDMlu', 'admin'
 WHERE NOT EXISTS (

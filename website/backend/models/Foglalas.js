@@ -39,6 +39,45 @@ class FoglalasModel {
     return result.insertId;
   }
 
+  static async createWithConnection(
+    connection,
+    eszkoz_id,
+    idopont_id,
+    felhasznalo_id,
+    berlesi_kezdete,
+    berlesi_vege,
+    mentor_id,
+    mentor_nev,
+    ugyfel_nev,
+    szamlazasi_nev,
+    email,
+    telefon,
+    megjegyzes,
+  ) {
+    const [result] = await connection.execute(
+      `INSERT INTO foglalas
+       (felhasznalo_id, eszkoz_id, idopont_id, berlesi_kezdete, berlesi_vege, mentor_id, mentor_nev, ugyfel_nev, szamlazasi_nev, email, telefon, megjegyzes, foglalas_datuma, statusz)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)`,
+      [
+        felhasznalo_id,
+        eszkoz_id,
+        idopont_id,
+        berlesi_kezdete,
+        berlesi_vege,
+        mentor_id,
+        mentor_nev,
+        ugyfel_nev,
+        szamlazasi_nev,
+        email,
+        telefon,
+        megjegyzes,
+        "confirmed",
+      ],
+    );
+
+    return result.insertId;
+  }
+
   // Minden foglalás lekérése
   static async getAll() {
     const [rows] = await db.execute(`

@@ -48,7 +48,9 @@ const ServerDetails = () => {
         const response = await api.get(`/eszkoz/${id}`);
         setServer(response.data);
       } catch (err) {
-        setError(err.response?.data?.message || "Nem sikerült betölteni a szervert.");
+        setError(
+          err.response?.data?.message || "Nem sikerült betölteni a szervert.",
+        );
       } finally {
         setLoading(false);
       }
@@ -96,8 +98,8 @@ const ServerDetails = () => {
           <span className="server-chip">Részletes információ</span>
           <h1>Szerver #{server.id}</h1>
           <p>
-            Válaszd ki ezt a konfigurációt, majd a következő oldalon mentorral és
-            időponttal végig tudod vinni a foglalást.
+            Válaszd ki ezt a konfigurációt, majd a következő oldalon mentorral
+            és időponttal végig tudod vinni a foglalást.
           </p>
         </div>
 
@@ -146,14 +148,14 @@ const ServerDetails = () => {
               className="details-primary-btn"
               onClick={() => navigate(`/termekek/${id}/foglalas`)}
             >
-              Foglalás megkezdése →
+              {"Foglalás megkezdése ->"}
             </button>
             <button
               type="button"
               className="details-secondary-btn"
               onClick={() => navigate("/termekek")}
             >
-              ← Vissza a listához
+              {"<- Vissza a listához"}
             </button>
           </aside>
         </div>
